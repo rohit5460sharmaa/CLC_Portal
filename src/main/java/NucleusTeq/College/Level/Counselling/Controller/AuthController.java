@@ -36,6 +36,8 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         String username = authRequest.getUsername();
         String password = authRequest.getPassword();
+        
+        
 
         Optional<Student> student = studentRepository.findByEmailOrRollNumber(username, username);
         if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
@@ -59,8 +61,8 @@ public class AuthController {
             return ResponseEntity.status(403).body("Access Denied. Only Admins can add users.");
         }
 
-        if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null || user.getRole() == null) {
-            return ResponseEntity.badRequest().body("All fields (username, email, password, role) are required.");
+        if (user.getUsername() == null || user.getEmail() == null || user.getPassword() == null || user.getRole() == null || user.getName() == null || user.getPhone() == null || user.getDepartment() == null) {
+            return ResponseEntity.badRequest().body("All fields (username, email, password, role, name, phone, department) are required.");
         }
 
         if (!user.getRole().equals("OFFICER") && !user.getRole().equals("ADMIN")) {
@@ -131,6 +133,10 @@ public class AuthController {
             User user = userOptional.get();
             user.setUsername(updatedUser.getUsername());
             user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            user.setName(updatedUser.getName());
+            user.setPhone(updatedUser.getPhone());
+            user.setDepartment(updatedUser.getDepartment());
+
             userRepository.save(user);
 
             return ResponseEntity.ok("User updated successfully.");

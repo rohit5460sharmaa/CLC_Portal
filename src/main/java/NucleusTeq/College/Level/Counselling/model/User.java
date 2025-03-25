@@ -25,6 +25,15 @@ public class User {
     @Column(nullable = false)
     private boolean enabled = true; // ✅ New field (Default: true)
 
+    @Column(nullable = false)
+    private String name; // New field: Full name
+
+    @Column(nullable = false)
+    private String phone; // New field: Contact number
+
+    @Column(nullable = false)
+    private String department; // New field: Department
+
     // Default constructor (Required by JPA)
     public User() {}
 
@@ -38,12 +47,15 @@ public class User {
     }
 
     // Constructor for Admin/Officer (If username is null, set email as username)
-    public User(String username, String email, String password, String role) {
+    public User(String username, String email, String password, String role, String name, String phone, String department) {
         this.email = email;
         this.username = (username == null || username.trim().isEmpty()) ? email : username;
         this.password = password;
         this.role = role;
         this.enabled = true;   // Enable user by default
+        this.name = name;
+        this.phone = phone;
+        this.department = department;
     }
 
     // Getters and Setters
@@ -95,6 +107,30 @@ public class User {
         this.enabled = enabled;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     // toString() Method
     @Override
     public String toString() {
@@ -104,6 +140,9 @@ public class User {
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", enabled=" + enabled +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", department='" + department + '\'' +
                 '}';
     }
 }
