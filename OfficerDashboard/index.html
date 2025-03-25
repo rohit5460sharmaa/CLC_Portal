@@ -6,6 +6,7 @@
     <title>CLC Portal - Admission Officer Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-50">
     <!-- Navbar -->
@@ -185,301 +186,314 @@
                         <canvas id="category-admission-chart"></canvas>
                     </div>
                 </div>
-                
-                <!-- New Branch Occupancy Section -->
-                <div class="mt-8">
-                    <h3 class="text-lg font-semibold mb-4">Branch Seat Occupancy</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="branch-occupancy-grid">
-                        <!-- Branch occupancy cards will be dynamically populated here -->
-                    </div>
-                    
-                    <!-- Branch Details Popup -->
-                    <div id="branch-details-popup" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
-                        <div class="bg-white p-6 rounded-lg shadow-xl w-96">
-                            <h4 id="popup-branch-name" class="text-xl font-bold mb-4 text-indigo-800"></h4>
-                            <div class="space-y-2">
-                                <div class="flex justify-between">
-                                    <span class="font-medium text-gray-700">Total Seats:</span>
-                                    <span id="popup-total-seats" class="font-bold text-indigo-600"></span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="font-medium text-gray-700">General:</span>
-                                    <span id="popup-general-seats" class="font-bold text-green-600"></span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="font-medium text-gray-700">SC:</span>
-                                    <span id="popup-sc-seats" class="font-bold text-blue-600"></span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="font-medium text-gray-700">ST:</span>
-                                    <span id="popup-st-seats" class="font-bold text-purple-600"></span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="font-medium text-gray-700">OBC:</span>
-                                    <span id="popup-obc-seats" class="font-bold text-yellow-600"></span>
-                                </div>
-                            </div>
-                            <button id="close-branch-details" class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Modal for Editing Seats -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-96">
+            <h2 class="text-xl font-bold mb-4">Edit Branch Seats</h2>
+            <form id="edit-seat-form">
+                <input type="hidden" id="edit-seat-id">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Branch Name</label>
+                    <input type="text" id="edit-branch-name" class="mt-1 block w-full rounded-md border-gray-300" required>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs">General Seats</label>
+                        <input type="number" id="edit-gen-seats" class="block w-full rounded-md border-gray-300">
+                    </div>
+                    <div>
+                        <label class="text-xs">SC Seats</label>
+                        <input type="number" id="edit-sc-seats" class="block w-full rounded-md border-gray-300">
+                    </div>
+                    <div>
+                        <label class="text-xs">ST Seats</label>
+                        <input type="number" id="edit-st-seats" class="block w-full rounded-md border-gray-300">
+                    </div>
+                    <div>
+                        <label class="text-xs">OBC Seats</label>
+                        <input type="number" id="edit-obc-seats" class="block w-full rounded-md border-gray-300">
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end space-x-2">
+                    <button type="button" id="cancel-edit" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md">Cancel</button>
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Navigation Links
-            const links = [
-                { id: 'dashboard-link', section: 'dashboard' },
-                { id: 'seat-management-link', section: 'seat-management' },
-                { id: 'student-queue-link', section: 'student-queue' },
-                { id: 'reports-link', section: 'reports' }
-            ];
-
-            links.forEach(link => {
-                document.getElementById(link.id).addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // Hide all sections
-                    document.querySelectorAll('.section').forEach(section => {
-                        section.classList.add('hidden');
-                    });
-                    // Show selected section
-                    document.getElementById(link.section).classList.remove('hidden');
-                });
-            });
-
-            // Branch and Seat Management
             const branchSeatForm = document.getElementById('branch-seat-form');
             const seatMatrixBody = document.getElementById('seat-matrix-body');
+            const editModal = document.getElementById('edit-modal');
+            const editSeatForm = document.getElementById('edit-seat-form');
+            const cancelEditBtn = document.getElementById('cancel-edit');
 
-            branchSeatForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const branchName = document.getElementById('branch-name').value;
-                const totalSeats = document.getElementById('total-seats').value;
-                const genSeats = document.getElementById('gen-seats').value;
-                const scSeats = document.getElementById('sc-seats').value;
-                const stSeats = document.getElementById('st-seats').value;
-                const obcSeats = document.getElementById('obc-seats').value;
+            // Navigation links
+            const dashboardLink = document.getElementById('dashboard-link');
+            const seatManagementLink = document.getElementById('seat-management-link');
+            const studentQueueLink = document.getElementById('student-queue-link');
+            const reportsLink = document.getElementById('reports-link');
 
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-4 py-2">${branchName}</td>
-                    <td class="px-4 py-2">${totalSeats}</td>
-                    <td class="px-4 py-2">${genSeats}</td>
-                    <td class="px-4 py-2">${scSeats}</td>
-                    <td class="px-4 py-2">${stSeats}</td>
-                    <td class="px-4 py-2">${obcSeats}</td>
-                    <td class="px-4 py-2">
-                        <button class="text-red-600 hover:text-red-800">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                seatMatrixBody.appendChild(row);
+            // Sections
+            const sections = document.querySelectorAll('.section');
 
-                // Reset form
-                branchSeatForm.reset();
-            });
-
-            // Simulated student queue
-            const students = [
-                { 
-                    name: 'Pratham Joya', 
-                    rank: 1, 
-                    category: 'General', 
-                    branches: ['Computer Science', 'Electronics'] 
-                },
-                { 
-                    name: 'John Doe', 
-                    rank: 2, 
-                    category: 'SC', 
-                    branches: ['Mechanical', 'Civil'] 
-                }
-            ];
-
-            let currentStudentIndex = 0;
-
-            function updateCurrentStudent() {
-                if (currentStudentIndex < students.length) {
-                    const student = students[currentStudentIndex];
-                    document.getElementById('student-name').textContent = student.name;
-                    document.getElementById('student-rank').textContent = student.rank;
-                    document.getElementById('student-category').textContent = student.category;
-                    document.getElementById('student-branches').textContent = student.branches.join(', ');
-                } else {
-                    // No more students
-                    document.getElementById('student-name').textContent = 'No more students';
-                    document.getElementById('student-rank').textContent = '-';
-                    document.getElementById('student-category').textContent = '-';
-                    document.getElementById('student-branches').textContent = '-';
-                }
+            // Navigation event listeners
+            function showSection(sectionId) {
+                sections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(sectionId).classList.remove('hidden');
             }
 
-            document.getElementById('admit-btn').addEventListener('click', () => {
-                currentStudentIndex++;
-                updateCurrentStudent();
-            });
+            dashboardLink.addEventListener('click', () => showSection('dashboard'));
+            seatManagementLink.addEventListener('click', () => showSection('seat-management'));
+            studentQueueLink.addEventListener('click', () => showSection('student-queue'));
+            reportsLink.addEventListener('click', () => showSection('reports'));
 
-            document.getElementById('skip-btn').addEventListener('click', () => {
-                currentStudentIndex++;
-                updateCurrentStudent();
-            });
+            // Base URL for backend API (update this to your actual backend URL)
+            const BASE_URL = 'http://localhost:8080/api/seats';
 
-            // Initial setup
-            updateCurrentStudent();
-
-            // Charts (using Chart.js)
-            const seatOccupancyCtx = document.getElementById('seat-occupancy-chart').getContext('2d');
-            new Chart(seatOccupancyCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Computer Science', 'Electronics', 'Mechanical', 'Civil'],
-                    datasets: [{
-                        label: 'Seat Occupancy',
-                        data: [30, 25, 20, 25],
-                        backgroundColor: [
-                            'rgba(99, 102, 241, 0.7)',
-                            'rgba(79, 70, 229, 0.7)',
-                            'rgba(129, 140, 248, 0.7)',
-                            'rgba(165, 180, 252, 0.7)'
-                        ]
-                    }]
-                }
-            });
-
-            const categoryAdmissionCtx = document.getElementById('category-admission-chart').getContext('2d');
-            new Chart(categoryAdmissionCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['General', 'SC', 'ST', 'OBC'],
-                    datasets: [{
-                        label: 'Admissions',
-                        data: [40, 15, 10, 20],
-                        backgroundColor: [
-                            'rgba(99, 102, 241, 0.7)',
-                            'rgba(79, 70, 229, 0.7)',
-                            'rgba(129, 140, 248, 0.7)',
-                            'rgba(165, 180, 252, 0.7)'
-                        ]
-                    }]
-                }
-            });
-
-            // Branch Occupancy Cards
-            function createBranchOccupancyCards() {
-                const branchOccupancyGrid = document.getElementById('branch-occupancy-grid');
-                const branchDetailsPopup = document.getElementById('branch-details-popup');
-                const closeBranchDetailsBtn = document.getElementById('close-branch-details');
-
-                // Sample branch data (replace with your actual data)
-                const branchData = [
-                    {
-                        name: 'Computer Science',
-                        totalSeats: 120,
-                        occupiedSeats: 90,
-                        categories: {
-                            general: 50,
-                            sc: 15,
-                            st: 10,
-                            obc: 15
-                        }
-                    },
-                    {
-                        name: 'Electronics',
-                        totalSeats: 100,
-                        occupiedSeats: 75,
-                        categories: {
-                            general: 40,
-                            sc: 12,
-                            st: 8,
-                            obc: 15
-                        }
-                    },
-                    {
-                        name: 'Mechanical',
-                        totalSeats: 90,
-                        occupiedSeats: 60,
-                        categories: {
-                            general: 35,
-                            sc: 10,
-                            st: 5,
-                            obc: 10
-                        }
-                    },
-                    {
-                        name: 'Civil',
-                        totalSeats: 80,
-                        occupiedSeats: 55,
-                        categories: {
-                            general: 30,
-                            sc: 8,
-                            st: 7,
-                            obc: 10
-                        }
-                    }
-                ];
-
-                branchData.forEach(branch => {
-                    // Create branch card
-                    const branchCard = document.createElement('div');
-                    branchCard.className = 'bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-all';
+            // Function to fetch branches from backend
+            async function fetchBranches() {
+                try {
+                    const response = await fetch(BASE_URL);
+                    const branches = await response.json();
                     
-                    // Calculate occupancy percentage
-                    const occupancyPercentage = Math.round((branch.occupiedSeats / branch.totalSeats) * 100);
-                    
-                    branchCard.innerHTML = `
-                        <h4 class="text-lg font-semibold mb-2 text-indigo-800">${branch.name}</h4>
-                        <div class="mb-2">
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-indigo-600 h-2.5 rounded-full" style="width: ${occupancyPercentage}%"></div>
-                            </div>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span>Occupied: ${branch.occupiedSeats}/${branch.totalSeats}</span>
-                            <span class="font-bold text-indigo-600">${occupancyPercentage}%</span>
-                        </div>
-                    `;
+                    // Clear existing rows
+                    seatMatrixBody.innerHTML = '';
 
-                    // Add click event to show details
-                    branchCard.addEventListener('click', () => {
-                        document.getElementById('popup-branch-name').textContent = branch.name;
-                        document.getElementById('popup-total-seats').textContent = branch.totalSeats;
-                        document.getElementById('popup-general-seats').textContent = branch.categories.general;
-                        document.getElementById('popup-sc-seats').textContent = branch.categories.sc;
-                        document.getElementById('popup-st-seats').textContent = branch.categories.st;
-                        document.getElementById('popup-obc-seats').textContent = branch.categories.obc;
-                        
-                        branchDetailsPopup.classList.remove('hidden');
+                    // Populate table with fetched branches
+                    branches.forEach(branch => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="px-4 py-2">${branch.branch}</td>
+                            <td class="px-4 py-2">${branch.generalSeats + branch.scSeats + branch.stSeats + branch.obcSeats}</td>
+                            <td class="px-4 py-2">${branch.generalSeats}</td>
+                            <td class="px-4 py-2">${branch.scSeats}</td>
+                            <td class="px-4 py-2">${branch.stSeats}</td>
+                            <td class="px-4 py-2">${branch.obcSeats}</td>
+                            <td class="px-4 py-2 space-x-2">
+                                <button onclick="editBranch(${branch.id}, '${branch.branch}', ${branch.generalSeats}, ${branch.scSeats}, ${branch.stSeats}, ${branch.obcSeats})" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteBranch(${branch.id})" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        seatMatrixBody.appendChild(row);
                     });
 
-                    branchOccupancyGrid.appendChild(branchCard);
+                    // Update dashboard statistics
+                    updateDashboardStats(branches);
+                    updateReports(branches);
+                } catch (error) {
+                    console.error('Error fetching branches:', error);
+                    alert('Failed to fetch branches');
+                }
+            }
+
+            // Function to update dashboard statistics
+            function updateDashboardStats(branches) {
+                const totalSeats = branches.reduce((sum, branch) => 
+                    sum + branch.generalSeats + branch.scSeats + branch.stSeats + branch.obcSeats, 0);
+                const admittedStudents = branches.reduce((sum, branch) => 
+                    sum + branch.filledGeneralSeats + branch.filledScSeats + branch.filledStSeats + branch.filledObcSeats, 0);
+                
+                document.getElementById('total-students').textContent = totalSeats;
+                document.getElementById('vacant-seats').textContent = totalSeats - admittedStudents;
+                document.getElementById('admitted-students').textContent = admittedStudents;
+            }
+
+            // Function to update reports charts
+            function updateReports(branches) {
+                // Seat Occupancy Chart
+                const seatOccupancyCtx = document.getElementById('seat-occupancy-chart').getContext('2d');
+                new Chart(seatOccupancyCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: branches.map(b => b.branch),
+                        datasets: [{
+                            label: 'Seat Occupancy',
+                            data: branches.map(b => b.generalSeats + b.scSeats + b.stSeats + b.obcSeats),
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)'
+                            ]
+                        }]
+                    }
                 });
 
-                // Close popup event
-                closeBranchDetailsBtn.addEventListener('click', () => {
-                    branchDetailsPopup.classList.add('hidden');
-                });
-
-                // Close popup when clicking outside
-                branchDetailsPopup.addEventListener('click', (e) => {
-                    if (e.target === branchDetailsPopup) {
-                        branchDetailsPopup.classList.add('hidden');
+                // Category-wise Admission Chart
+                const categoryAdmissionCtx = document.getElementById('category-admission-chart').getContext('2d');
+                new Chart(categoryAdmissionCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['General', 'SC', 'ST', 'OBC'],
+                        datasets: [{
+                            label: 'Seats',
+                            data: [
+                                branches.reduce((sum, b) => sum + b.generalSeats, 0),
+                                branches.reduce((sum, b) => sum + b.scSeats, 0),
+                                branches.reduce((sum, b) => sum + b.stSeats, 0),
+                                branches.reduce((sum, b) => sum + b.obcSeats, 0)
+                            ],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)'
+                            ]
+                        }]
                     }
                 });
             }
 
-            // Call branch occupancy function
-            createBranchOccupancyCards();
+            // Function to add a new branch
+            async function addBranch(e) {
+                e.preventDefault();
+                
+                // Collect form data
+                const branchData = {
+                    branch: document.getElementById('branch-name').value,
+                    generalSeats: parseInt(document.getElementById('gen-seats').value || 0),
+                    scSeats: parseInt(document.getElementById('sc-seats').value || 0),
+                    stSeats: parseInt(document.getElementById('st-seats').value || 0),
+                    obcSeats: parseInt(document.getElementById('obc-seats').value || 0),
+                    filledGeneralSeats: 0,
+                    filledScSeats: 0,
+                    filledStSeats: 0,
+                    filledObcSeats: 0
+                };
+
+                try {
+                    const response = await fetch(BASE_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(branchData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to add branch');
+                    }
+
+                    // Refresh the branch list
+                    fetchBranches();
+
+                    // Reset form
+                    branchSeatForm.reset();
+                } catch (error) {
+                    console.error('Error adding branch:', error);
+                    alert('Failed to add branch');
+                }
+            }
+
+            // Function to delete a branch
+            async function deleteBranch(id) {
+                try {
+                    const response = await fetch(`${BASE_URL}/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to delete branch');
+                    }
+
+                    // Refresh the branch list
+                    fetchBranches();
+                } catch (error) {
+                    console.error('Error deleting branch:', error);
+                    alert('Failed to delete branch');
+                }
+            }
+
+            // Function to edit a branch
+            function editBranch(id, branch, genSeats, scSeats, stSeats, obcSeats) {
+                // Populate edit modal
+                document.getElementById('edit-seat-id').value = id;
+                document.getElementById('edit-branch-name').value = branch;
+                document.getElementById('edit-gen-seats').value = genSeats;
+                document.getElementById('edit-sc-seats').value = scSeats;
+                document.getElementById('edit-st-seats').value = stSeats;
+                document.getElementById('edit-obc-seats').value = obcSeats;
+
+                // Show edit modal
+                editModal.classList.remove('hidden');
+                editModal.classList.add('flex');
+            }
+
+            // Function to update a branch
+            async function updateBranch(e) {
+                e.preventDefault();
+
+                const id = document.getElementById('edit-seat-id').value;
+                const branchData = {
+                    branch: document.getElementById('edit-branch-name').value,
+                    generalSeats: parseInt(document.getElementById('edit-gen-seats').value || 0),
+                    scSeats: parseInt(document.getElementById('edit-sc-seats').value || 0),
+                    stSeats: parseInt(document.getElementById('edit-st-seats').value || 0),
+                    obcSeats: parseInt(document.getElementById('edit-obc-seats').value || 0),
+                    filledGeneralSeats: 0,
+                    filledScSeats: 0,
+                    filledStSeats: 0,
+                    filledObcSeats: 0
+                };
+
+                try {
+                    const response = await fetch(`${BASE_URL}/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(branchData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to update branch');
+                    }
+
+                    // Close modal and refresh list
+                    editModal.classList.add('hidden');
+                    editModal.classList.remove('flex');
+                    fetchBranches();
+                } catch (error) {
+                    console.error('Error updating branch:', error);
+                    alert('Failed to update branch');
+                }
+            }
+
+            // Close edit modal
+            cancelEditBtn.addEventListener('click', () => {
+                editModal.classList.add('hidden');
+                editModal.classList.remove('flex');
+            });
+
+            // Attach event listeners
+            branchSeatForm.addEventListener('submit', addBranch);
+            editSeatForm.addEventListener('submit', updateBranch);
+
+            // Make functions available globally
+            window.deleteBranch = deleteBranch;
+            window.editBranch = editBranch;
+
+            // Initial fetch of branches
+            fetchBranches();
 
             // Logout functionality
-            document.getElementById('logout-btn').addEventListener('click', () => {
-                alert('Logged out successfully');
-                // Implement actual logout logic
+            const logoutBtn = document.getElementById('logout-btn');
+            logoutBtn.addEventListener('click', () => {
+                // Implement logout logic here (e.g., clearing session, redirecting to login page)
+                alert('Logout functionality to be implemented');
             });
         });
     </script>
