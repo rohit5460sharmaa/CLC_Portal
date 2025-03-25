@@ -1,0 +1,251 @@
+:root {
+    --indigo-50: #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-200: #c7d2fe;
+    --indigo-300: #a5b4fc;
+    --indigo-400: #818cf8;
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+    --indigo-800: #3730a3;
+    --indigo-900: #312e81;
+
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --background-light: #f3f4f6;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--white);
+    border-right: 1px solid var(--indigo-100);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo-img {
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.sidebar-menu ul {
+    list-style: none;
+}
+
+.sidebar-menu .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu .menu-item i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.sidebar-menu .menu-item.active,
+.sidebar-menu .menu-item:hover {
+    background-color: var(--indigo-100);
+    color: var(--indigo-700);
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: var(--background-light);
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 10px;
+    width: 300px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.search-bar i {
+    color: var(--text-secondary);
+    margin-right: 10px;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.notifications {
+    margin-right: 20px;
+    position: relative;
+}
+
+.notifications i {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.welcome-section {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.current-standing .standing-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.standing-item {
+    text-align: center;
+}
+
+.standing-item span {
+    display: block;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+.seat-matrix .matrix-progress {
+    background-color: var(--indigo-100);
+    border-radius: 10px;
+    height: 20px;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.matrix-progress .progress-bar {
+    background-color: var(--indigo-500);
+    height: 100%;
+    border-radius: 10px;
+}
+
+.matrix-progress span {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--indigo-700);
+    font-size: 0.8rem;
+}
+
+.matrix-branches .branch-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.counseling-status .status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
+
+.status-badge.pending {
+    background-color: var(--indigo-100);
+    color: var(--indigo-700);
+}
+
+.btn-primary {
+    display: inline-block;
+    background-color: var(--indigo-500);
+    color: var(--white);
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--indigo-600);
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category-wise Counselling</title>
+    <link rel="stylesheet" href="category-counseling.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Category-wise Counselling</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">Students</a></li>
+                    <li><a href="#">Reports</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="filter-section">
+                <h2>Filter Options</h2>
+                <form id="filter-form">
+                    <div class="form-group">
+                        <label for="academic-year">Academic Year:</label>
+                        <select id="academic-year">
+                            <option value="2025-2026">2025-2026</option>
+                            <option value="2024-2025">2024-2025</option>
+                            <option value="2023-2024">2023-2024</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="program">Program:</label>
+                        <select id="program">
+                            <option value="all">All Programs</option>
+                            <option value="btech">B.Tech</option>
+                            <option value="mtech">M.Tech</option>
+                            <option value="bca">BCA</option>
+                            <option value="mca">MCA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department:</label>
+                        <select id="department">
+                            <option value="all">All Departments</option>
+                            <option value="cse">Computer Science</option>
+                            <option value="ece">Electronics</option>
+                            <option value="mech">Mechanical</option>
+                            <option value="civil">Civil</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Apply Filters</button>
+                </form>
+            </section>
+
+            <section class="stats-section">
+                <div class="stat-card">
+                    <h3>Total Seats</h3>
+                    <p class="stat-number">500</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Allocated</h3>
+                    <p class="stat-number">325</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Available</h3>
+                    <p class="stat-number">175</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Waitlisted</h3>
+                    <p class="stat-number">42</p>
+                </div>
+            </section>
+
+            <section class="category-section">
+                <h2>Category-wise Seat Allocation</h2>
+                <div class="category-controls">
+                    <button id="add-category" class="btn">Add Category</button>
+                    <button id="edit-quotas" class="btn">Edit Quotas</button>
+                    <button id="export-data" class="btn">Export Data</button>
+                </div>
+                <div class="table-container">
+                    <table id="category-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Total Seats</th>
+                                <th>Allocated</th>
+                                <th>Available</th>
+                                <th>Waitlisted</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>General</td>
+                                <td>250</td>
+                                <td>180</td>
+                                <td>70</td>
+                                <td>15</td>
+                                <td>
+                                    <button class="action-btn view-btn">View</button>
+                                    <button class="action-btn edit-btn">Edit</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>OBC</td>
+                                <td>135</td>
+                                <td>90</td>
+                                <td>45</td>
+                                <td>12</td>
+                                <td>
+                                    <button class="action-btn view-btn">View</button>
+                                    <button class="action-btn edit-btn">Edit</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SC</td>
+                                <td>75</td>
+                                <td>45</td>
+                                <td>30</td>
+                                <td>8</td>
+                                <td>
+                                    <button class="action-btn view-btn">View</button>
+                                    <button class="action-btn edit-btn">Edit</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ST</td>
+                                <td>40</td>
+                                <td>10</td>
+                                <td>30</td>
+                                <td>7</td>
+                                <td>
+                                    <button class="action-btn view-btn">View</button>
+                                    <button class="action-btn edit-btn">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="graph-section">
+                <h2>Visual Representation</h2>
+                <div class="graph-container">
+                    <div class="graph-placeholder">
+                        <!-- Graph visualization will be implemented with JavaScript -->
+                        <div class="bar-chart">
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 72%;" data-category="General"></div>
+                                <div class="bar-label">GEN</div>
+                            </div>
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 67%;" data-category="OBC"></div>
+                                <div class="bar-label">OBC</div>
+                            </div>
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 60%;" data-category="SC"></div>
+                                <div class="bar-label">SC</div>
+                            </div>
+                            <div class="bar">
+                                <div class="bar-fill" style="height: 25%;" data-category="ST"></div>
+                                <div class="bar-label">ST</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="edit-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Edit Category Quota</h2>
+                <form id="edit-category-form">
+                    <div class="form-group">
+                        <label for="category-name">Category:</label>
+                        <input type="text" id="category-name" value="General" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="total-seats">Total Seats:</label>
+                        <input type="number" id="total-seats" value="250">
+                    </div>
+                    <div class="form-group">
+                        <label for="allocation-percent">Allocation Percentage:</label>
+                        <input type="number" id="allocation-percent" value="50" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="seat-notes">Notes:</label>
+                        <textarea id="seat-notes" rows="3"></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn cancel-btn">Cancel</button>
+                        <button type="submit" class="btn save-btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Institution Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="category-counseling.js"></script>
+</body>
+</html>

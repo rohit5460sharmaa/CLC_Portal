@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLC Portal - Student Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-indigo-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-university text-2xl mr-2"></i>
+                        <span class="font-bold text-xl">CLC Portal</span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <a href="login.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Back to Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto mt-8 p-6">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-indigo-700 text-white p-4">
+                <h2 class="text-2xl font-bold">Student Registration</h2>
+                <p class="text-indigo-100">Enter your details to register for college counselling</p>
+            </div>
+            
+            <form class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="rollNumber">
+                            Roll Number (Qualifying Exam) *
+                        </label>
+                        <input id="rollNumber" type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your roll number" required>
+                        <p class="text-xs text-gray-500 mt-1">This will be your login ID</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="rank">
+                            Rank *
+                        </label>
+                        <input id="rank" type="number" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your rank" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="fullName">
+                            Full Name *
+                        </label>
+                        <input id="fullName" type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="fatherName">
+                            Father's Name *
+                        </label>
+                        <input id="fatherName" type="text" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your father's name" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="dob">
+                            Date of Birth *
+                        </label>
+                        <input id="dob" type="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="category">
+                            Category *
+                        </label>
+                        <select id="category" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                            <option value="">Select Category</option>
+                            <option value="general">General</option>
+                            <option value="obc">OBC</option>
+                            <option value="sc">SC</option>
+                            <option value="st">ST</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            Email *
+                        </label>
+                        <input id="email" type="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
+                            Phone Number *
+                        </label>
+                        <input id="phone" type="tel" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="address">
+                            Address *
+                        </label>
+                        <textarea id="address" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder="Enter your full address" required></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                            Create Password *
+                        </label>
+                        <input id="password" type="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Create a password" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">
+                            Confirm Password *
+                        </label>
+                        <input id="confirmPassword" type="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="termsAgree" class="mr-2" required>
+                        <label for="termsAgree" class="text-sm text-gray-700">I agree to the <a href="#" class="text-indigo-600 hover:underline">Terms and Conditions</a> and <a href="#" class="text-indigo-600 hover:underline">Privacy Policy</a></label>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end mt-6">
+                    <a href="index.html" class="px-6 py-2 border border-gray-300 rounded-lg mr-4 hover:bg-gray-50">Cancel</a>
+                    <button type="button" onclick="register()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-gray-100 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 text-sm">
+                © 2025 College Level Counselling Portal. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

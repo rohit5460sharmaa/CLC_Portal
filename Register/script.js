@@ -87,7 +87,7 @@ function register() {
     .then(data => {
         console.log('Registration successful:', data);
         alert('Registration successful! You can now login with your roll number and password.');
-        window.location.href = '../Loginlogin.html'; // Redirect to login page
+        window.location.href = '../Login/login.html'; // Redirect to login page
     })
     .catch(error => {
         console.error('Error:', error);

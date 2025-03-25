@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLC Portal - Standing Page</title>
+    <link rel="stylesheet" href="standing.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">CLC Portal</div>
+            <nav class="nav-links">
+                <a href="../hero.html">Home</a>
+                <a href="../StandingPage/standing.html" class="active">Standing</a>
+                <a href="../Seat.html">Seat Matrix</a>
+                <a href="../login.html" id="loginLink">Login</a>
+                <a href="#" id="profileLink" class="hidden">My Profile</a>
+                <a href="#" id="logoutLink" class="hidden">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Current Student Section (Only visible to logged-in students or admin/officers) -->
+        <div class="current-student-section hidden" id="currentStudentSection">
+            <div class="section-title">
+                <i class="fas fa-user-graduate"></i>
+                Current Student Being Processed
+            </div>
+            <div class="current-student">
+                <div class="student-info">
+                    <div class="student-name" id="studentName">Rahul Sharma</div>
+                    <div class="student-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Roll Number</span>
+                            <span class="detail-value" id="studentRoll">2023BTECH1001</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Rank</span>
+                            <span class="detail-value" id="studentRank">16</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Desired Branch</span>
+                            <span class="detail-value" id="studentBranch">Computer Science</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Contact</span>
+                            <span class="detail-value" id="studentContact">+91 98765 43210</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-text" id="statusText">Processing</div>
+                    <div class="status-icon" id="statusIcon">
+                        <i class="fas fa-sync fa-spin"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Controls (Only visible to admin/officers) -->
+        <div class="admin-controls hidden" id="adminControls">
+            <div class="section-title">
+                <i class="fas fa-cogs"></i>
+                Admin Controls
+            </div>
+            <div class="admin-actions">
+                <button id="processNextBtn" class="admin-btn">
+                    <i class="fas fa-play"></i>
+                    Process Next Student
+                </button>
+                <button id="skipCurrentBtn" class="admin-btn">
+                    <i class="fas fa-forward"></i>
+                    Skip Current
+                </button>
+                <button id="resetQueueBtn" class="admin-btn danger">
+                    <i class="fas fa-redo"></i>
+                    Reset Queue
+                </button>
+            </div>
+        </div>
+
+        <div class="standings-section">
+            <div class="standings-header">
+                <div class="standings-title">Top 15 Students by Rank</div>
+                <button class="refresh-btn" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+            </div>
+            <table class="standings-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Roll Number</th>
+                        <th>Branch Preference</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="standingsTableBody">
+                    <!-- Table rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Login to CLC Portal</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username/Roll Number</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userType">User Type</label>
+                        <select id="userType">
+                            <option value="student">Student</option>
+                            <option value="officer">Officer</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="standing.js"></script>
+</body>
+</html>

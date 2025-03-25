@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Management - CLC Portal</title>
+    <link rel="stylesheet" href="adminProcess.css">
+</head>
+<body>
+    <header class="fixed-header">
+        <div class="container header-content">
+            <div class="logo">CLC Portal</div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div>Admin User</div>
+                    <div class="user-email">admin@clcportal.com</div>
+                </div>
+                <button class="logout-btn">Logout</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container main-container">
+        <aside class="sidebar" id="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Admission Officers</a></li>
+                <li><a href="#">Students</a></li>
+                <li><a href="#">Seat Matrix</a></li>
+                <li><a href="#">Branch Management</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <h1 class="page-title">Admission Officers Management</h1>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-title">Total Admission Officers</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-desc">4 officers added this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Active Officers</div>
+                    <div class="stat-value">10</div>
+                    <div class="stat-desc">2 officers inactive</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Admissions Processed</div>
+                    <div class="stat-value">256</div>
+                    <div class="stat-desc">Last 30 days</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title">Add New Admission Officer</h2>
+                <form id="addOfficerForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="officer-name">Full Name</label>
+                            <input type="text" id="officer-name" placeholder="Enter full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="officer-email">Email Address</label>
+                            <input type="email" id="officer-email" placeholder="Enter email address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="officer-phone">Phone Number</label>
+                            <input type="tel" id="officer-phone" placeholder="Enter phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="officer-dept">Department</label>
+                            <select id="officer-dept" required>
+                                <option value="">Select department</option>
+                                <option value="CS">Computer Science</option>
+                                <option value="ECE">Electronics & Communication</option>
+                                <option value="ME">Mechanical Engineering</option>
+                                <option value="CE">Civil Engineering</option>
+                                <option value="EE">Electrical Engineering</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Admission Officer</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title">Current Admission Officers</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="officersTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Removal</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to remove this admission officer? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelDelete">Cancel</button>
+                <button class="btn btn-danger" id="confirmDelete">Remove</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Officer Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Admission Officer</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editOfficerForm">
+                    <input type="hidden" id="edit-officer-id">
+                    <div class="form-group">
+                        <label for="edit-officer-name">Full Name</label>
+                        <input type="text" id="edit-officer-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-officer-email">Email Address</label>
+                        <input type="email" id="edit-officer-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-officer-phone">Phone Number</label>
+                        <input type="tel" id="edit-officer-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-officer-dept">Department</label>
+                        <select id="edit-officer-dept" required>
+                            <option value="CS">Computer Science</option>
+                            <option value="ECE">Electronics & Communication</option>
+                            <option value="ME">Mechanical Engineering</option>
+                            <option value="CE">Civil Engineering</option>
+                            <option value="EE">Electrical Engineering</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-officer-status">Status</label>
+                        <select id="edit-officer-status" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelEdit">Cancel</button>
+                <button class="btn btn-primary" id="saveEdit">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">Operation completed successfully!</div>
+    
+    <script src="adminProcess.js"></script>
+</body>
+</html>

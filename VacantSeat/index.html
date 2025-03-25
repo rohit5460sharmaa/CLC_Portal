@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Portal - Vacant Seat Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <span>Admission Portal</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#" class="active"><i class="fas fa-chair"></i> Vacant Seats</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Applicants</a></li>
+                <li><a href="#"><i class="fas fa-clipboard-list"></i> Counselling</a></li>
+                <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            </ul>
+            <div class="user-profile">
+                <span>Admin</span>
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Vacant Seat Management</h1>
+            <p>Manage and update the number of vacant seats for each branch and category</p>
+        </div>
+
+        <section class="filters">
+            <div class="filter-group">
+                <label for="academic-year">Academic Year:</label>
+                <select id="academic-year">
+                    <option value="2025-2026">2025-2026</option>
+                    <option value="2024-2025">2024-2025</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="round">Counselling Round:</label>
+                <select id="round">
+                    <option value="round1">Round 1</option>
+                    <option value="round2">Round 2</option>
+                    <option value="round3">Round 3</option>
+                </select>
+            </div>
+            <button class="btn-primary"><i class="fas fa-filter"></i> Apply Filters</button>
+        </section>
+
+        <section class="seat-matrix-container">
+            <div class="section-header">
+                <h2>Current Seat Matrix</h2>
+                <button class="btn-primary"><i class="fas fa-plus"></i> Add New Branch</button>
+            </div>
+            
+            <div class="category-legend">
+                <div class="category-item" data-category="gen">
+                    <span class="category-color"></span>
+                    <span class="category-name">General</span>
+                </div>
+                <div class="category-item" data-category="sc">
+                    <span class="category-color"></span>
+                    <span class="category-name">SC</span>
+                </div>
+                <div class="category-item" data-category="st">
+                    <span class="category-color"></span>
+                    <span class="category-name">ST</span>
+                </div>
+                <div class="category-item" data-category="obc">
+                    <span class="category-color"></span>
+                    <span class="category-name">OBC</span>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="seat-matrix">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Branch Code</th>
+                            <th rowspan="2">Branch Name</th>
+                            <th rowspan="2">Total Seats</th>
+                            <th colspan="4">Category-wise Seats</th>
+                            <th rowspan="2">Available</th>
+                            <th rowspan="2">Actions</th>
+                        </tr>
+                        <tr class="category-headers">
+                            <th class="gen-header">GEN</th>
+                            <th class="sc-header">SC</th>
+                            <th class="st-header">ST</th>
+                            <th class="obc-header">OBC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CSE</td>
+                            <td>Computer Science and Engineering</td>
+                            <td class="total-seats">120</td>
+                            <td>
+                                <input type="number" class="gen-seats" value="60" min="0" data-category="gen">
+                            </td>
+                            <td>
+                                <input type="number" class="sc-seats" value="18" min="0" data-category="sc">
+                            </td>
+                            <td>
+                                <input type="number" class="st-seats" value="12" min="0" data-category="st">
+                            </td>
+                            <td>
+                                <input type="number" class="obc-seats" value="30" min="0" data-category="obc">
+                            </td>
+                            <td class="available-seats">0</td>
+                            <td>
+                                <button class="btn-update"><i class="fas fa-save"></i> Update</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ECE</td>
+                            <td>Electronics and Communication Engineering</td>
+                            <td class="total-seats">90</td>
+                            <td>
+                                <input type="number" class="gen-seats" value="45" min="0" data-category="gen">
+                            </td>
+                            <td>
+                                <input type="number" class="sc-seats" value="13" min="0" data-category="sc">
+                            </td>
+                            <td>
+                                <input type="number" class="st-seats" value="9" min="0" data-category="st">
+                            </td>
+                            <td>
+                                <input type="number" class="obc-seats" value="23" min="0" data-category="obc">
+                            </td>
+                            <td class="available-seats">0</td>
+                            <td>
+                                <button class="btn-update"><i class="fas fa-save"></i> Update</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ME</td>
+                            <td>Mechanical Engineering</td>
+                            <td class="total-seats">60</td>
+                            <td>
+                                <input type="number" class="gen-seats" value="30" min="0" data-category="gen">
+                            </td>
+                            <td>
+                                <input type="number" class="sc-seats" value="9" min="0" data-category="sc">
+                            </td>
+                            <td>
+                                <input type="number" class="st-seats" value="6" min="0" data-category="st">
+                            </td>
+                            <td>
+                                <input type="number" class="obc-seats" value="15" min="0" data-category="obc">
+                            </td>
+                            <td class="available-seats">0</td>
+                            <td>
+                                <button class="btn-update"><i class="fas fa-save"></i> Update</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EEE</td>
+                            <td>Electrical and Electronics Engineering</td>
+                            <td class="total-seats">60</td>
+                            <td>
+                                <input type="number" class="gen-seats" value="30" min="0" data-category="gen">
+                            </td>
+                            <td>
+                                <input type="number" class="sc-seats" value="9" min="0" data-category="sc">
+                            </td>
+                            <td>
+                                <input type="number" class="st-seats" value="6" min="0" data-category="st">
+                            </td>
+                            <td>
+                                <input type="number" class="obc-seats" value="15" min="0" data-category="obc">
+                            </td>
+                            <td class="available-seats">0</td>
+                            <td>
+                                <button class="btn-update"><i class="fas fa-save"></i> Update</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CE</td>
+                            <td>Civil Engineering</td>
+                            <td class="total-seats">60</td>
+                            <td>
+                                <input type="number" class="gen-seats" value="30" min="0" data-category="gen">
+                            </td>
+                            <td>
+                                <input type="number" class="sc-seats" value="9" min="0" data-category="sc">
+                            </td>
+                            <td>
+                                <input type="number" class="st-seats" value="6" min="0" data-category="st">
+                            </td>
+                            <td>
+                                <input type="number" class="obc-seats" value="15" min="0" data-category="obc">
+                            </td>
+                            <td class="available-seats">0</td>
+                            <td>
+                                <button class="btn-update"><i class="fas fa-save"></i> Update</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="2">Total</td>
+                            <td id="grand-total">390</td>
+                            <td id="gen-total">195</td>
+                            <td id="sc-total">58</td>
+                            <td id="st-total">39</td>
+                            <td id="obc-total">98</td>
+                            <td id="available-total">0</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-secondary"><i class="fas fa-download"></i> Export to Excel</button>
+                <button class="btn-primary"><i class="fas fa-save"></i> Save All Changes</button>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card gen-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>General Seats</h3>
+                        <p>195</p>
+                    </div>
+                </div>
+                <div class="stat-card sc-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>SC Seats</h3>
+                        <p>58</p>
+                    </div>
+                </div>
+                <div class="stat-card st-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>ST Seats</h3>
+                        <p>39</p>
+                    </div>
+                </div>
+                <div class="stat-card obc-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>OBC Seats</h3>
+                        <p>98</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Admission Portal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Calculate available seats and update totals
+        function calculateSeats() {
+            let genTotal = 0;
+            let scTotal = 0;
+            let stTotal = 0;
+            let obcTotal = 0;
+            let grandTotal = 0;
+            let availableTotal = 0;
+            
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const totalInput = parseInt(row.querySelector('.total-seats').textContent) || 0;
+                const genInput = parseInt(row.querySelector('.gen-seats').value) || 0;
+                const scInput = parseInt(row.querySelector('.sc-seats').value) || 0;
+                const stInput = parseInt(row.querySelector('.st-seats').value) || 0;
+                const obcInput = parseInt(row.querySelector('.obc-seats').value) || 0;
+                
+                const sumCategories = genInput + scInput + stInput + obcInput;
+                const available = totalInput - sumCategories;
+                
+                row.querySelector('.available-seats').textContent = available;
+                
+                // Update totals
+                genTotal += genInput;
+                scTotal += scInput;
+                stTotal += stInput;
+                obcTotal += obcInput;
+                grandTotal += totalInput;
+                availableTotal += available;
+            });
+            
+            // Update footer totals
+            document.getElementById('gen-total').textContent = genTotal;
+            document.getElementById('sc-total').textContent = scTotal;
+            document.getElementById('st-total').textContent = stTotal;
+            document.getElementById('obc-total').textContent = obcTotal;
+            document.getElementById('grand-total').textContent = grandTotal;
+            document.getElementById('available-total').textContent = availableTotal;
+            
+            // Update stats cards
+            document.querySelector('.gen-card .stat-info p').textContent = genTotal;
+            document.querySelector('.sc-card .stat-info p').textContent = scTotal;
+            document.querySelector('.st-card .stat-info p').textContent = stTotal;
+            document.querySelector('.obc-card .stat-info p').textContent = obcTotal;
+        }
+        
+        // Add event listeners for all inputs
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('change', calculateSeats);
+        });
+        
+        // Initial calculation
+        calculateSeats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLC Portal - College Level Counselling</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-indigo-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-university text-2xl mr-2"></i>
+                        <span class="font-bold text-xl">CLC Portal</span>
+                    </div>
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+                        <a href="hero.html" class="px-3 py-2 rounded-md text-sm font-medium bg-indigo-900">Home</a>
+                        <a href="AboutUS/about.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">About</a>
+                        <a href="Seat.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Seat Matrix</a>
+                        <a href="StandingPage/standing.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Standing</a>
+                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Contact</a>
+                    </div>
+                </div>
+                <!-- Auth Buttons and Mobile Menu Toggle -->
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:block">
+                        <a href="login.html" class="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition duration-150 ease-in-out text-center inline-block">
+                            Log In
+                        </a>
+                        <a href="register.html" class="px-4 py-2 rounded-md bg-white text-indigo-700 font-medium hover:bg-gray-100 transition duration-150 ease-in-out text-center inline-block">
+                            Register
+                        </a>
+                    </div>
+                    <!-- Mobile Menu Toggle Button -->
+                    <div class="md:hidden">
+                        <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-indigo-700 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="hero.html" class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-900">Home</a>
+                <a href="AboutUS/about.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">About</a>
+                <a href="Seat.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Seat Matrix</a>
+                <a href="StandingPage/standing.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Standing</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Contact</a>
+                <div class="mt-4 flex space-x-2">
+                    <a href="login.html" class="w-1/2 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition duration-150 ease-in-out text-center inline-block">
+                        Log In
+                    </a>
+                    <a href="Register.html" class="w-1/2 px-4 py-2 rounded-md bg-white text-indigo-700 font-medium hover:bg-gray-100 transition duration-150 ease-in-out inline-block text-center">
+                        Register
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative bg-indigo-800 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="relative z-10 pb-8 bg-indigo-800 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+                <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-indigo-800 transform translate-x-1/2" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    <polygon points="50,0 100,0 50,100 0,100" />
+                </svg>
+
+                <div class="pt-10 sm:pt-16 lg:pt-8 xl:pt-16">
+                    <div class="sm:text-center lg:text-left">
+                        <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                            <span class="block">College Level</span>
+                            <span class="block text-indigo-300">Counselling Portal</span>
+                        </h1>
+                        <p class="mt-3 text-base text-indigo-100 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto lg:mx-0">
+                            A fair and transparent admission process based on merit. Join thousands of students who have found their perfect college match through our platform.
+                        </p>
+                        <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                            <div class="rounded-md shadow">
+                                <a href="#" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+                                    Get Started
+                                </a>
+                            </div>
+                            <div class="mt-3 sm:mt-0 sm:ml-3">
+                                <a href="Seat.html" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+                                    View Seat Matrix
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+            <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="University campus">
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Features</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    A Better Way to Get College Admission
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    Our platform makes the admission process transparent, fair, and efficient for all stakeholders.
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <dl class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
+                    <div class="relative">
+                        <dt>
+                            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Student-Centric</p>
+                        </dt>
+                        <dd class="mt-2 ml-16 text-base text-gray-500">
+                            Register, check your rank, see available seats, and secure your admission - all in one place.
+                        </dd>
+                    </div>
+
+                    <div class="relative">
+                        <dt>
+                            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Merit-Based</p>
+                        </dt>
+                        <dd class="mt-2 ml-16 text-base text-gray-500">
+                            Admissions strictly based on rank, ensuring fairness and transparency in the process.
+                        </dd>
+                    </div>
+
+                    <div class="relative">
+                        <dt>
+                            <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Real-Time Updates</p>
+                        </dt>
+                        <dd class="mt-2 ml-16 text-base text-gray-500">
+                            Get instant updates on seat availability and your standing in the admission queue.
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="bg-indigo-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Trusted by students across the country
+                </h2>
+                <p class="mt-3 text-xl text-indigo-200 sm:mt-4">
+                    Our platform has helped thousands of students secure admissions in their dream colleges.
+                </p>
+            </div>
+            <dl class="mt-10 text-center sm:max-w-3xl sm:mx-auto sm:grid sm:grid-cols-3 sm:gap-8">
+                <div class="flex flex-col">
+                    <dt class="order-2 mt-2 text-lg leading-6 font-medium text-indigo-200">
+                        Students Registered
+                    </dt>
+                    <dd class="order-1 text-5xl font-extrabold text-white">
+                        10,000+
+                    </dd>
+                </div>
+                <div class="flex flex-col mt-10 sm:mt-0">
+                    <dt class="order-2 mt-2 text-lg leading-6 font-medium text-indigo-200">
+                        Colleges
+                    </dt>
+                    <dd class="order-1 text-5xl font-extrabold text-white">
+                        50+
+                    </dd>
+                </div>
+                <div class="flex flex-col mt-10 sm:mt-0">
+                    <dt class="order-2 mt-2 text-lg leading-6 font-medium text-indigo-200">
+                        Successful Admissions
+                    </dt>
+                    <dd class="order-1 text-5xl font-extrabold text-white">
+                        8,500+
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Process</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    How It Works
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    Four simple steps to secure your college admission.
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-between">
+                        <div>
+                            <span class="bg-indigo-600 h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">1</span>
+                        </div>
+                        <div>
+                            <span class="bg-indigo-600 h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">2</span>
+                        </div>
+                        <div>
+                            <span class="bg-indigo-600 h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">3</span>
+                        </div>
+                        <div>
+                            <span class="bg-indigo-600 h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">4</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="text-center">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-md bg-indigo-100 text-indigo-600 mx-auto">
+                            <i class="fas fa-user-plus text-2xl"></i>
+                        </div>
+                        <h3 class="mt-3 text-lg font-medium text-gray-900">Register</h3>
+                        <p class="mt-2 text-base text-gray-500">Create an account with your exam roll number and personal details.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-md bg-indigo-100 text-indigo-600 mx-auto">
+                            <i class="fas fa-clipboard-list text-2xl"></i>
+                        </div>
+                        <h3 class="mt-3 text-lg font-medium text-gray-900">Choose Preferences</h3>
+                        <p class="mt-2 text-base text-gray-500">Select your preferred branches in order of priority.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-md bg-indigo-100 text-indigo-600 mx-auto">
+                            <i class="fas fa-user-clock text-2xl"></i>
+                        </div>
+                        <h3 class="mt-3 text-lg font-medium text-gray-900">Wait For Your Turn</h3>
+                        <p class="mt-2 text-base text-gray-500">Based on your rank, you'll be called for document verification.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-md bg-indigo-100 text-indigo-600 mx-auto">
+                            <i class="fas fa-check-circle text-2xl"></i>
+                        </div>
+                        <h3 class="mt-3 text-lg font-medium text-gray-900">Secure Admission</h3>
+                        <p class="mt-2 text-base text-gray-500">Present your documents and confirm your seat in your preferred branch.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="bg-indigo-50">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                <span class="block">Ready to start your journey?</span>
+                <span class="block text-indigo-600">Register today and secure your future.</span>
+            </h2>
+            <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+                <div class="inline-flex rounded-md shadow">
+                    <a href="Register.html" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                        Register Now
+                    </a>
+                </div>
+                <div class="ml-3 inline-flex rounded-md shadow">
+                    <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+            <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+                <div class="space-y-8 xl:col-span-1">
+                    <div class="flex items-center">
+                        <i class="fas fa-university text-2xl text-white mr-2"></i>
+                        <span class="font-bold text-xl text-white">CLC Portal</span>
+                    </div>
+                    <p class="text-gray-300 text-base">
+                        Making college admissions fair, transparent, and efficient.
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-gray-300">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-gray-300">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-gray-300">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-gray-300">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                                Quick Links
+                            </h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="hero.html" class="text-base text-gray-300 hover:text-white">
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        About
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="Seat.html" class="text-base text-gray-300 hover:text-white">
+                                        Seat Matrix
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Standing
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-12 md:mt-0">
+                            <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                                Support
+                            </h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        FAQs
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Help Center
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Contact Us
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Privacy Policy
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                                For Students
+                            </h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        How to Register
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Document Checklist
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Admission Process
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Important Dates
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-12 md:mt-0">
+                            <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                                For Colleges
+                            </h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Join as Partner
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Officer Login
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        Admin Portal
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        System Guide
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8">
+                <p class="text-base text-gray-400 xl:text-center">
+                    &copy; 2025 CLC Portal. All rights reserved. Designed by Pratham Joya.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('[aria-controls="mobile-menu"]');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                const expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !expanded);
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

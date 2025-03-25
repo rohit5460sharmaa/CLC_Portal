@@ -14,6 +14,11 @@ async function login() {
     const userType = document.getElementById('userType').value.trim();
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
+
+    console.log('Username:', username);
+console.log('Password:', password);
+console.log('UserType:', userType);
+
     
     if (!username || !password) {
         alert('Please enter both username and password');
@@ -39,6 +44,8 @@ async function login() {
         
         const data = await response.json();
 
+        console.log('Full Response:', data);
+
         // Debugging Logs
         console.log('Login Response:', data);
         console.log('Token:', data.token);
@@ -58,10 +65,10 @@ async function login() {
                         redirectUrl = '../StudentDashboard.html';
                         break;
                     case 'officer':
-                        redirectUrl = 'officer-dashboard.html';
+                        redirectUrl = '../AdminProcess/admin.html';
                         break;
                     case 'admin':
-                        redirectUrl = 'admin-dashboard.html';
+                        redirectUrl = '../AdminProcess/admin.html';
                         break;
                     default:
                         console.error('Unknown userType:', data.userType);

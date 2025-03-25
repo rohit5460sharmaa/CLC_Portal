@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLC Portal - Admission Processing</title>
+    <style>
+        :root {
+            --indigo-50: #eef2ff;
+            --indigo-100: #e0e7ff;
+            --indigo-200: #c7d2fe;
+            --indigo-300: #a5b4fc;
+            --indigo-400: #818cf8;
+            --indigo-500: #6366f1;
+            --indigo-600: #4f46e5;
+            --indigo-700: #4338ca;
+            --indigo-800: #3730a3;
+            --indigo-900: #312e81;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--indigo-800);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-role {
+            background-color: var(--indigo-600);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: white;
+            color: var(--indigo-800);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: var(--indigo-700);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .student-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .rank {
+            background-color: var(--indigo-600);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: 700;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--indigo-600);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--indigo-700);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--indigo-600);
+            border: 1px solid var(--indigo-300);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--indigo-50);
+        }
+        
+        .btn-danger {
+            background-color: #f87171;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #ef4444;
+        }
+        
+        .status-bar {
+            background-color: var(--indigo-100);
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .status-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .status-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--indigo-800);
+        }
+        
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .document-item {
+            border: 1px solid var(--indigo-200);
+            border-radius: 4px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .document-item:hover {
+            border-color: var(--indigo-400);
+            background-color: var(--indigo-50);
+        }
+        
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--indigo-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+        }
+        
+        .document-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .document-status {
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+        }
+        
+        .verified {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .pending {
+            background-color: #fff9c9;
+            color: #854d0e;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            overflow: hidden;
+            animation: modalOpen 0.3s ease-out;
+        }
+        
+        @keyframes modalOpen {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            background-color: var(--indigo-700);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        
+        .confirmation-text {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .document-preview {
+            width: 100%;
+            height: 400px;
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .preview-placeholder {
+            color: #64748b;
+            text-align: center;
+        }
+        
+        /* Animations and transitions */
+        .fadeIn {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .student-info {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .document-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .document-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-bar {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .user-info {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">CLC Portal</div>
+        <div class="user-info">
+            <span class="user-role">Admission Officer</span>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="card">
+            <div class="card-header">Current Student for Admission</div>
+            <div class="card-body">
+                <div class="status-bar">
+                    <div class="status-item">
+                        <span class="status-label">Waiting</span>
+                        <span class="status-value">12</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Processing</span>
+                        <span class="status-value">1</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Admitted</span>
+                        <span class="status-value">24</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Skipped</span>
+                        <span class="status-value">3</span>
+                    </div>
+                </div>
+                
+                <div class="student-info">
+                    <div>
+                        <div class="info-group">
+                            <span class="info-label">Student Name</span>
+                            <span class="info-value">Rahul Sharma</span>
+                        </div>
+                        <div class="info-group">
+                            <span class="info-label">Father's Name</span>
+                            <span class="info-value">Suresh Sharma</span>
+                        </div>
+                        <div class="info-group">
+                            <span class="info-label">Date of Birth</span>
+                            <span class="info-value">15-Apr-2002</span>
+                        </div>
+                        <div class="info-group">
+                            <span class="info-label">Contact</span>
+                            <span class="info-value">+91 9876543210</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="info-group">
+                            <span class="info-label">Roll Number</span>
+                            <span class="info-value">CLC2023456</span>
+                        </div>
+                        <div class="info-group">
+                            <span class="info-label">Exam Rank</span>
+                            <span class="info-value rank">#37</span>
+                        </div>
+                        <div class="info-group">
+                            <span class="info-label">Email</span>
+                            <span class="info-value">rahul.sharma@example.com</span>
+                        </div>
+                        <div class="info-group">
+                            <span class="info-label">Address</span>
+                            <span class="info-value">123, Sector 4, Vijay Nagar, Indore - 452010</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 1rem; margin-bottom: 0.5rem; color: var(--indigo-700);">Documents</h3>
+                <div class="document-grid">
+                    <div class="document-item" onclick="showDocumentModal('Marksheet')">
+                        <div class="document-icon">📄</div>
+                        <span class="document-name">Qualifying Exam Marksheet</span>
+                        <span class="document-status verified">Verified</span>
+                    </div>
+                    <div class="document-item" onclick="showDocumentModal('ID Proof')">
+                        <div class="document-icon">🪪</div>
+                        <span class="document-name">ID Proof (Aadhar Card)</span>
+                        <span class="document-status verified">Verified</span>
+                    </div>
+                    <div class="document-item" onclick="showDocumentModal('Birth Certificate')">
+                        <div class="document-icon">📜</div>
+                        <span class="document-name">Birth Certificate</span>
+                        <span class="document-status verified">Verified</span>
+                    </div>
+                    <div class="document-item" onclick="showDocumentModal('Category Certificate')">
+                        <div class="document-icon">📑</div>
+                        <span class="document-name">Category Certificate</span>
+                        <span class="document-status verified">Verified</span>
+                    </div>
+                    <div class="document-item" onclick="showDocumentModal('Migration Certificate')">
+                        <div class="document-icon">📝</div>
+                        <span class="document-name">Migration Certificate</span>
+                        <span class="document-status pending">Pending</span>
+                    </div>
+                    <div class="document-item" onclick="showDocumentModal('Passport Photo')">
+                        <div class="document-icon">🖼️</div>
+                        <span class="document-name">Passport Size Photo</span>
+                        <span class="document-status verified">Verified</span>
+                    </div>
+                </div>
+                
+                <div class="actions">
+                    <button class="btn btn-primary pulse" onclick="showAdmitModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12l2 2 4-4"></path>
+                            <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path>
+                        </svg>
+                        Admit Student
+                    </button>
+                    <button class="btn btn-secondary" onclick="showSkipModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                        Skip Student
+                    </button>
+                    <button class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 14H3"></path>
+                            <path d="M21 9H3"></path>
+                            <path d="M21 4H3"></path>
+                            <path d="M21 19H3"></path>
+                        </svg>
+                        View All Documents
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Document Modal -->
+    <div class="modal" id="documentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="documentModalTitle">Document Preview</h3>
+                <button class="close-btn" onclick="closeModal('documentModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="document-preview">
+                    <div class="preview-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <p>Document preview would appear here</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="info-group">
+                        <span class="info-label">Document Type</span>
+                        <span class="info-value" id="documentType">-</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">Upload Date</span>
+                        <span class="info-value">17-Mar-2025</span>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">Verification Status</span>
+                        <span class="info-value" id="documentStatus">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('documentModal')">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admit Modal -->
+    <div class="modal" id="admitModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Admission</h3>
+                <button class="close-btn" onclick="closeModal('admitModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="confirmation-text">Are you sure you want to admit <strong>Rahul Sharma</strong> to the program?</p>
+                
+                <div class="info-group">
+                    <span class="info-label">Select Branch</span>
+                    <select style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc; margin-top: 0.5rem;">
+                        <option>Computer Science Engineering (Seats: 12)</option>
+                        <option>Electronics & Communication (Seats: 8)</option>
+                        <option>Mechanical Engineering (Seats: 15)</option>
+                        <option>Civil Engineering (Seats: 20)</option>
+                        <option>Electrical Engineering (Seats: 10)</option>
+                    </select>
+                </div>
+                
+                <div class="info-group">
+                    <span class="info-label">Comments (Optional)</span>
+                    <textarea style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc; margin-top: 0.5rem; height: 100px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('admitModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="admitStudent()">Confirm Admission</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Skip Modal -->
+    <div class="modal" id="skipModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Skip Student</h3>
+                <button class="close-btn" onclick="closeModal('skipModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="confirmation-text">Are you sure you want to skip <strong>Rahul Sharma</strong>?</p>
+                
+                <div class="info-group">
+                    <span class="info-label">Reason for Skipping</span>
+                    <select style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc; margin-top: 0.5rem;">
+                        <option>Student Absent</option>
+                        <option>Student Declined Admission</option>
+                        <option>Incomplete Documentation</option>
+                        <option>Ineligible for Admission</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                
+                <div class="info-group">
+                    <span class="info-label">Comments (Required for 'Other')</span>
+                    <textarea style="width: 100%; padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc; margin-top: 0.5rem; height: 100px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('skipModal')">Cancel</button>
+                <button class="btn btn-danger" onclick="skipStudent()">Confirm Skip</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Success</h3>
+                <button class="close-btn" onclick="closeModal('successModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; padding: 2rem 1rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <h2 style="margin-top: 1rem; color: #10b981; margin-bottom: 0.5rem;" id="successTitle">Student Admitted Successfully</h2>
+                    <p style="color: #64748b;" id="successMessage">Rahul Sharma has been successfully admitted to Computer Science Engineering.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="loadNextStudent()">Process Next Student</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Show modal function
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        // Close modal function
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Show document modal
+        function showDocumentModal(documentName) {
+            document.getElementById('documentModalTitle').innerText = documentName + ' Preview';
+            document.getElementById('documentType').innerText = documentName;
+            
+            if (documentName === 'Migration Certificate') {
+                document.getElementById('documentStatus').innerText = 'Pending Verification';
+                document.getElementById('documentStatus').style.color = '#854d0e';
+            } else {
+                document.getElementById('documentStatus').innerText = 'Verified';
+                document.getElementById('documentStatus').style.color = '#065f46';
+            }
+            
+            showModal('documentModal');
+        }
+        
+        // Show admit modal
+        function showAdmitModal() {
+            showModal('admitModal');
+        }
+        
+        // Show skip modal
+        function showSkipModal() {
+            showModal('skipModal');
+        }
+        
+        // Admit student function
+        function admitStudent() {
+            closeModal('admitModal');
+            document.getElementById('successTitle').innerText = 'Student Admitted Successfully';
+            document.getElementById('successMessage').innerText = 'Rahul Sharma has been successfully admitted to Computer Science Engineering.';
+            showModal('successModal');
+        }
+        
+        // Skip student function
+        function skipStudent() {
+            closeModal('skipModal');
+            document.getElementById('successTitle').innerText = 'Student Skipped';
+            document.getElementById('successMessage').innerText = 'Rahul Sharma has been skipped and marked as absent.';
+            showModal('successModal');
+        }
+        
+        // Load next student function
+        function loadNextStudent() {
+            closeModal('successModal');
+            // Here you would typically load the next student's data from the server
+            // For this demo, we'll just show a simple animation
+            
+            const cardBody = document.querySelector('.card-body');
+            cardBody.classList.add('fadeIn');
+            
+            // Update counters for demonstration
+            const waitingCount = document.querySelector('.status-item:nth-child(1) .status-value');
+            const admittedCount = document.querySelector('.status-item:nth-child(3) .status-value');
+            const skippedCount = document.querySelector('.status-item:nth-child(4) .status-value');
+            
+            if (document.getElementById('successTitle').innerText.includes('Admitted')) {
+                waitingCount.innerText = parseInt(waitingCount.innerText) - 1;
+                admittedCount.innerText = parseInt(admittedCount.innerText) + 1;
+            } else {
+                waitingCount.innerText = parseInt(waitingCount.innerText) - 1;
+                skippedCount.innerText = parseInt(skippedCount.innerText) + 1;
+            }
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                cardBody.classList.remove('fadeIn');
+            }, 500);
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.getElementsByClassName('modal');
+            for (let i = 0; i < modals.length; i++) {
+                if (event.target === modals[i]) {
+                    modals[i].style.display = 'none';
+                }
+            }
+        };
+    </script>
+</body>
+</html>

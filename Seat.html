@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLC Portal - Seat Matrix</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        :root {
+            --indigo-50: #eef2ff;
+            --indigo-100: #e0e7ff;
+            --indigo-200: #c7d2fe;
+            --indigo-300: #a5b4fc;
+            --indigo-400: #818cf8;
+            --indigo-500: #6366f1;
+            --indigo-600: #4f46e5;
+            --indigo-700: #4338ca;
+            --indigo-800: #3730a3;
+            --indigo-900: #312e81;
+            --white: #ffffff;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--indigo-50);
+            color: var(--gray-800);
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--indigo-700);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--indigo-200);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            background-color: var(--indigo-300);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
+        }
+        
+        .login-btn {
+            background-color: var(--indigo-500);
+            color: var(--white);
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: var(--indigo-600);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-title {
+            color: var(--indigo-900);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--indigo-500);
+            padding-bottom: 0.5rem;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            background-color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-label {
+            margin-right: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        select, input {
+            padding: 0.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            background-color: var(--white);
+            margin-right: 1rem;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--indigo-500);
+            box-shadow: 0 0 0 3px var(--indigo-100);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--indigo-600);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--indigo-700);
+        }
+
+        .btn-secondary {
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray-200);
+        }
+
+        .seat-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .branch-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .branch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .branch-card.editable {
+            cursor: pointer;
+        }
+
+        .branch-header {
+            background-color: var(--indigo-600);
+            color: var(--white);
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .branch-body {
+            padding: 1.5rem;
+        }
+
+        .seat-category {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .seat-category:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .category-name {
+            font-weight: 500;
+        }
+
+        .seat-count {
+            font-weight: bold;
+            color: var(--indigo-700);
+        }
+
+        .total-seats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--indigo-200);
+            font-weight: bold;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: var(--indigo-800);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--indigo-800) transparent transparent transparent;
+        }
+
+        .branch-card.editable:hover .tooltip {
+            opacity: 1;
+        }
+
+        .summary-section {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-title {
+            color: var(--indigo-900);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--indigo-50);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem;
+            border-left: 4px solid var(--indigo-600);
+        }
+
+        .stat-title {
+            color: var(--gray-700);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--indigo-900);
+        }
+
+        .stat-percentage {
+            font-size: 0.875rem;
+            color: var(--indigo-700);
+        }
+        
+        .auth-message {
+            background-color: var(--indigo-100);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .auth-message p {
+            color: var(--indigo-900);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--indigo-700);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+            }
+
+            nav ul li {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                margin-bottom: 1rem;
+            }
+
+            .seat-matrix {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header for non-logged in users -->
+    <header id="public-header">
+        <div class="logo">
+            <span>CLC Portal</span>
+        </div>
+        <a href="#" class="login-btn" id="login-btn">Login</a>
+    </header>
+    
+    <!-- Header for logged in users (hidden by default) -->
+    <header id="user-header" style="display: none;">
+        <div class="logo">
+            <span>CLC Portal</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#" class="active">Seat Matrix</a></li>
+                <li><a href="#">Standing</a></li>
+                <li><a href="#">My Profile</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            <span id="user-role">Admission Officer</span>
+            <div class="user-avatar" id="user-avatar">AO</div>
+        </div>
+    </header>
+
+    <main>
+        <h1 class="page-title">Seat Matrix</h1>
+        
+        <!-- Login reminder for non-logged in users -->
+        <div class="auth-message" id="auth-message">
+            <p>You are viewing the seat matrix as a guest. Login to access additional features.</p>
+            <a href="#" class="login-btn">Login</a>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <span class="filter-label">Academic Year:</span>
+                <select id="academic-year">
+                    <option value="2025">2025-26</option>
+                    <option value="2024">2024-25</option>
+                    <option value="2023">2023-24</option>
+                </select>
+
+                <span class="filter-label">Category:</span>
+                <select id="category">
+                    <option value="all">All Categories</option>
+                    <option value="general">General</option>
+                    <option value="obc">OBC</option>
+                    <option value="sc">SC</option>
+                    <option value="st">ST</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Search:</span>
+                <input type="text" id="search" placeholder="Search by branch name...">
+                <!-- Update button only visible for logged in users -->
+                <button class="btn btn-primary" id="update-btn" style="display: none;">Update Seats</button>
+            </div>
+        </div>
+
+        <div class="seat-matrix" id="seat-matrix">
+            <div class="loading">Loading seat data...</div>
+        </div>
+
+        <div class="summary-section">
+            <h2 class="summary-title">Summary</h2>
+            <div class="summary-stats" id="summary-stats">
+                <!-- Summary stats will be populated from JSON data -->
+                <div class="loading">Loading summary data...</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Mock JSON data URL - In a real application, this would be your actual API endpoint
+        const seatDataUrl = 'seat-data.json';
+        
+        // Check login status function
+        function checkLoginStatus() {
+            // This would typically check with your backend/localStorage/sessionStorage
+            // For this demo, we'll simulate as not logged in initially
+            return false;
+        }
+        
+        // Function to update UI based on login status
+        function updateUIForLoginStatus(isLoggedIn) {
+            if (isLoggedIn) {
+                // User is logged in
+                document.getElementById('public-header').style.display = 'none';
+                document.getElementById('user-header').style.display = 'flex';
+                document.getElementById('auth-message').style.display = 'none';
+                document.getElementById('update-btn').style.display = 'block';
+                
+                // Make cards editable for authorized users
+                document.querySelectorAll('.branch-card').forEach(card => {
+                    card.classList.add('editable');
+                });
+            } else {
+                // User is not logged in
+                document.getElementById('public-header').style.display = 'flex';
+                document.getElementById('user-header').style.display = 'none';
+                document.getElementById('auth-message').style.display = 'flex';
+                document.getElementById('update-btn').style.display = 'none';
+                
+                // Remove editable class from cards
+                document.querySelectorAll('.branch-card').forEach(card => {
+                    card.classList.remove('editable');
+                });
+            }
+        }
+        
+        // Function to create a branch card
+        function createBranchCard(branch) {
+            let totalSeats = 0;
+            
+            // Create the HTML for seat categories
+            const categoryHTML = Object.keys(branch.seats).map(category => {
+                totalSeats += branch.seats[category];
+                return `
+                    <div class="seat-category">
+                        <span class="category-name">${category}</span>
+                        <span class="seat-count">${branch.seats[category]}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            // Create the branch card HTML
+            const cardHTML = `
+                <div class="branch-card" data-branch="${branch.name}">
+                    <div class="branch-header">${branch.name}</div>
+                    <div class="branch-body">
+                        ${categoryHTML}
+                        <div class="total-seats">
+                            <span>Total Seats</span>
+                            <span>${totalSeats}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return cardHTML;
+        }
+        
+        // Function to create summary stats
+        function createSummaryStats(data) {
+            let totalBranches = data.length;
+            let totalSeats = 0;
+            let filledSeats = 0;
+            
+            // Calculate totals
+            data.forEach(branch => {
+                Object.keys(branch.seats).forEach(category => {
+                    totalSeats += branch.seats[category];
+                    filledSeats += branch.filled[category] || 0;
+                });
+            });
+            
+            const vacantSeats = totalSeats - filledSeats;
+            const filledPercentage = Math.round((filledSeats / totalSeats) * 100);
+            const vacantPercentage = 100 - filledPercentage;
+            
+            // Create the HTML for summary stats
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-title">Total Branches</div>
+                    <div class="stat-value">${totalBranches}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Total Seats</div>
+                    <div class="stat-value">${totalSeats}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Filled Seats</div>
+                    <div class="stat-value">${filledSeats}</div>
+                    <div class="stat-percentage">${filledPercentage}% filled</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Vacant Seats</div>
+                    <div class="stat-value">${vacantSeats}</div>
+                    <div class="stat-percentage">${vacantPercentage}% vacant</div>
+                </div>
+            `;
+            
+            return statsHTML;
+        }
+        
+        // Function to fetch and display seat data
+        function fetchAndDisplaySeatData() {
+            // For demo purposes, we'll use this mock data
+            // In a real application, you would fetch this from your API
+            const mockData = [
+                {
+                    "name": "Computer Science Engineering",
+                    "seats": {
+                        "General": 60,
+                        "OBC": 30,
+                        "SC": 15,
+                        "ST": 15
+                    },
+                    "filled": {
+                        "General": 58,
+                        "OBC": 25,
+                        "SC": 10,
+                        "ST": 9
+                    }
+                },
+                {
+                    "name": "Information Technology",
+                    "seats": {
+                        "General": 50,
+                        "OBC": 25,
+                        "SC": 13,
+                        "ST": 12
+                    },
+                    "filled": {
+                        "General": 48,
+                        "OBC": 22,
+                        "SC": 10,
+                        "ST": 8
+                    }
+                },
+                {
+                    "name": "Electronics & Communication",
+                    "seats": {
+                        "General": 45,
+                        "OBC": 22,
+                        "SC": 11,
+                        "ST": 12
+                    },
+                    "filled": {
+                        "General": 40,
+                        "OBC": 18,
+                        "SC": 8,
+                        "ST": 7
+                    }
+                },
+                {
+                    "name": "Mechanical Engineering",
+                    "seats": {
+                        "General": 40,
+                        "OBC": 20,
+                        "SC": 10,
+                        "ST": 10
+                    },
+                    "filled": {
+                        "General": 30,
+                        "OBC": 15,
+                        "SC": 5,
+                        "ST": 4
+                    }
+                },
+                {
+                    "name": "Civil Engineering",
+                    "seats": {
+                        "General": 35,
+                        "OBC": 18,
+                        "SC": 9,
+                        "ST": 8
+                    },
+                    "filled": {
+                        "General": 20,
+                        "OBC": 10,
+                        "SC": 5,
+                        "ST": 3
+                    }
+                },
+                {
+                    "name": "Electrical Engineering",
+                    "seats": {
+                        "General": 40,
+                        "OBC": 20,
+                        "SC": 10,
+                        "ST": 10
+                    },
+                    "filled": {
+                        "General": 30,
+                        "OBC": 12,
+                        "SC": 8,
+                        "ST": 7
+                    }
+                }
+            ];
+            
+            // In a real application, this would be a fetch request:
+            // fetch(seatDataUrl)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         // Process data
+            //     })
+            //     .catch(error => {
+            //         console.error('Error fetching seat data:', error);
+            //     });
+            
+            // For this demo, we'll just use the mock data directly
+            const seatMatrixContainer = document.getElementById('seat-matrix');
+            const summaryStatsContainer = document.getElementById('summary-stats');
+            
+            // Clear loading messages
+            seatMatrixContainer.innerHTML = '';
+            summaryStatsContainer.innerHTML = '';
+            
+            // Generate branch cards
+            mockData.forEach(branch => {
+                seatMatrixContainer.innerHTML += createBranchCard(branch);
+            });
+            
+            // Generate summary stats
+            summaryStatsContainer.innerHTML = createSummaryStats(mockData);
+            
+            // Update UI based on login status
+            const isLoggedIn = checkLoginStatus();
+            updateUIForLoginStatus(isLoggedIn);
+            
+            // Add event listeners
+            setupEventListeners();
+        }
+        
+        // Function to setup event listeners
+        function setupEventListeners() {
+            // Search functionality
+            $('#search').on('input', function() {
+                let searchTerm = $(this).val().toLowerCase();
+                
+                $('.branch-card').each(function() {
+                    let branchName = $(this).data('branch').toLowerCase();
+                    
+                    if (branchName.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+            
+            // Category filter
+            $('#category').change(function() {
+                let selectedCategory = $(this).val().toLowerCase();
+                
+                if (selectedCategory === 'all') {
+                    $('.seat-category').show();
+                } else {
+                    $('.seat-category').each(function() {
+                        let categoryName = $(this).find('.category-name').text().toLowerCase();
+                        
+                        if (categoryName === selectedCategory) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                }
+            });
+            
+            // Add tooltips to branch cards for logged-in users
+            $('.branch-card.editable').hover(function(e) {
+                let branchName = $(this).data('branch');
+                let tooltip = $('<div class="tooltip">Click to edit seats</div>');
+                
+                tooltip.css({
+                    top: e.pageY - 40,
+                    left: e.pageX - 70
+                });
+                
+                $('body').append(tooltip);
+            }, function() {
+                $('.tooltip').remove();
+            });
+            
+            // Branch card click event (for editing) - only for logged-in users
+            $('.branch-card.editable').click(function() {
+                let branchName = $(this).data('branch');
+                alert(`Edit seats for ${branchName}`);
+                // Here you would typically open a modal for editing
+            });
+            
+            // Update button click
+            $('#update-btn').click(function() {
+                alert('Seat information updated successfully!');
+            });
+            
+            // Login button click
+            $('.login-btn').click(function(e) {
+                e.preventDefault();
+                
+                // This would typically redirect to a login page or show a login modal
+                // For this demo, we'll just toggle the login status
+                const isCurrentlyLoggedIn = document.getElementById('user-header').style.display === 'flex';
+                updateUIForLoginStatus(!isCurrentlyLoggedIn);
+                
+                // Add editable class to branch cards if logged in
+                if (!isCurrentlyLoggedIn) {
+                    document.querySelectorAll('.branch-card').forEach(card => {
+                        card.classList.add('editable');
+                    });
+                    
+                    // Set up tooltips and click events for editable cards
+                    setupEditableCards();
+                }
+            });
+        }
+        
+        // Function to set up editable cards
+        function setupEditableCards() {
+            // Add tooltips to branch cards
+            $('.branch-card.editable').hover(function(e) {
+                let branchName = $(this).data('branch');
+                let tooltip = $('<div class="tooltip">Click to edit seats</div>');
+                
+                tooltip.css({
+                    top: e.pageY - 40,
+                    left: e.pageX - 70
+                });
+                
+                $('body').append(tooltip);
+            }, function() {
+                $('.tooltip').remove();
+            });
+            
+            // Branch card click event (for editing)
+            $('.branch-card.editable').click(function() {
+                let branchName = $(this).data('branch');
+                alert(`Edit seats for ${branchName}`);
+                // Here you would typically open a modal for editing
+            });
+        }
+        
+        // Initialize the page
+        $(document).ready(function() {
+            fetchAndDisplaySeatData();
+        });
+    </script>
+</body>
+</html>

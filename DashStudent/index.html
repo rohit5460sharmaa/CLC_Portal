@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="/api/placeholder/50/50" alt="College Logo" class="logo-img">
+                <h2>Student Portal</h2>
+            </div>
+            <nav class="sidebar-menu">
+                <ul>
+                    <li class="active">
+                        <a href="#" class="menu-item">
+                            <i class="ri-dashboard-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="menu-item">
+                            <i class="ri-book-mark-line"></i>
+                            <span>Branch Preferences</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="menu-item">
+                            <i class="ri-calendar-line"></i>
+                            <span>Counseling Schedule</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="menu-item">
+                            <i class="ri-profile-line"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <div class="search-bar">
+                    <i class="ri-search-line"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="ri-notification-line"></i>
+                    </div>
+                    <div class="user-profile">
+                        <img src="/api/placeholder/40/40" alt="User Profile" class="profile-pic">
+                        <span class="user-name">John Doe</span>
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div class="welcome-section">
+                    <h1>Welcome Back, John!</h1>
+                    <p>Here's your current academic standing and upcoming events.</p>
+                </div>
+
+                <div class="dashboard-cards">
+                    <div class="card current-standing">
+                        <div class="card-header">
+                            <h3>Current Standing</h3>
+                            <i class="ri-information-line"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="standing-details">
+                                <div class="standing-item">
+                                    <span>CGPA</span>
+                                    <strong>8.5</strong>
+                                </div>
+                                <div class="standing-item">
+                                    <span>Rank</span>
+                                    <strong>12/250</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card seat-matrix">
+                        <div class="card-header">
+                            <h3>Seat Matrix</h3>
+                            <a href="#" class="view-details">View Details</a>
+                        </div>
+                        <div class="card-content">
+                            <div class="matrix-progress">
+                                <div class="progress-bar" style="width: 65%;"></div>
+                                <span>65% Chances</span>
+                            </div>
+                            <div class="matrix-branches">
+                                <div class="branch-item">
+                                    <span>Computer Science</span>
+                                    <strong>High Probability</strong>
+                                </div>
+                                <div class="branch-item">
+                                    <span>Electronics</span>
+                                    <strong>Medium Probability</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card counseling-status">
+                        <div class="card-header">
+                            <h3>Counseling Status</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="status-details">
+                                <div class="status-badge pending">Upcoming</div>
+                                <p>Your counseling turn is scheduled soon. Prepare your branch preferences.</p>
+                                <a href="branch-preference.html" class="btn-primary">Update Preferences</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

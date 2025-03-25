@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLC Portal - Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <h2>CLC Portal</h2>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li class="active">
+                        <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="branchpreference.html"><i class="fas fa-list-check"></i> Branch Preference</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-table-columns"></i> Seat Matrix</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-ranking-star"></i> Standing</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-circle-info"></i> Help & Support</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="logout-container">
+                <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="search-container">
+                    <input type="text" placeholder="Search...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="user-actions">
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="/api/placeholder/36/36" alt="Student Avatar">
+                        <span class="username" id="student-name">Student Name</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <h1>Student Dashboard</h1>
+
+                <!-- Status Card -->
+                <div class="status-card" id="status-container">
+                    <!-- Content will be added by JavaScript -->
+                </div>
+
+                <!-- Info Cards -->
+                <div class="info-cards">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>Your Rank</h3>
+                            <p id="student-rank">--</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-list-ol"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>Counselling Position</h3>
+                            <p id="counselling-position">--</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-days"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>Next Counselling</h3>
+                            <p id="next-counselling-date">--</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Branch Preferences Section -->
+                <section class="branch-preferences">
+                    <div class="section-header">
+                        <h2>Your Branch Preferences</h2>
+                        <a href="branchpreference.html" class="action-btn">
+                            <i class="fas fa-edit"></i> Edit Preferences
+                        </a>
+                    </div>
+                    <div class="preference-list" id="preference-container">
+                        <!-- Content will be added by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Seat Matrix Overview -->
+                <section class="seat-matrix">
+                    <div class="section-header">
+                        <h2>Seat Matrix Overview</h2>
+                        <a href="#" class="action-btn">
+                            <i class="fas fa-eye"></i> View Full Matrix
+                        </a>
+                    </div>
+                    <div class="matrix-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Total Seats</th>
+                                    <th>Filled</th>
+                                    <th>Available</th>
+                                </tr>
+                            </thead>
+                            <tbody id="seat-matrix-body">
+                                <!-- Content will be added by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Preference Form Modal -->
+    <div class="modal" id="preference-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Set Your Branch Preferences</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Please set your branch preferences before proceeding to the dashboard.</p>
+                <a href="branchpreference.html" class="modal-btn">Set Preferences Now</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branch Preference Selection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <h1>CLC Portal</h1>
+                </div>
+                <nav>
+                    <input type="checkbox" id="nav-toggle">
+                    <label for="nav-toggle" class="nav-toggle-label">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                    <ul>
+                        <li><a href="../StudentDashboard/index.html">Home</a></li>
+                        <li><a href="../AboutUS/about.html" class="active">About Us</a></li>
+                        <li><a href="../Seat.html">Seat Matrix</a></li>
+                        <li><a href="../standing.html">Standing</a></li>
+                        <li><a href="../../login.html" class="btn-login">Login</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div class="branch-info-container">
+                <h2>Available Branches</h2>
+                <div class="branch-info" id="branch-info">
+                    <!-- Branches will be dynamically populated here -->
+                </div>
+            </div>
+
+            <div class="preference-section">
+                <h2>Set Your Preferences</h2>
+                <p class="instruction">Drag and drop branches to set your priority order</p>
+
+                <form id="preference-form">
+                    <div class="preference-list" id="preference-container">
+                        <div class="preference-item">
+                            <span class="priority-number">1</span>
+                            <select class="branch-select" required>
+                                <option value="" selected disabled>Select Branch</option>
+                                <!-- Branch options will be dynamically populated here -->
+                            </select>
+                            <button type="button" class="remove-btn" disabled>×</button>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="add-preference" class="add-btn">+ Add Another Preference</button>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn">Reset</button>
+                        <button type="submit" class="primary-btn">Submit Preferences</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <p>Note: Your branch allocation will be based on your rank and preference order.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
