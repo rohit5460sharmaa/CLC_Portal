@@ -1,3 +1,4 @@
+
 package NucleusTeq.College.Level.Counselling.Service;
 
 import NucleusTeq.College.Level.Counselling.Repository.StudentRepo;
@@ -8,18 +9,24 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+
 @Service
 public class StudentService {
 
     private final StudentRepo studentRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public StudentService(StudentRepo studentRepo) {
+    public StudentService(StudentRepo studentRepo, PasswordEncoder passwordEncoder) {
         this.studentRepo = studentRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // Save or update student
+    // Save or update student with encrypted password
     public Student saveStudent(Student student) {
+        student.setPassword(passwordEncoder.encode(student.getPassword())); // Encrypt password
         return studentRepo.save(student);
     }
 

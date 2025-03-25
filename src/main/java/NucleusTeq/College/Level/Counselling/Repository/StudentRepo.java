@@ -1,3 +1,4 @@
+
 package NucleusTeq.College.Level.Counselling.Repository;
 
 import NucleusTeq.College.Level.Counselling.model.Student;
@@ -15,4 +16,6 @@ public interface StudentRepo extends JpaRepository<Student, String> {
     void deleteByRollNumber(String rollNumber); // Delete student by roll number
     Optional<Student> findTopByOrderByRankAsc(); // Get the student with the lowest rank
     Optional<Student> findByEmail(String email); // Find student by email
+    Optional<Student> findByEmailOrRollNumber(String email, String rollNumber);
+
 }

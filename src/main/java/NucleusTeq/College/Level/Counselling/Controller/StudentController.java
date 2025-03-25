@@ -1,6 +1,6 @@
 package NucleusTeq.College.Level.Counselling.Controller;
 
-import NucleusTeq.College.Level.Counselling.Repository.StudentRepo;
+import NucleusTeq.College.Level.Counselling.Service.StudentService;
 import NucleusTeq.College.Level.Counselling.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,46 +13,51 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class StudentController {
 
+    private final StudentService studentService;
+
     @Autowired
-    private StudentRepo studentRepo;
+    public StudentController(StudentService studentService) { // ✅ Constructor Injection
+        this.studentService = studentService;
+    }
 
     @GetMapping
     public List<Student> getAllStudents() {
-        return studentRepo.findAll();
+        return studentService.getAllStudents(); // ✅ Use service instead of repo
     }
 
     @GetMapping("/{rollNumber}")
     public ResponseEntity<Student> getStudentByRollNumber(@PathVariable String rollNumber) {
-        return studentRepo.findById(rollNumber)
+        return studentService.getStudentByRollNumber(rollNumber)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentRepo.save(student);
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        return ResponseEntity.ok(studentService.saveStudent(student)); // ✅ Use service
     }
 
     @PutMapping("/{rollNumber}")
     public ResponseEntity<Student> updateStudent(@PathVariable String rollNumber, @RequestBody Student updatedStudent) {
-        return studentRepo.findById(rollNumber).map(student -> {
+        return studentService.getStudentByRollNumber(rollNumber).map(student -> {
             updatedStudent.setRollNumber(rollNumber);
-            return ResponseEntity.ok(studentRepo.save(updatedStudent));
+            return ResponseEntity.ok(studentService.saveStudent(updatedStudent)); // ✅ Use service
         }).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{rollNumber}")
     public ResponseEntity<Void> deleteStudent(@PathVariable String rollNumber) {
-        return studentRepo.findById(rollNumber).map(student -> {
-            studentRepo.delete(student);
-            return ResponseEntity.noContent().<Void>build();
-        }).orElse(ResponseEntity.notFound().build());
+        if (studentService.existsByRollNumber(rollNumber)) { // ✅ Use service
+            studentService.deleteByRollNumber(rollNumber);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Student> getStudentByEmail(@PathVariable String email) {
-        return studentRepo.findByEmail(email)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+//    @GetMapping("/email/{email}")
+//    public ResponseEntity<Student> getStudentByEmail(@PathVariable String email) {
+//        return studentService.existsByEmail(email)
+//                .map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.notFound().build());
+//    }
 }
