@@ -42,13 +42,13 @@ public class AuthController {
         Optional<Student> student = studentRepository.findByEmailOrRollNumber(username, username);
         if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
             String token = jwtUtil.generateToken(username, "STUDENT");
-            return ResponseEntity.ok(new AuthResponse(token, "STUDENT"));
+            return ResponseEntity.ok(new AuthResponse(token, "STUDENT",student.get().getName()));
         }
 
         Optional<User> user = userRepository.findByEmail(username);
         if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
             String token = jwtUtil.generateToken(username, user.get().getRole());
-            return ResponseEntity.ok(new AuthResponse(token, user.get().getRole()));
+            return ResponseEntity.ok(new AuthResponse(token, user.get().getRole(), user.get().getUsername()));
         }
 
         return ResponseEntity.status(401).body("Invalid Credentials");
@@ -87,8 +87,11 @@ public class AuthController {
         return ResponseEntity.ok("Admin Token: " + adminToken);
     }
 
-    @DeleteMapping("/remove-officer")
-    public ResponseEntity<?> removeOfficer(@RequestParam String username, @RequestHeader("Authorization") String token) {
+    @DeleteMapping("/remove-officer/{username}")
+    public ResponseEntity<?> removeOfficer(
+        @PathVariable String username, 
+        @RequestHeader("Authorization") String token
+    ) {
         String adminRole = jwtUtil.extractRole(token.substring(7));
         if (!"ADMIN".equals(adminRole)) {
             return ResponseEntity.status(403).body("Access Denied. Only Admins can remove officers.");
@@ -118,6 +121,7 @@ public class AuthController {
     public ResponseEntity<?> updateOfficer(@RequestBody User updatedUser, @RequestHeader("Authorization") String token) {
         String role = jwtUtil.extractRole(token.substring(7));
         String email = jwtUtil.extractUsername(token.substring(7));
+        System.out.println("hiit the request");
 
         if ("OFFICER".equals(role) && !email.equals(updatedUser.getEmail())) {
             return ResponseEntity.status(403).body("Access Denied. Officers can only update their own profile.");
