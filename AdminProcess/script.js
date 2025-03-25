@@ -220,7 +220,7 @@ async function deleteOfficer() {
     if (!currentDeleteUsername) return;
 
     try {
-        const response = await fetch(`http://localhost:8080/api/auth/delete/${currentDeleteUsername}`, {
+        const response = await fetch(`http://localhost:8080/api/auth/remove-officer/${currentDeleteUsername}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${getToken()}`
@@ -232,6 +232,7 @@ async function deleteOfficer() {
             document.getElementById('deleteConfirmModal').classList.add('hidden');
             fetchOfficers(); // Refresh the list
         } else {
+            
             const errorData = await response.json();
             alert(`Error: ${errorData.message || 'Failed to delete officer'}`);
         }
@@ -342,6 +343,217 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (statusFilter) {
         statusFilter.addEventListener('change', filterOfficers);
+    }
+
+    // Initial fetch
+    fetchOfficers();
+});
+
+// Add this to your existing script.js file
+
+// Open Edit Officer Modal
+function openEditOfficerModal(username) {
+    const officer = currentOfficers.find(o => o.username === username);
+    if (!officer) {
+        alert('Officer not found');
+        return;
+    }
+
+    // Create edit modal if not already exists
+    let editModal = document.getElementById('editOfficerModal');
+    if (!editModal) {
+        const modalHTML = `
+        <div id="editOfficerModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
+            <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white">
+                <div class="flex justify-between items-center border-b pb-3">
+                    <h3 class="text-lg font-medium text-gray-900">Edit Admission Officer</h3>
+                    <button onclick="closeEditOfficerModal()" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <form id="editOfficerForm">
+                        <input type="hidden" id="editOfficerOriginalUsername" name="originalUsername">
+                        
+                        <div class="mb-4">
+                            <label for="editOfficerName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" id="editOfficerName" name="officerName" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="editOfficerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="editOfficerEmail" name="officerEmail" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="editOfficerUsername" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                            <input type="text" id="editOfficerUsername" name="officerUsername" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="editContact" class="block text-sm font-medium text-gray-700 mb-1">Contact</label>
+                            <input type="number" id="editContact" name="contact" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="editRole" class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                            <input type="text" id="editRole" name="role" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="editOfficerDepartment" class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                            <select id="editOfficerDepartment" name="officerDepartment" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electronics & Communication">Electronics & Communication</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input id="editIsActive" name="isActive" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="editIsActive" class="font-medium text-gray-700">Active Status</label>
+                                    <p class="text-gray-500">Set the officer as active</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end space-x-3 mt-6">
+                            <button type="button" onclick="closeEditOfficerModal()" class="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Cancel
+                            </button>
+                            <button type="submit" class="inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-save mr-2"></i> Update Officer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>`;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+
+    // Populate form with existing officer data
+    document.getElementById('editOfficerOriginalUsername').value = officer.username;
+    document.getElementById('editOfficerName').value = officer.name;
+    document.getElementById('editOfficerEmail').value = officer.email;
+    document.getElementById('editOfficerUsername').value = officer.username;
+    document.getElementById('editContact').value = officer.phone;
+    document.getElementById('editRole').value = officer.role;
+    document.getElementById('editOfficerDepartment').value = officer.department;
+    document.getElementById('editIsActive').checked = officer.enabled;
+
+    // Show the modal
+    document.getElementById('editOfficerModal').classList.remove('hidden');
+    document.getElementById('editOfficerModal').addEventListener('submit',updateOfficer);
+}
+
+// Close Edit Officer Modal
+function closeEditOfficerModal() {
+    document.getElementById('editOfficerModal').classList.add('hidden');
+}
+
+// Update Officer
+async function updateOfficer(event) {
+    event.preventDefault();
+    const form = event.target;
+    alert("Hitt");
+    const officerData = {
+        originalUsername: form.originalUsername.value, // Add this hidden input
+        username: form.officerUsername.value,
+        email: form.officerEmail.value,
+        name: form.officerName.value,
+        phone: form.contact.value,
+        role: form.role.value,
+        department: form.officerDepartment.value,
+        enabled: form.isActive.checked,
+        // Optional: password update
+        password: form.officerPassword ? form.officerPassword.value : ''
+    };
+
+    // Validate that no fields are empty
+    const requiredFields = ['username', 'email', 'name', 'phone', 'role', 'department'];
+    const missingFields = requiredFields.filter(field => !officerData[field]);
+
+    if (missingFields.length > 0) {
+        alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:8080/api/auth/update-officer', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            },
+            body: JSON.stringify(officerData)
+        });
+
+        const responseBody = await response.text();
+
+        if (response.ok) {
+            alert('Officer updated successfully!');
+            closeEditOfficerModal();
+            
+            // Refresh officers list
+            fetchOfficers();
+        } else {
+            alert(`Error: ${responseBody}`);
+        }
+    } catch (error) {
+        console.error('Update officer error:', error);
+        alert('Network error. Please try again.');
+    }
+}
+
+// Add this to your DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', () => {
+    // Add Officer Form Submission
+    const addOfficerForm = document.getElementById('addOfficerForm');
+    if (addOfficerForm) {
+        addOfficerForm.addEventListener('submit', addNewOfficer);
+    }
+
+    // Delete Confirmation Buttons
+    const confirmDeleteBtn = document.getElementById('confirmDelete');
+    const cancelDeleteBtn = document.getElementById('cancelDelete');
+    
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', () => {
+            deleteOfficer();
+            document.getElementById('deleteConfirmModal').classList.add('hidden');
+        });
+    }
+
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', () => {
+            document.getElementById('deleteConfirmModal').classList.add('hidden');
+        });
+    }
+
+    // Search and Filter
+    const searchInput = document.getElementById('searchOfficers');
+    const statusFilter = document.getElementById('officerStatusFilter');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', filterOfficers);
+    }
+    
+    if (statusFilter) {
+        statusFilter.addEventListener('change', filterOfficers);
+    }
+
+    // Edit Officer Form Submission
+    const editOfficerForm = document.getElementById('editOfficerForm');
+    if (editOfficerForm) {
+        editOfficerForm.addEventListener('submit', updateOfficer);
     }
 
     // Initial fetch
