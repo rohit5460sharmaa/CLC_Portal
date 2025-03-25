@@ -20,8 +20,12 @@ public class SecurityConfig {
             .cors(cors -> {})  // Enable CORS - configurations are picked up from CorsConfig
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/**").permitAll()  // Allow all requests for now (development)
+                .requestMatchers("/api/auth/**").permitAll()  // Allow all auth endpoints
+
                 .requestMatchers("/auth/register-student", "/auth/login-student").permitAll()
                 //.requestMatchers("/auth/login-admin", "/auth/login-officer").denyAll() // Future Use
+                .requestMatchers("/api/auth/login").permitAll()  // Public
+                .requestMatchers("/api/auth/add-user").hasAuthority("ADMIN")  // Only Admins
                 .anyRequest().authenticated()
             );
         return http.build();

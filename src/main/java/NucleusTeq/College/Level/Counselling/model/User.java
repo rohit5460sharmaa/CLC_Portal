@@ -22,9 +22,11 @@ public class User {
     @Column(nullable = false)
     private String role; // STUDENT, ADMIN, OFFICER
 
+    @Column(nullable = false)
+    private boolean enabled = true; // ✅ New field (Default: true)
+
     // Default constructor (Required by JPA)
-    public User() {
-    }
+    public User() {}
 
     // Constructor for Student registration (Username is required)
     public User(String username, String email, String password) {
@@ -32,6 +34,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = "STUDENT"; // Default role
+        this.enabled = true;   // Enable user by default
     }
 
     // Constructor for Admin/Officer (If username is null, set email as username)
@@ -40,6 +43,7 @@ public class User {
         this.username = (username == null || username.trim().isEmpty()) ? email : username;
         this.password = password;
         this.role = role;
+        this.enabled = true;   // Enable user by default
     }
 
     // Getters and Setters
@@ -83,6 +87,14 @@ public class User {
         this.role = role;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     // toString() Method
     @Override
     public String toString() {
@@ -91,6 +103,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

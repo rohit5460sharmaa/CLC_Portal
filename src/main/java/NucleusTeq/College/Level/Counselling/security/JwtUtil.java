@@ -28,6 +28,13 @@ public class JwtUtil {
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
+    
+    // Generate Admin token
+    public String generateAdminToken(String adminEmail) {
+        return generateToken(adminEmail, "ADMIN");
+    }
+
+    
 
     public String extractUsername(String token) {
         return extractClaim(token, claims -> claims.get("username", String.class));
