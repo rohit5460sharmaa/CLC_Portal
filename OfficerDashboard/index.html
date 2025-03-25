@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLC Portal - Admission Officer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-indigo-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-university text-2xl mr-2"></i>
+                        <span class="font-bold text-xl">CLC Portal</span>
+                    </div>
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+                        <a href="#dashboard" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" id="dashboard-link">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                        </a>
+                        <a href="#seat-management" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" id="seat-management-link">
+                            <i class="fas fa-chair mr-2"></i>Seat Management
+                        </a>
+                        <a href="#student-queue" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" id="student-queue-link">
+                            <i class="fas fa-users mr-2"></i>Student Queue
+                        </a>
+                        <a href="#reports" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" id="reports-link">
+                            <i class="fas fa-chart-bar mr-2"></i>Reports
+                        </a>
+                    </div>
+                </div>
+                <!-- User Profile and Logout -->
+                <div class="flex items-center">
+                    <div class="mr-4">
+                        <span id="username" class="text-sm font-medium">Admission Officer</span>
+                    </div>
+                    <button id="logout-btn" class="px-3 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Sections -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-800">Dashboard</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold mb-4">Total Students</h3>
+                    <p class="text-4xl font-bold text-indigo-600" id="total-students">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold mb-4">Vacant Seats</h3>
+                    <p class="text-4xl font-bold text-indigo-600" id="vacant-seats">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold mb-4">Admitted Students</h3>
+                    <p class="text-4xl font-bold text-indigo-600" id="admitted-students">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seat Management Section -->
+        <section id="seat-management" class="section hidden">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-800">Seat Management</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Add Branch and Seats</h3>
+                    <form id="branch-seat-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Branch Name</label>
+                            <input type="text" id="branch-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Total Seats</label>
+                            <input type="number" id="total-seats" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Category-wise Seat Distribution</label>
+                            <div class="grid grid-cols-2 gap-2 mt-2">
+                                <div>
+                                    <label class="text-xs">General</label>
+                                    <input type="number" id="gen-seats" class="block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="General Seats">
+                                </div>
+                                <div>
+                                    <label class="text-xs">SC</label>
+                                    <input type="number" id="sc-seats" class="block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="SC Seats">
+                                </div>
+                                <div>
+                                    <label class="text-xs">ST</label>
+                                    <input type="number" id="st-seats" class="block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="ST Seats">
+                                </div>
+                                <div>
+                                    <label class="text-xs">OBC</label>
+                                    <input type="number" id="obc-seats" class="block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="OBC Seats">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-300">
+                                Add Branch
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Seat Matrix Table -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-4">Current Seat Matrix</h3>
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Branch</th>
+                                <th class="px-4 py-2 text-left">Total Seats</th>
+                                <th class="px-4 py-2 text-left">General</th>
+                                <th class="px-4 py-2 text-left">SC</th>
+                                <th class="px-4 py-2 text-left">ST</th>
+                                <th class="px-4 py-2 text-left">OBC</th>
+                                <th class="px-4 py-2 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="seat-matrix-body">
+                            <!-- Dynamically populated seat matrix rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Student Queue Section -->
+        <section id="student-queue" class="section hidden">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-800">Student Admission Queue</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div id="current-student" class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Current Student</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Name</label>
+                            <p id="student-name" class="mt-1 block w-full rounded-md border-gray-300">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Rank</label>
+                            <p id="student-rank" class="mt-1 block w-full rounded-md border-gray-300">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Category</label>
+                            <p id="student-category" class="mt-1 block w-full rounded-md border-gray-300">-</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Preferred Branches</label>
+                            <p id="student-branches" class="mt-1 block w-full rounded-md border-gray-300">-</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex space-x-4">
+                        <button id="admit-btn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                            <i class="fas fa-check mr-2"></i>Admit
+                        </button>
+                        <button id="skip-btn" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                            <i class="fas fa-times mr-2"></i>Skip
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="section hidden">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-800">Reports</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Seat Occupancy</h3>
+                        <canvas id="seat-occupancy-chart"></canvas>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Category-wise Admission</h3>
+                        <canvas id="category-admission-chart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- New Branch Occupancy Section -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold mb-4">Branch Seat Occupancy</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="branch-occupancy-grid">
+                        <!-- Branch occupancy cards will be dynamically populated here -->
+                    </div>
+                    
+                    <!-- Branch Details Popup -->
+                    <div id="branch-details-popup" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+                        <div class="bg-white p-6 rounded-lg shadow-xl w-96">
+                            <h4 id="popup-branch-name" class="text-xl font-bold mb-4 text-indigo-800"></h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="font-medium text-gray-700">Total Seats:</span>
+                                    <span id="popup-total-seats" class="font-bold text-indigo-600"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="font-medium text-gray-700">General:</span>
+                                    <span id="popup-general-seats" class="font-bold text-green-600"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="font-medium text-gray-700">SC:</span>
+                                    <span id="popup-sc-seats" class="font-bold text-blue-600"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="font-medium text-gray-700">ST:</span>
+                                    <span id="popup-st-seats" class="font-bold text-purple-600"></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="font-medium text-gray-700">OBC:</span>
+                                    <span id="popup-obc-seats" class="font-bold text-yellow-600"></span>
+                                </div>
+                            </div>
+                            <button id="close-branch-details" class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation Links
+            const links = [
+                { id: 'dashboard-link', section: 'dashboard' },
+                { id: 'seat-management-link', section: 'seat-management' },
+                { id: 'student-queue-link', section: 'student-queue' },
+                { id: 'reports-link', section: 'reports' }
+            ];
+
+            links.forEach(link => {
+                document.getElementById(link.id).addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Hide all sections
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.classList.add('hidden');
+                    });
+                    // Show selected section
+                    document.getElementById(link.section).classList.remove('hidden');
+                });
+            });
+
+            // Branch and Seat Management
+            const branchSeatForm = document.getElementById('branch-seat-form');
+            const seatMatrixBody = document.getElementById('seat-matrix-body');
+
+            branchSeatForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const branchName = document.getElementById('branch-name').value;
+                const totalSeats = document.getElementById('total-seats').value;
+                const genSeats = document.getElementById('gen-seats').value;
+                const scSeats = document.getElementById('sc-seats').value;
+                const stSeats = document.getElementById('st-seats').value;
+                const obcSeats = document.getElementById('obc-seats').value;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-4 py-2">${branchName}</td>
+                    <td class="px-4 py-2">${totalSeats}</td>
+                    <td class="px-4 py-2">${genSeats}</td>
+                    <td class="px-4 py-2">${scSeats}</td>
+                    <td class="px-4 py-2">${stSeats}</td>
+                    <td class="px-4 py-2">${obcSeats}</td>
+                    <td class="px-4 py-2">
+                        <button class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                seatMatrixBody.appendChild(row);
+
+                // Reset form
+                branchSeatForm.reset();
+            });
+
+            // Simulated student queue
+            const students = [
+                { 
+                    name: 'Pratham Joya', 
+                    rank: 1, 
+                    category: 'General', 
+                    branches: ['Computer Science', 'Electronics'] 
+                },
+                { 
+                    name: 'John Doe', 
+                    rank: 2, 
+                    category: 'SC', 
+                    branches: ['Mechanical', 'Civil'] 
+                }
+            ];
+
+            let currentStudentIndex = 0;
+
+            function updateCurrentStudent() {
+                if (currentStudentIndex < students.length) {
+                    const student = students[currentStudentIndex];
+                    document.getElementById('student-name').textContent = student.name;
+                    document.getElementById('student-rank').textContent = student.rank;
+                    document.getElementById('student-category').textContent = student.category;
+                    document.getElementById('student-branches').textContent = student.branches.join(', ');
+                } else {
+                    // No more students
+                    document.getElementById('student-name').textContent = 'No more students';
+                    document.getElementById('student-rank').textContent = '-';
+                    document.getElementById('student-category').textContent = '-';
+                    document.getElementById('student-branches').textContent = '-';
+                }
+            }
+
+            document.getElementById('admit-btn').addEventListener('click', () => {
+                currentStudentIndex++;
+                updateCurrentStudent();
+            });
+
+            document.getElementById('skip-btn').addEventListener('click', () => {
+                currentStudentIndex++;
+                updateCurrentStudent();
+            });
+
+            // Initial setup
+            updateCurrentStudent();
+
+            // Charts (using Chart.js)
+            const seatOccupancyCtx = document.getElementById('seat-occupancy-chart').getContext('2d');
+            new Chart(seatOccupancyCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Computer Science', 'Electronics', 'Mechanical', 'Civil'],
+                    datasets: [{
+                        label: 'Seat Occupancy',
+                        data: [30, 25, 20, 25],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(79, 70, 229, 0.7)',
+                            'rgba(129, 140, 248, 0.7)',
+                            'rgba(165, 180, 252, 0.7)'
+                        ]
+                    }]
+                }
+            });
+
+            const categoryAdmissionCtx = document.getElementById('category-admission-chart').getContext('2d');
+            new Chart(categoryAdmissionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['General', 'SC', 'ST', 'OBC'],
+                    datasets: [{
+                        label: 'Admissions',
+                        data: [40, 15, 10, 20],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(79, 70, 229, 0.7)',
+                            'rgba(129, 140, 248, 0.7)',
+                            'rgba(165, 180, 252, 0.7)'
+                        ]
+                    }]
+                }
+            });
+
+            // Branch Occupancy Cards
+            function createBranchOccupancyCards() {
+                const branchOccupancyGrid = document.getElementById('branch-occupancy-grid');
+                const branchDetailsPopup = document.getElementById('branch-details-popup');
+                const closeBranchDetailsBtn = document.getElementById('close-branch-details');
+
+                // Sample branch data (replace with your actual data)
+                const branchData = [
+                    {
+                        name: 'Computer Science',
+                        totalSeats: 120,
+                        occupiedSeats: 90,
+                        categories: {
+                            general: 50,
+                            sc: 15,
+                            st: 10,
+                            obc: 15
+                        }
+                    },
+                    {
+                        name: 'Electronics',
+                        totalSeats: 100,
+                        occupiedSeats: 75,
+                        categories: {
+                            general: 40,
+                            sc: 12,
+                            st: 8,
+                            obc: 15
+                        }
+                    },
+                    {
+                        name: 'Mechanical',
+                        totalSeats: 90,
+                        occupiedSeats: 60,
+                        categories: {
+                            general: 35,
+                            sc: 10,
+                            st: 5,
+                            obc: 10
+                        }
+                    },
+                    {
+                        name: 'Civil',
+                        totalSeats: 80,
+                        occupiedSeats: 55,
+                        categories: {
+                            general: 30,
+                            sc: 8,
+                            st: 7,
+                            obc: 10
+                        }
+                    }
+                ];
+
+                branchData.forEach(branch => {
+                    // Create branch card
+                    const branchCard = document.createElement('div');
+                    branchCard.className = 'bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-all';
+                    
+                    // Calculate occupancy percentage
+                    const occupancyPercentage = Math.round((branch.occupiedSeats / branch.totalSeats) * 100);
+                    
+                    branchCard.innerHTML = `
+                        <h4 class="text-lg font-semibold mb-2 text-indigo-800">${branch.name}</h4>
+                        <div class="mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-indigo-600 h-2.5 rounded-full" style="width: ${occupancyPercentage}%"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>Occupied: ${branch.occupiedSeats}/${branch.totalSeats}</span>
+                            <span class="font-bold text-indigo-600">${occupancyPercentage}%</span>
+                        </div>
+                    `;
+
+                    // Add click event to show details
+                    branchCard.addEventListener('click', () => {
+                        document.getElementById('popup-branch-name').textContent = branch.name;
+                        document.getElementById('popup-total-seats').textContent = branch.totalSeats;
+                        document.getElementById('popup-general-seats').textContent = branch.categories.general;
+                        document.getElementById('popup-sc-seats').textContent = branch.categories.sc;
+                        document.getElementById('popup-st-seats').textContent = branch.categories.st;
+                        document.getElementById('popup-obc-seats').textContent = branch.categories.obc;
+                        
+                        branchDetailsPopup.classList.remove('hidden');
+                    });
+
+                    branchOccupancyGrid.appendChild(branchCard);
+                });
+
+                // Close popup event
+                closeBranchDetailsBtn.addEventListener('click', () => {
+                    branchDetailsPopup.classList.add('hidden');
+                });
+
+                // Close popup when clicking outside
+                branchDetailsPopup.addEventListener('click', (e) => {
+                    if (e.target === branchDetailsPopup) {
+                        branchDetailsPopup.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Call branch occupancy function
+            createBranchOccupancyCards();
+
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                alert('Logged out successfully');
+                // Implement actual logout logic
+            });
+        });
+    </script>
+</body>
+</html>
