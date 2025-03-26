@@ -21,7 +21,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/**").permitAll()  // Allow all requests for now (development)
                 .requestMatchers("/api/auth/**").permitAll()  // Allow all auth endpoints
-
+                .requestMatchers("/api/seats/**").permitAll()
                 .requestMatchers("/auth/register-student", "/auth/login-student").permitAll()
                 //.requestMatchers("/auth/login-admin", "/auth/login-officer").denyAll() // Future Use
                 .requestMatchers("/api/auth/login").permitAll()  // Public
