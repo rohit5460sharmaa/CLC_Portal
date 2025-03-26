@@ -1,7 +1,7 @@
 package NucleusTeq.College.Level.Counselling.Controller;
 
-import NucleusTeq.College.Level.Counselling.model.Seat;
 import NucleusTeq.College.Level.Counselling.Service.SeatService;
+import NucleusTeq.College.Level.Counselling.model.Seat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +45,10 @@ public class SeatController {
     public ResponseEntity<Void> deleteSeat(@PathVariable Long id) {
         seatService.deleteSeat(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/allocate")
+    public ResponseEntity<Seat> allocateSeat(@RequestParam String branch, @RequestParam String category) {
+        return ResponseEntity.ok(seatService.allocateSeat(branch, category));
     }
 }

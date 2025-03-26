@@ -59,6 +59,17 @@ public class Seat {
         return calculateTotalSeats() - calculateFilledSeats();
     }
 
+    // Update filled seats dynamically
+    public void incrementFilledSeats(String category) {
+        switch (category.toLowerCase()) {
+            case "general" -> this.filledGeneralSeats++;
+            case "obc" -> this.filledObcSeats++;
+            case "sc" -> this.filledScSeats++;
+            case "st" -> this.filledStSeats++;
+        }
+        updateSeatCounts();
+    }
+
     @PrePersist
     @PreUpdate
     public void updateSeatCounts() {
@@ -107,6 +118,10 @@ public class Seat {
                 ", branch='" + branch + '\'' +
                 ", totalSeats=" + totalSeats +
                 ", vacantSeats=" + vacantSeats +
+                ", filledGeneralSeats=" + filledGeneralSeats +
+                ", filledObcSeats=" + filledObcSeats +
+                ", filledScSeats=" + filledScSeats +
+                ", filledStSeats=" + filledStSeats +
                 ", filledSeats=" + calculateFilledSeats() +
                 '}';
     }

@@ -15,10 +15,14 @@ public class PreferenceService {
     }
 
     public Preference savePreference(String studentName, String rollNumber, int rank, String category, List<String> branches) {
-        String branchList = branches != null ? String.join(",", branches) : "";
+        if (studentName == null || rollNumber == null || branches == null || branches.isEmpty()) {
+            throw new IllegalArgumentException("Student name, roll number, and branches cannot be null or empty");
+        }
+        String branchList = String.join(",", branches);
         Preference preference = new Preference(studentName, rollNumber, rank, category, branchList);
         return preferenceRepository.save(preference);
     }
+
 
     public List<Preference> getAllPreferences() {
         return preferenceRepository.findAll();

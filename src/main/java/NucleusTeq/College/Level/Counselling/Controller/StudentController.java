@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/students")
@@ -38,11 +40,32 @@ public class StudentController {
     }
 
     @PutMapping("/{rollNumber}")
-    public ResponseEntity<Student> updateStudent(@PathVariable String rollNumber, @RequestBody Student updatedStudent) {
-        return studentService.getStudentByRollNumber(rollNumber).map(student -> {
-            updatedStudent.setRollNumber(rollNumber);
-            return ResponseEntity.ok(studentService.saveStudent(updatedStudent)); // ✅ Use service
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Student> updateStudent(
+        @PathVariable String rollNumber,
+        @RequestBody Map<String, Object> updates) {
+        
+        return studentService.getStudentByRollNumber(rollNumber)
+            .map(existingStudent -> {
+                // Merge changes with existing data
+                if (updates.containsKey("name")) {
+                    existingStudent.setName((String) updates.get("name"));
+                }
+                if (updates.containsKey("email")) {
+                    existingStudent.setEmail((String) updates.get("email"));
+                }
+                if (updates.containsKey("phone")) {
+                    existingStudent.setPhone((String) updates.get("phone"));
+                }
+                if (updates.containsKey("address")) {
+                    existingStudent.setAddress((String) updates.get("address"));
+                }
+                if (updates.containsKey("dob")) {
+                    existingStudent.setDob(LocalDate.parse((String) updates.get("dob")));
+                }
+                
+                return ResponseEntity.ok(studentService.saveStudent(existingStudent));
+            })
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{rollNumber}")
