@@ -3,160 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLC Portal - Student Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="dashboard.css">
+    <title>CLC Student Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="Styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo-container">
+    <div class="dashboard-wrapper">
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="clc-logo.png" alt="CLC Logo">
                 <h2>CLC Portal</h2>
             </div>
-            <nav class="nav-menu">
-                <ul>
-                    <li class="active">
-                        <a href="#"><i class="fas fa-home"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="branchpreference.html"><i class="fas fa-list-check"></i> Branch Preference</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-table-columns"></i> Seat Matrix</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-ranking-star"></i> Standing</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-circle-info"></i> Help & Support</a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="logout-container">
-                <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-target="dashboard">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-target="profile">
+                    <i class="ri-user-line"></i>
+                    <span>Profile</span>
+                </li>
+                <li class="nav-item" data-target="branches">
+                    <i class="ri-book-open-line"></i>
+                    <span>Branch Selection</span>
+                </li>
+                <li class="nav-item" data-target="documents">
+                    <i class="ri-file-upload-line"></i>
+                    <span>Documents</span>
+                </li>
+                <li class="nav-item" data-target="status">
+                    <i class="ri-checkbox-line"></i>
+                    <span>Counselling Status</span>
+                </li>
+            </ul>
+            <div class="sidebar-bottom">
+                <button class="logout-btn">
+                    <i class="ri-logout-box-r-line"></i>
+                    Logout
+                </button>
             </div>
-        </aside>
+        </nav>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <header class="top-bar">
-                <div class="menu-toggle">
-                    <i class="fas fa-bars"></i>
+            <header class="main-header">
+                <div class="header-left">
+                    <h1 id="greeting">Good Morning, Pratham!</h1>
+                    <p>Welcome to your CLC counselling dashboard</p>
                 </div>
-                <div class="search-container">
-                    <input type="text" placeholder="Search...">
-                    <i class="fas fa-search"></i>
-                </div>
-                <div class="user-actions">
-                    <div class="notification">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge">3</span>
-                    </div>
-                    <div class="user-profile">
-                        <img src="/api/placeholder/36/36" alt="Student Avatar">
-                        <span class="username" id="student-name">Student Name</span>
+                <div class="header-right">
+                    <div class="user-badge">
+                        <span class="rank-badge">Rank: 124</span>
+                        <span class="time-badge" id="current-time"></span>
                     </div>
                 </div>
             </header>
 
-            <div class="dashboard-content">
-                <h1>Student Dashboard</h1>
+            <section id="dashboard" class="content-section active">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card counselling-progress">
+                        <div class="card-header">
+                            <i class="ri-pulse-line"></i>
+                            <h3>Counselling Progress</h3>
+                        </div>
+                        <div class="progress-wrapper">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%;"></div>
+                            </div>
+                            <span class="progress-text">65% Complete</span>
+                        </div>
+                    </div>
 
-                <!-- Status Card -->
-                <div class="status-card" id="status-container">
-                    <!-- Content will be added by JavaScript -->
+                    <div class="dashboard-card branch-preferences">
+                        <div class="card-header">
+                            <i class="ri-book-2-line"></i>
+                            <h3>Branch Preferences</h3>
+                        </div>
+                        <ul id="preferred-branches">
+                            <li>Computer Science</li>
+                            <li>Electronics Engineering</li>
+                            <li>Mechanical Engineering</li>
+                        </ul>
+                    </div>
+
+                    <div class="dashboard-card document-status">
+                        <div class="card-header">
+                            <i class="ri-file-list-3-line"></i>
+                            <h3>Document Status</h3>
+                        </div>
+                        <div class="status-list">
+                            <div class="status-item">
+                                <span>Marksheet</span>
+                                <i class="ri-check-line status-icon verified"></i>
+                            </div>
+                            <div class="status-item">
+                                <span>Birth Certificate</span>
+                                <i class="ri-check-line status-icon verified"></i>
+                            </div>
+                            <div class="status-item">
+                                <span>Transfer Certificate</span>
+                                <i class="ri-close-line status-icon pending"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </section>
 
-                <!-- Info Cards -->
-                <div class="info-cards">
-                    <div class="card">
-                        <div class="card-icon">
-                            <i class="fas fa-medal"></i>
+            <section id="profile" class="content-section">
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="profile-placeholder.png" alt="Profile Picture">
+                            <button class="edit-profile">
+                                <i class="ri-pencil-line"></i>
+                            </button>
                         </div>
-                        <div class="card-info">
-                            <h3>Your Rank</h3>
-                            <p id="student-rank">--</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">
-                            <i class="fas fa-list-ol"></i>
-                        </div>
-                        <div class="card-info">
-                            <h3>Counselling Position</h3>
-                            <p id="counselling-position">--</p>
+                        <div class="profile-info">
+                            <h2>Pratham Joya</h2>
+                            <p>CLC Counselling Candidate</p>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-icon">
-                            <i class="fas fa-calendar-days"></i>
-                        </div>
-                        <div class="card-info">
-                            <h3>Next Counselling</h3>
-                            <p id="next-counselling-date">--</p>
+                    <div class="profile-details">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <label>Roll Number</label>
+                                <input type="text" value="CLC2024124" readonly>
+                            </div>
+                            <div class="detail-item">
+                                <label>Email</label>
+                                <input type="email" value="pratham.joya@example.com">
+                            </div>
+                            <div class="detail-item">
+                                <label>Phone Number</label>
+                                <input type="tel" value="+91 9876543210">
+                            </div>
+                            <div class="detail-item">
+                                <label>Date of Birth</label>
+                                <input type="date" value="2005-06-15">
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <!-- Branch Preferences Section -->
-                <section class="branch-preferences">
-                    <div class="section-header">
-                        <h2>Your Branch Preferences</h2>
-                        <a href="branchpreference.html" class="action-btn">
-                            <i class="fas fa-edit"></i> Edit Preferences
-                        </a>
+            <section id="branches" class="content-section">
+                <div class="branch-selection-container">
+                    <h2>Branch Preference Selection</h2>
+                    <div class="branch-grid">
+                        <div class="available-branches">
+                            <h3>Available Branches</h3>
+                            <ul id="branch-list">
+                                <li draggable="true">Computer Science</li>
+                                <li draggable="true">Electronics Engineering</li>
+                                <li draggable="true">Mechanical Engineering</li>
+                                <li draggable="true">Civil Engineering</li>
+                                <li draggable="true">Electrical Engineering</li>
+                            </ul>
+                        </div>
+                        <div class="selected-branches">
+                            <h3>Your Preferences</h3>
+                            <ul id="selected-branch-list"></ul>
+                        </div>
                     </div>
-                    <div class="preference-list" id="preference-container">
-                        <!-- Content will be added by JavaScript -->
-                    </div>
-                </section>
+                    <button class="save-preferences">Save Preferences</button>
+                </div>
+            </section>
 
-                <!-- Seat Matrix Overview -->
-                <section class="seat-matrix">
-                    <div class="section-header">
-                        <h2>Seat Matrix Overview</h2>
-                        <a href="#" class="action-btn">
-                            <i class="fas fa-eye"></i> View Full Matrix
-                        </a>
+            <section id="documents" class="content-section">
+                <div class="document-upload-container">
+                    <div class="upload-area">
+                        <input type="file" id="file-upload" multiple>
+                        <label for="file-upload" class="upload-label">
+                            <i class="ri-upload-cloud-2-line"></i>
+                            <span>Drag & Drop or Click to Upload Documents</span>
+                        </label>
                     </div>
-                    <div class="matrix-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Branch</th>
-                                    <th>Total Seats</th>
-                                    <th>Filled</th>
-                                    <th>Available</th>
-                                </tr>
-                            </thead>
-                            <tbody id="seat-matrix-body">
-                                <!-- Content will be added by JavaScript -->
-                            </tbody>
-                        </table>
+                    <div id="file-list" class="file-list"></div>
+                </div>
+            </section>
+
+            <section id="status" class="content-section">
+                <div class="counselling-status-container">
+                    <div class="timeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-icon">
+                                <i class="ri-user-add-line"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Registration Completed</h4>
+                                <span>June 15, 2024</span>
+                            </div>
+                        </div>
+                        <div class="timeline-item active">
+                            <div class="timeline-icon">
+                                <i class="ri-file-list-3-line"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Document Verification</h4>
+                                <span>Ongoing</span>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="ri-book-open-line"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Branch Counselling</h4>
+                                <span>Upcoming</span>
+                            </div>
+                        </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </main>
     </div>
-
-    <!-- Preference Form Modal -->
-    <div class="modal" id="preference-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Set Your Branch Preferences</h2>
-                <span class="close-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p>Please set your branch preferences before proceeding to the dashboard.</p>
-                <a href="branchpreference.html" class="modal-btn">Set Preferences Now</a>
-            </div>
-        </div>
-    </div>
-
-    <script src="dashboard.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

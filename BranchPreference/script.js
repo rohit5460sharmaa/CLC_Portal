@@ -11,17 +11,26 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fetch branch data from the backend
     async function fetchBranches() {
         try {
-            const response = await fetch('http://localhost:9090/api/seats/branch'); // Replace with your Spring Boot endpoint
+            const response = await fetch('http://localhost:8080/api/seats', {
+                method: 'GET', // Explicitly specifying GET method
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
             if (!response.ok) {
                 throw new Error('Failed to fetch branch data');
             }
+            
             branches = await response.json();
+            console.log(branches);
             populateBranchInfo(branches);
             populateBranchDropdowns();
         } catch (error) {
             console.error('Error fetching branches:', error);
         }
     }
+    
 
     // Populate branch info cards
     function populateBranchInfo(branches) {
@@ -29,9 +38,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .map(
                 (branch) => `
             <div class="branch-card">
-                <h3>${branch.name}</h3>
-                <p>Available Seats: <span class="seats">${branch.availableSeats}</span></p>
-                <p class="branch-code">${branch.code}</p>
+                <h3>${branch.branch}</h3>
+                <p>Available Seats: <span class="seats">${branch.
+                    vacantSeats
+                    }</span></p>
             </div>
         `
             )
@@ -48,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     .map(
                         (branch) => `
                     <option value="${branch.code}" ${usedBranches.has(branch.code) ? 'disabled' : ''}>
-                        ${branch.name}
+                        ${branch.branch}
                     </option>
                 `
                     )
@@ -98,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .map(
                     (branch) => `
                 <option value="${branch.code}" ${usedBranches.has(branch.code) ? 'disabled' : ''}>
-                    ${branch.name}
+                    ${branch.branch}
                 </option>
             `
                 )

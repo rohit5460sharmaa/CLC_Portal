@@ -65,7 +65,7 @@ console.log('UserType:', userType);
                         redirectUrl = '../StudentDashboard.html';
                         break;
                     case 'officer':
-                        redirectUrl = '../AdminProcess/admin.html';
+                        redirectUrl = '../OfficerDashboard/index.html';
                         break;
                     case 'admin':
                         redirectUrl = '../AdminProcess/admin.html';

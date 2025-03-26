@@ -1,146 +1,103 @@
-// DOM Elements
-const hamburger = document.querySelector('.hamburger');
-const navLinks = document.querySelector('.nav-links');
-const logoutBtn = document.getElementById('logout-btn');
-const welcomeName = document.getElementById('welcome-name');
-const studentName = document.getElementById('student-name');
-const markAllReadBtn = document.querySelector('.mark-all-read');
-const notifications = document.querySelectorAll('.notification');
-
-// Sample data - In a real app, this would come from an API
-const studentData = {
-    name: 'Pratham Joya',
-    rank: 42,
-    queuePosition: 5,
-    status: 'Waiting',
-    estimatedTime: '2 hrs 30 min'
-};
-
-// Initialize the dashboard
-function initDashboard() {
-    // Update student information
-    updateStudentInfo();
-    
-    // Set up event listeners
-    setupEventListeners();
-}
-
-// Update student info on the dashboard
-function updateStudentInfo() {
-    // Update welcome message and user info in navbar
-    if(welcomeName) welcomeName.textContent = studentData.name.split(' ')[0];
-    if(studentName) studentName.textContent = studentData.name;
-    
-    // Update dashboard cards
-    const rankElement = document.getElementById('current-rank');
-    const queueElement = document.getElementById('queue-position');
-    const statusElement = document.getElementById('counselling-status');
-    const timeElement = document.getElementById('estimated-time');
-    
-    if(rankElement) rankElement.textContent = studentData.rank;
-    if(queueElement) queueElement.textContent = studentData.queuePosition;
-    if(statusElement) {
-        statusElement.textContent = studentData.status;
-        // Add appropriate class based on status
-        if(studentData.status === 'Active') {
-            statusElement.className = 'highlight status-active';
-        } else if(studentData.status === 'Waiting') {
-            statusElement.className = 'highlight status-waiting';
-        }
-    }
-    if(timeElement) timeElement.textContent = studentData.estimatedTime;
-}
-
-// Set up event listeners
-function setupEventListeners() {
-    // Mobile navigation toggle
-    if(hamburger) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
-    }
-    
-    // Logout button
-    if(logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            // In a real app, this would call an API to log out
-            alert('Logging out...');
-            // Redirect to login page
-            // window.location.href = 'login.html';
-        });
-    }
-    
-    // Mark all notifications as read
-    if(markAllReadBtn) {
-        markAllReadBtn.addEventListener('click', () => {
-            notifications.forEach(notification => {
-                notification.classList.remove('unread');
-            });
-        });
-    }
-    
-    // Individual notification click
-    notifications.forEach(notification => {
-        notification.addEventListener('click', () => {
-            notification.classList.remove('unread');
-        });
-    });
-}
-
-// Simulate real-time updates (in a real app, this would use WebSockets or polling)
-function simulateRealTimeUpdates() {
-    // Update queue position randomly every 30 seconds
-    setInterval(() => {
-        const queueElement = document.getElementById('queue-position');
-        const currentPosition = parseInt(queueElement.textContent);
-        
-        // Sometimes decrease the position (queue moving forward)
-        if(currentPosition > 1 && Math.random() > 0.7) {
-            const newPosition = currentPosition - 1;
-            queueElement.textContent = newPosition;
-            studentData.queuePosition = newPosition;
-            
-            // Update estimated time
-            const timeElement = document.getElementById('estimated-time');
-            const newTime = `${newPosition * 30} min`;
-            timeElement.textContent = newTime;
-            studentData.estimatedTime = newTime;
-            
-            // Add a notification
-            addNotification(`Your position in queue has moved up to ${newPosition}.`);
-        }
-    }, 30000);
-}
-
-// Add a new notification
-function addNotification(message) {
-    const notificationList = document.getElementById('notifications');
-    
-    // Create new notification element
-    const newNotification = document.createElement('li');
-    newNotification.className = 'notification unread';
-    
-    newNotification.innerHTML = `
-        <div class="notification-icon"><i class="fas fa-bell"></i></div>
-        <div class="notification-content">
-            <p>${message}</p>
-            <span class="notification-time">Just now</span>
-        </div>
-    `;
-    
-    // Add click event to mark as read
-    newNotification.addEventListener('click', () => {
-        newNotification.classList.remove('unread');
-    });
-    
-    // Add to the top of the list
-    notificationList.insertBefore(newNotification, notificationList.firstChild);
-}
-
-// Initialize when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    initDashboard();
-    simulateRealTimeUpdates();
+    // Navigation
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.content-section');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Remove active states
+            navItems.forEach(nav => nav.classList.remove('active'));
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Add active states
+            item.classList.add('active');
+            const targetSection = document.getElementById(item.dataset.target);
+            targetSection.classList.add('active');
+        });
+    });
+
+    // Branch Drag and Drop
+    const branchList = document.getElementById('branch-list');
+    const selectedBranchList = document.getElementById('selected-branch-list');
+    let draggedItem = null;
+
+    branchList.addEventListener('dragstart', (e) => {
+        draggedItem = e.target;
+        e.dataTransfer.setData('text/plain', '');
+        e.target.classList.add('dragging');
+    });
+
+    branchList.addEventListener('dragend', (e) => {
+        e.target.classList.remove('dragging');
+    });
+
+    selectedBranchList.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    selectedBranchList.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (draggedItem && !selectedBranchList.contains(draggedItem)) {
+            selectedBranchList.appendChild(draggedItem.cloneNode(true));
+            draggedItem = null;
+        }
+    });
+
+    // Save Preferences
+    const savePreferencesBtn = document.querySelector('.save-preferences');
+    savePreferencesBtn.addEventListener('click', () => {
+        const preferences = Array.from(selectedBranchList.children)
+            .map(item => item.textContent);
+        
+        alert(`Preferences Saved: ${preferences.join(', ')}`);
+        // In real app, send to backend
+    });
+
+    // File Upload
+    const fileUpload = document.getElementById('file-upload');
+    const fileList = document.getElementById('file-list');
+
+    fileUpload.addEventListener('change', (e) => {
+        fileList.innerHTML = ''; // Clear previous uploads
+        
+        Array.from(e.target.files).forEach(file => {
+            const fileItem = document.createElement('div');
+            fileItem.classList.add('file-item');
+            fileItem.innerHTML = `
+                <span>${file.name}</span>
+                <span class="file-size">${(file.size / 1024).toFixed(2)} KB</span>
+                <i class="ri-check-line status-icon verified"></i>
+            `;
+            fileList.appendChild(fileItem);
+        });
+    });
+
+    // Logout
+    const logoutBtn = document.querySelector('.logout-btn');
+    logoutBtn.addEventListener('click', () => {
+        alert('Logging out...');
+        // Implement actual logout logic
+    });
+
+    // Time and Greeting
+    function updateTimeAndGreeting() {
+        const now = new Date();
+        const hours = now.getHours();
+        const currentTimeEl = document.getElementById('current-time');
+        const greetingEl = document.getElementById('greeting');
+
+        // Update time
+        currentTimeEl.textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+        // Update greeting
+        let greeting = 'Good Morning';
+        if (hours >= 12 && hours < 17) greeting = 'Good Afternoon';
+        if (hours >= 17) greeting = 'Good Evening';
+
+        greetingEl.textContent = `${greeting}, Pratham!`;
+    }
+
+    // Initial call and then update every minute
+    updateTimeAndGreeting();
+    setInterval(updateTimeAndGreeting, 60000);
 });

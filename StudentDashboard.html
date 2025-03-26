@@ -18,15 +18,15 @@
                     </div>
                     <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                         <a href="#" class="px-3 py-2 rounded-md text-sm font-medium bg-blue-900">Dashboard</a>
-                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Rankings</a>
-                        <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Seat Matrix</a>
+                        <a href="Seat/Seat.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Seat Matrix</a>
+                        <a href="BranchPreference/index.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Add Preference</a>
                         <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Profile</a>
                     </div>
                 </div>
                 <div class="flex items-center">
                     <div class="flex items-center">
-                        <span class="mr-4 text-sm">John Doe</span>
-                        <button class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
+                        <span class="mr-4 text-sm" data-user-fullname>John Doe</span>
+                        <button data-logout-button class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
                             <i class="fas fa-sign-out-alt mr-1"></i> Logout
                         </button>
                     </div>
@@ -38,7 +38,7 @@
     <!-- Mobile menu, show/hide based on menu state -->
     <div class="md:hidden">
         <div class="bg-indigo-700 px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="#" class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-900">Dashboard</a>
+            <a href="StudentDashboard.html" class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-900">Dashboard</a>
             <a href="#" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Rankings</a>
             <a href="#" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Seat Matrix</a>
             <a href="#" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Profile</a>
@@ -56,7 +56,7 @@
                     <div class="ml-5">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Current Admission Status</h3>
                         <div class="mt-2 max-w-xl text-sm text-gray-500">
-                            <p>Your rank is currently being processed for counselling.</p>
+                            <p data-admission-status>Your rank is currently being processed for counselling.</p>
                         </div>
                     </div>
                     <div class="ml-auto">
@@ -69,9 +69,9 @@
             <div class="bg-gray-50 px-4 py-4 sm:px-6">
                 <div class="text-sm">
                     <span class="font-medium text-gray-700">Your Current Rank:</span>
-                    <span class="ml-2 font-bold text-indigo-600">145</span>
+                    <span data-current-rank class="ml-2 font-bold text-indigo-600">145</span>
                     <span class="ml-4 font-medium text-gray-700">Students Ahead of You:</span>
-                    <span class="ml-2 font-bold text-indigo-600">8</span>
+                    <span data-students-ahead class="ml-2 font-bold text-indigo-600">8</span>
                 </div>
             </div>
         </div>
@@ -87,19 +87,19 @@
                     <dl class="space-y-2">
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt class="text-sm font-medium text-gray-500">Full name</dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">John Doe</dd>
+                            <dd data-user-fullname class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">John Doe</dd>
                         </div>
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt class="text-sm font-medium text-gray-500">Roll number</dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">EX-2023-45678</dd>
+                            <dd data-user-rollnumber class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">EX-2023-45678</dd>
                         </div>
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt class="text-sm font-medium text-gray-500">Rank</dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">145</dd>
+                            <dd data-user-rank class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">145</dd>
                         </div>
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt class="text-sm font-medium text-gray-500">Category</dt>
-                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">General</dd>
+                            <dd data-user-category class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">General</dd>
                         </div>
                     </dl>
                 </div>
@@ -114,15 +114,15 @@
                     <div class="mb-4">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-sm font-medium text-gray-500">Estimated Date</span>
-                            <span class="text-sm font-bold text-indigo-600">March 25, 2025</span>
+                            <span data-counselling-date class="text-sm font-bold text-indigo-600">March 25, 2025</span>
                         </div>
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-sm font-medium text-gray-500">Reporting Time</span>
-                            <span class="text-sm font-bold text-indigo-600">10:00 AM</span>
+                            <span data-counselling-time class="text-sm font-bold text-indigo-600">10:00 AM</span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-medium text-gray-500">Venue</span>
-                            <span class="text-sm font-bold text-indigo-600">Main Auditorium</span>
+                            <span data-counselling-venue class="text-sm font-bold text-indigo-600">Main Auditorium</span>
                         </div>
                     </div>
                     <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
@@ -183,73 +183,11 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Roll Number</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admitted</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EX-2023-12345</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Arun Kumar</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">General</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Admitted</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EX-2023-12346</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Priya Singh</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">OBC</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Admitted</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">3</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EX-2023-12347</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rahul Sharma</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">General</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Admitted</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">4</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EX-2023-12348</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Sneha Gupta</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">SC</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Admitted</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">5</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EX-2023-12349</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Ajay Patel</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">OBC</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Admitted</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">6</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EX-2023-12350</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Neha Malhotra</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">General</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">In Progress</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">7</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EX-2023-12351</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Vijay Kumar</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">General</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Waiting</span>
-                            </td>
-                        </tr>
+                    <tbody>
+                        <!-- Dynamic content will be populated here -->
                     </tbody>
                 </table>
             </div>
@@ -265,11 +203,179 @@
     </footer>
 
     <script>
-        // Toggle mobile menu visibility
+// Ensure rollNumber is stored from token
+function storeRollNumberFromToken() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.error('❌ Token not found in localStorage.');
+        return;
+    }
+
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.username) {
+            localStorage.setItem('rollNumber', payload.username);
+            console.log('✅ Stored rollNumber:', payload.username);
+        } else {
+            console.error('❌ Username missing in token payload.');
+        }
+    } catch (error) {
+        console.error('❌ Error decoding token:', error);
+    }
+}
+
+storeRollNumberFromToken(); 
+        
+        let userData = {};
+
+        async function fetchUserDetails() {
+            try {
+                const rollNumber = localStorage.getItem('rollNumber');
+                
+                if (!rollNumber) {
+                    console.error('Roll number not found in localStorage.');
+                    displayErrorMessage('Roll number is missing. Please log in again.');
+                    return;
+                }
+        
+                console.log('Fetching student data for rollNumber:', rollNumber); // Debugging log
+        
+                const response = await fetch(`http://localhost:8080/students/${rollNumber}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch user details. Status: ${response.status}`);
+                }
+        
+                userData = await response.json();
+                console.log(userData);
+                updateUserInterface(userData);
+            } catch (error) {
+                console.error('Error fetching user details:', error);
+                displayErrorMessage('Unable to load user details. Please try again later.');
+            }
+        }
+        
+        async function fetchCounsellingSchedule() {
+            try {
+                // Hardcoded counselling schedule
+                const scheduleData = {
+                    date: 'March 25, 2025',
+                    time: '10:00 AM',
+                    venue: 'Main Auditorium'
+                };
+                updateCounsellingSchedule(scheduleData);
+            } catch (error) {
+                console.error('Error fetching counselling schedule:', error);
+            }
+        }
+
+        async function fetchTopRankings() {
+            try {
+                const response = await fetch('http://localhost:8080/students', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch top rankings');
+                }
+
+                const rankingsData = await response.json();
+                rankingsData.sort((a, b) => a.rank - b.rank); // Sort by rank in ascending order
+                updateTopRankingsTable(rankingsData);
+            } catch (error) {
+                console.error('Error fetching top rankings:', error);
+            }
+        }
+
+        function updateUserInterface(userData) {
+            console.log(userData.name);
+            document.querySelectorAll('[data-user-fullname]').forEach(el => {
+                el.textContent = userData.name || 'John Doe';
+            });
+            document.querySelector('[data-user-rollnumber]').textContent = userData.rollNumber || 'EX-2023-45678';
+            document.querySelector('[data-user-rank]').textContent = userData.rank || '145';
+            document.querySelector('[data-user-category]').textContent = userData.category || 'General';
+
+            document.querySelector('[data-admission-status]').textContent = userData.admitted || 'In Queue';
+            document.querySelector('[data-current-rank]').textContent = userData.rank || '145';
+            document.querySelector('[data-students-ahead]').textContent = userData.studentsAhead || '8';
+        }
+
+        function updateCounsellingSchedule(scheduleData) {
+            document.querySelector('[data-counselling-date]').textContent = scheduleData.date;
+            document.querySelector('[data-counselling-time]').textContent = scheduleData.time;
+            document.querySelector('[data-counselling-venue]').textContent = scheduleData.venue;
+        }
+
+        function updateTopRankingsTable(rankingsData) {
+            const tableBody = document.querySelector('tbody');
+            tableBody.innerHTML = '';
+        
+            // Display only the top 15 students
+            rankingsData.slice(0, 15).forEach((student, index) => {
+                const row = `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${student.rank}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${student.rollNumber}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${student.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${student.category}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                ${student.admitted === 'true' ? 'bg-green-100 text-green-800' : 
+                                   student.admitted === 'In Progress' ? 'bg-blue-100 text-blue-800' : 
+                                   'bg-yellow-100 text-yellow-800'}">
+                                ${student.admitted}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+        
+
+        function displayErrorMessage(message) {
+            const errorContainer = document.createElement('div');
+            errorContainer.className = 'bg-red-50 p-4 rounded-md mb-4';
+            errorContainer.innerHTML = `
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-circle text-red-400 mr-2"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">${message}</p>
+                    </div>
+                </div>
+            `;
+            document.querySelector('.max-w-7xl').insertBefore(errorContainer, document.querySelector('.max-w-7xl').firstChild);
+        }
+
         function toggleMobileMenu() {
             const mobileMenu = document.querySelector('.md\\:hidden');
             mobileMenu.classList.toggle('hidden');
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchUserDetails();
+            fetchCounsellingSchedule();
+            fetchTopRankings();
+        });
+
+        document.querySelector('[data-logout-button]').addEventListener('click', () => {
+            localStorage.removeItem('authToken');
+            window.location.href = 'Login/login.html';
+        });
+
     </script>
+
 </body>
 </html>

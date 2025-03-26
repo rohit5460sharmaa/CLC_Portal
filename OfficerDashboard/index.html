@@ -493,7 +493,8 @@
             const logoutBtn = document.getElementById('logout-btn');
             logoutBtn.addEventListener('click', () => {
                 // Implement logout logic here (e.g., clearing session, redirecting to login page)
-                alert('Logout functionality to be implemented');
+                localStorage.removeItem('token');
+                window.location.href = '../Login/login.html'; // Redirect to login page
             });
         });
     </script>
