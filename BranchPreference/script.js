@@ -7,30 +7,72 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let usedBranches = new Set();
     let branches = []; // To store fetched branch data
+    let studentData = null; // Store student details
+
+    // Get roll number from URL
+    function getRollNumberFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('rollNumber');
+    }
+
+    // Function to append rollNumber to links
+function appendRollNumberToLinks() {
+    const rollNumber = localStorage.getItem('rollNumber');
+    if (!rollNumber) return;
+
+    document.querySelectorAll('a').forEach(link => {
+        const url = new URL(link.href, window.location.origin);
+        url.searchParams.set('rollNumber', rollNumber);
+        link.href = url.toString();
+    });
+}
+
+    appendRollNumberToLinks();
+
+    // Fetch and display student details
+    async function fetchStudentAndDisplay() {
+        const rollNumber = getRollNumberFromURL();
+        if (!rollNumber) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/students/${rollNumber}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch student data');
+
+            studentData = await response.json();
+            console.log('📌 Student Data:', studentData);
+
+            // Display student name on the page
+            document.querySelectorAll('[data-user-fullname]').forEach(el => {
+                el.textContent = studentData.name || 'John Doe';
+            });
+        } catch (error) {
+            console.error('❌ Error fetching student:', error);
+            alert('Failed to load student information.');
+        }
+    }
 
     // Fetch branch data from the backend
     async function fetchBranches() {
         try {
             const response = await fetch('http://localhost:8080/api/seats', {
-                method: 'GET', // Explicitly specifying GET method
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
             });
-    
-            if (!response.ok) {
-                throw new Error('Failed to fetch branch data');
-            }
-            
+
+            if (!response.ok) throw new Error('Failed to fetch branch data');
+
             branches = await response.json();
             console.log(branches);
             populateBranchInfo(branches);
             populateBranchDropdowns();
         } catch (error) {
-            console.error('Error fetching branches:', error);
+            console.error('❌ Error fetching branches:', error);
         }
     }
-    
 
     // Populate branch info cards
     function populateBranchInfo(branches) {
@@ -39,9 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 (branch) => `
             <div class="branch-card">
                 <h3>${branch.branch}</h3>
-                <p>Available Seats: <span class="seats">${branch.
-                    vacantSeats
-                    }</span></p>
+                <p>Available Seats: <span class="seats">${branch.vacantSeats}</span></p>
             </div>
         `
             )
@@ -78,8 +118,6 @@ document.addEventListener('DOMContentLoaded', function () {
             usedBranches.add(event.target.value);
             event.target.dataset.previousValue = event.target.value;
         }
-
-        updateDropdowns();
     }
 
     // Add a new preference item
@@ -127,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             newItem.remove();
             updatePriorityNumbers();
-            updateDropdowns();
+            populateBranchDropdowns();
             addPreferenceButton.disabled = false;
         });
 
@@ -178,17 +216,17 @@ document.addEventListener('DOMContentLoaded', function () {
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
+        if (!studentData) {
+            alert('Student information is missing.');
+            return;
+        }
+
+        // Collect branch preferences
         const preferences = [];
         const selects = preferenceContainer.querySelectorAll('.branch-select');
-
-        selects.forEach((select, index) => {
+        selects.forEach((select) => {
             if (select.value) {
-                const branchName = select.options[select.selectedIndex].text;
-                preferences.push({
-                    priority: index + 1,
-                    code: select.value,
-                    name: branchName,
-                });
+                preferences.push(select.options[select.selectedIndex].text);
             }
         });
 
@@ -197,27 +235,51 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        // Prepare request payload
+        const payload = {
+            rollNumber: studentData.rollNumber,
+            studentName: studentData.name,
+            rank: studentData.rank,
+            category: studentData.category,
+            branches: preferences,
+        };
+
         try {
-            const response = await fetch('http://localhost:8080/api/preferences', {
+            const response = await fetch('http://localhost:8080/api/preferences/add', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(preferences),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to submit preferences');
-            }
+            const responseText = await response.text();
+            console.log('📌 Response Status:', response.status);
+            console.log('📌 Response Body:', responseText);
 
-            alert('Your branch preferences have been submitted successfully!');
+            if (!response.ok) throw new Error(`Failed to submit preferences: ${response.statusText}`);
+
+            alert('✅ Preferences submitted successfully!');
+
+            document.querySelectorAll('.branch-select, .remove-btn, #add-preference, button[type="submit"]').forEach(el => {
+                el.disabled = true;
+            });
+
         } catch (error) {
-            console.error('Error submitting preferences:', error);
+            console.error('❌ Error submitting preferences:', error);
             alert('Failed to submit preferences. Please try again.');
         }
     });
 
     // Initialize
     fetchBranches();
+    fetchStudentAndDisplay();
     addPreferenceButton.addEventListener('click', addPreferenceItem);
+});
+
+// Logout logic
+document.querySelector('[data-logout-button]').addEventListener('click', function () {
+    // Clear stored session (e.g., auth token)
+    localStorage.clear();  // or sessionStorage.clear();
+
+    // Redirect to the login page
+    window.location.href = '../Login/login.html';
 });

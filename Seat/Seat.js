@@ -4,7 +4,7 @@ let allSeatData = null; // Store the complete original data
 
 // Function to check login status
 function checkLoginStatus() {
-    const token = localStorage.getItem('userToken');
+    const token = localStorage.getItem('token');
     return !!token;
 }
 

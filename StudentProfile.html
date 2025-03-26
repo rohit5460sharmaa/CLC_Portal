@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - CLC Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-indigo-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-university text-2xl mr-2"></i>
+                        <span class="font-bold text-xl">CLC Portal</span>
+                    </div>
+                    <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+                        <a href="StudentDashboard.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Dashboard</a>
+                        <a href="Seat/Seat.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Seat Matrix</a>
+                        <a href="BranchPreference/index.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Add Preference</a>
+                        <a href="StudentProfile.html" class="px-3 py-2 rounded-md text-sm font-medium bg-blue-900">Profile</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex items-center">
+                        <span id="header-user-name" class="mr-4 text-sm">Loading...</span>
+                        <button data-logout-button class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden">
+        <div class="bg-indigo-700 px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="StudentDashboard.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Dashboard</a>
+            <a href="Seat/Seat.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Seat Matrix</a>
+            <a href="BranchPreference/index.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Add Preference</a>
+            <a href="StudentProfile.html" class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-900">Profile</a>
+        </div>
+    </div>
+
+    <!-- Student Profile Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <!-- Profile Header -->
+            <div class="bg-indigo-800 text-white p-6 flex items-center">
+                <div class="w-24 h-24 rounded-full bg-indigo-600 flex items-center justify-center mr-6">
+                    <i class="fas fa-user text-4xl"></i>
+                </div>
+                <div>
+                    <h2 id="profile-header-name" class="text-2xl font-bold view-mode">Loading...</h2>
+                    <p id="profile-header-branch" class="text-indigo-200 view-mode">Loading...</p>
+                    <div class="edit-mode hidden">
+                        <input id="edit-header-name" type="text" class="bg-indigo-700 text-white rounded px-2 py-1 mb-2 w-full">
+                        <input id="edit-header-branch" type="text" class="bg-indigo-700 text-white rounded px-2 py-1 w-full">
+                    </div>
+                </div>
+                <button id="edit-profile-btn" class="ml-auto bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded view-mode">
+                    <i class="fas fa-edit mr-2"></i>Edit Profile
+                </button>
+            </div>
+
+            <!-- Profile Details -->
+            <form id="profile-form" class="p-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Personal Information -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-indigo-800 mb-4">Personal Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Full Name</label>
+                                <p id="view-name" class="text-gray-600 view-mode">Loading...</p>
+                                <input id="edit-name" type="text" class="w-full px-3 py-2 border rounded edit-mode hidden">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Roll Number</label>
+                                <p id="view-roll" class="text-gray-600 view-mode">Loading...</p>
+                                <input type="text" class="w-full px-3 py-2 border rounded edit-mode hidden" disabled>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Date of Birth</label>
+                                <p id="view-dob" class="text-gray-600 view-mode">Loading...</p>
+                                <input id="edit-dob" type="date" class="w-full px-3 py-2 border rounded edit-mode hidden">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-indigo-800 mb-4">Contact Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Email</label>
+                                <p id="view-email" class="text-gray-600 view-mode">Loading...</p>
+                                <input id="edit-email" type="email" class="w-full px-3 py-2 border rounded edit-mode hidden">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                                <p id="view-phone" class="text-gray-600 view-mode">Loading...</p>
+                                <input id="edit-phone" type="tel" class="w-full px-3 py-2 border rounded edit-mode hidden">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Address</label>
+                                <p id="view-address" class="text-gray-600 view-mode">Loading...</p>
+                                <textarea id="edit-address" class="w-full px-3 py-2 border rounded edit-mode hidden"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Counselling Information -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold text-indigo-800 mb-4">Counselling Information</h3>
+                    <div class="bg-indigo-50 p-4 rounded-lg">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <p class="text-gray-600 font-medium">Current Rank</p>
+                                <p id="view-rank" class="text-indigo-800 font-bold">Loading...</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 font-medium">Preferred Branch</p>
+                                <p id="view-branch" class="text-indigo-800 font-bold">Loading...</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 font-medium">Seat Allocation Status</p>
+                                <p id="view-status" class="text-green-600 font-bold">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Profile Buttons -->
+                <div class="edit-mode hidden mt-6 flex space-x-4">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded">
+                        Save Changes
+                    </button>
+                    <button type="button" id="cancel-edit-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const editProfileBtn = document.getElementById('edit-profile-btn');
+            const profileForm = document.getElementById('profile-form');
+            const viewModeElements = document.querySelectorAll('.view-mode');
+            const editModeElements = document.querySelectorAll('.edit-mode');
+            let studentData = {};
+
+            // Get roll number from URL or default
+            function getRollNumber() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get('rollNumber') || '2023-CSE-0042';
+            }
+
+            // Fetch student data from API
+            async function fetchStudentData() {
+                try {
+                    const response = await fetch(`http://localhost:8080/students/${getRollNumber()}`);
+                    if (!response.ok) throw new Error('Failed to fetch data');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    alert('Error loading student data');
+                    return null;
+                }
+            }
+
+            // Populate all profile data
+            function populateProfile(data) {
+                // Header Section
+                document.getElementById('header-user-name').textContent = data.name;
+                document.getElementById('profile-header-name').textContent = data.name;
+                document.getElementById('profile-header-branch').textContent = data.branch;
+                document.getElementById('edit-header-name').value = data.name;
+                document.getElementById('edit-header-branch').value = data.branch;
+
+                // Personal Information
+                document.getElementById('view-name').textContent = data.name;
+                document.getElementById('edit-name').value = data.name;
+                document.getElementById('view-roll').textContent = data.rollNumber;
+                document.getElementById('view-dob').textContent = new Date(data.dob).toLocaleDateString();
+                document.getElementById('edit-dob').value = data.dob;
+
+                // Contact Information
+                document.getElementById('view-email').textContent = data.email;
+                document.getElementById('edit-email').value = data.email;
+                document.getElementById('view-phone').textContent = data.phone;
+                document.getElementById('edit-phone').value = data.phone;
+                document.getElementById('view-address').textContent = data.address;
+                document.getElementById('edit-address').value = data.address;
+
+                // Counselling Information
+                document.getElementById('view-rank').textContent = data.rank;
+                document.getElementById('view-branch').textContent = data.preferredBranch;
+                document.getElementById('view-status').textContent = data.admitted;
+            }
+
+            // Toggle edit mode
+            function toggleEditMode(enable) {
+                viewModeElements.forEach(el => el.classList.toggle('hidden', enable));
+                editModeElements.forEach(el => el.classList.toggle('hidden', !enable));
+            }
+
+            // Event Listeners
+            editProfileBtn.addEventListener('click', () => toggleEditMode(true));
+            
+            document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+                toggleEditMode(false);
+                populateProfile(studentData); // Reset form
+            });
+
+            profileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const updatedData = {
+                    name: document.getElementById('edit-name').value,
+                    email: document.getElementById('edit-email').value,
+                    phone: document.getElementById('edit-phone').value,
+                    address: document.getElementById('edit-address').value,
+                    dob: document.getElementById('edit-dob').value
+                };
+            
+                try {
+                    const response = await fetch(`http://localhost:8080/students/${getRollNumber()}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updatedData)
+                    });
+            
+                    const responseData = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(responseData.message || 'Update failed');
+                    }
+                    
+                    studentData = { ...studentData, ...updatedData };
+                    populateProfile(studentData);
+                    toggleEditMode(false);
+                    alert('Profile updated successfully!');
+                } catch (error) {
+                    console.error('Update error:', error);
+                    alert(`Error updating profile: ${error.message}`);
+                }
+            });
+
+            
+            // Initialization
+            async function initialize() {
+                const data = await fetchStudentData();
+                if (data) {
+                    studentData = data;
+                    populateProfile(data);
+                }
+            }
+
+            initialize();
+        });
+
+        document.querySelector('[data-logout-button]').addEventListener('click', () => {
+            localStorage.removeItem('authToken');
+            window.location.href = 'Login/login.html';
+        });
+    </script>
+</body>
+</html>
