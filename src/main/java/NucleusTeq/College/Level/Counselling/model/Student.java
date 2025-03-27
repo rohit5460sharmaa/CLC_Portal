@@ -3,6 +3,8 @@ package NucleusTeq.College.Level.Counselling.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Student {
     @Id
@@ -31,6 +33,7 @@ public class Student {
     private LocalDate dob; // Date of birth
 
     @Column(nullable = false)
+    @JsonProperty 
     private boolean admitted = false; // Track admission status
 
     @Column(nullable = false)
@@ -104,7 +107,7 @@ public class Student {
         this.dob = dob;
     }
 
-    public boolean isAdmitted() {
+    public boolean admitted() {
         return admitted;
     }
 

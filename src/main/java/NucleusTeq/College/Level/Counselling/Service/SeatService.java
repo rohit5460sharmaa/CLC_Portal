@@ -26,7 +26,7 @@ public class SeatService {
         return seatRepository.findById(id);
     }
 
-    public Seat getSeatByBranch(String branch) {
+    public Optional<Seat> getSeatByBranch(String branch) {
         return seatRepository.findByBranch(branch);
     }
 
@@ -40,55 +40,65 @@ public class SeatService {
 
     public Seat updateSeat(Long id, Seat seatDetails) {
         return seatRepository.findById(id).map(seat -> {
-            seat.setBranch(seatDetails.getBranch());
-            seat.setGeneralSeats(seatDetails.getGeneralSeats());
-            seat.setObcSeats(seatDetails.getObcSeats());
-            seat.setScSeats(seatDetails.getScSeats());
-            seat.setStSeats(seatDetails.getStSeats());
-            seat.setFilledGeneralSeats(seatDetails.getFilledGeneralSeats());
-            seat.setFilledObcSeats(seatDetails.getFilledObcSeats());
-            seat.setFilledScSeats(seatDetails.getFilledScSeats());
-            seat.setFilledStSeats(seatDetails.getFilledStSeats());
+            if (seatDetails.getBranch() != null) seat.setBranch(seatDetails.getBranch());
+            if (seatDetails.getGeneralSeats() != null) seat.setGeneralSeats(seatDetails.getGeneralSeats());
+            if (seatDetails.getObcSeats() != null) seat.setObcSeats(seatDetails.getObcSeats());
+            if (seatDetails.getScSeats() != null) seat.setScSeats(seatDetails.getScSeats());
+            if (seatDetails.getStSeats() != null) seat.setStSeats(seatDetails.getStSeats());
+            if (seatDetails.getFilledGeneralSeats() != null) seat.setFilledGeneralSeats(seatDetails.getFilledGeneralSeats());
+            if (seatDetails.getFilledObcSeats() != null) seat.setFilledObcSeats(seatDetails.getFilledObcSeats());
+            if (seatDetails.getFilledScSeats() != null) seat.setFilledScSeats(seatDetails.getFilledScSeats());
+            if (seatDetails.getFilledStSeats() != null) seat.setFilledStSeats(seatDetails.getFilledStSeats());
+            
             seat.updateSeatCounts();
             return seatRepository.save(seat);
         }).orElseThrow(() -> new RuntimeException("Seat not found with id " + id));
     }
+    
+    public Seat updateSeatByBranch(String branch, Seat seatDetails) {
+        Seat seat = seatRepository.findByBranch(branch)
+                .orElseThrow(() -> new RuntimeException("Branch not found: " + branch));
 
+        seat.updateSeatByBranch(seatDetails);
+        return seatRepository.save(seat);
+    }
+    
+    
+    
     public Seat allocateSeat(String branch, String category) {
-        Seat seat = seatRepository.findByBranch(branch);
-        if (seat == null) {
-            throw new RuntimeException("Branch not found: " + branch);
-        }
+        Seat seat = seatRepository.findByBranch(branch)
+                .orElseThrow(() -> new RuntimeException("Branch not found: " + branch));
 
         if (seat.getVacantSeats() <= 0) {
             throw new RuntimeException("No vacant seats available in " + branch);
         }
 
+        // Handle category-based allocation
         switch (category.toLowerCase()) {
             case "general" -> {
                 if (seat.getFilledGeneralSeats() < seat.getGeneralSeats()) {
-                    seat.incrementFilledSeats("general");
+                    seat.incrementFilledSeats("general");  // Increment filled general seats
                 } else {
                     throw new RuntimeException("No available General seats in " + branch);
                 }
             }
             case "obc" -> {
                 if (seat.getFilledObcSeats() < seat.getObcSeats()) {
-                    seat.incrementFilledSeats("obc");
+                    seat.incrementFilledSeats("obc");  // Increment filled OBC seats
                 } else {
                     throw new RuntimeException("No available OBC seats in " + branch);
                 }
             }
             case "sc" -> {
                 if (seat.getFilledScSeats() < seat.getScSeats()) {
-                    seat.incrementFilledSeats("sc");
+                    seat.incrementFilledSeats("sc");  // Increment filled SC seats
                 } else {
                     throw new RuntimeException("No available SC seats in " + branch);
                 }
             }
             case "st" -> {
                 if (seat.getFilledStSeats() < seat.getStSeats()) {
-                    seat.incrementFilledSeats("st");
+                    seat.incrementFilledSeats("st");  // Increment filled ST seats
                 } else {
                     throw new RuntimeException("No available ST seats in " + branch);
                 }
@@ -96,6 +106,10 @@ public class SeatService {
             default -> throw new RuntimeException("Invalid category: " + category);
         }
 
-        return seatRepository.save(seat);
+        // Update total and vacant seats dynamically based on the allocation
+        seat.updateSeatCounts();
+
+        return seatRepository.save(seat);  // Save updated seat state
     }
+
 }

@@ -38,11 +38,6 @@ public class StudentAllocationController {
         return ResponseEntity.ok(allocationService.allocateStudent(allocation));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<StudentAllocation> updateStudentAllocation(@PathVariable Long id, @RequestBody StudentAllocation newAllocation) {
-        return ResponseEntity.ok(allocationService.updateStudentAllocation(id, newAllocation));
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAllocation(@PathVariable Long id) {
         allocationService.deleteAllocation(id);

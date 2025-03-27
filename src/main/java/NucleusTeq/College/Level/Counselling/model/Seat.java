@@ -15,43 +15,49 @@ public class Seat {
     private String branch;
 
     @Column(name = "general_seats", nullable = false)
-    private int generalSeats;
+    private Integer generalSeats;
 
     @Column(name = "obc_seats", nullable = false)
-    private int obcSeats;
+    private Integer obcSeats;
 
     @Column(name = "sc_seats", nullable = false)
-    private int scSeats;
+    private Integer scSeats;
 
     @Column(name = "st_seats", nullable = false)
-    private int stSeats;
+    private Integer stSeats;
 
     @Column(name = "filled_general_seats", nullable = false)
-    private int filledGeneralSeats;
+    private Integer filledGeneralSeats;
 
     @Column(name = "filled_obc_seats", nullable = false)
-    private int filledObcSeats;
+    private Integer filledObcSeats;
 
     @Column(name = "filled_sc_seats", nullable = false)
-    private int filledScSeats;
+    private Integer filledScSeats;
 
     @Column(name = "filled_st_seats", nullable = false)
-    private int filledStSeats;
+    private Integer filledStSeats;
 
     @Column(name = "total_seats", nullable = false)
-    private int totalSeats;
+    private Integer totalSeats;
 
     @Column(name = "vacant_seats", nullable = false)
-    private int vacantSeats;
+    private Integer vacantSeats;
 
     // Calculate total seats
     public int calculateTotalSeats() {
-        return generalSeats + obcSeats + scSeats + stSeats;
+        return (generalSeats != null ? generalSeats : 0) + 
+               (obcSeats != null ? obcSeats : 0) + 
+               (scSeats != null ? scSeats : 0) + 
+               (stSeats != null ? stSeats : 0);
     }
 
     // Calculate filled seats
     public int calculateFilledSeats() {
-        return filledGeneralSeats + filledObcSeats + filledScSeats + filledStSeats;
+        return (filledGeneralSeats != null ? filledGeneralSeats : 0) + 
+               (filledObcSeats != null ? filledObcSeats : 0) + 
+               (filledScSeats != null ? filledScSeats : 0) + 
+               (filledStSeats != null ? filledStSeats : 0);
     }
 
     // Calculate vacant seats
@@ -62,10 +68,10 @@ public class Seat {
     // Update filled seats dynamically
     public void incrementFilledSeats(String category) {
         switch (category.toLowerCase()) {
-            case "general" -> this.filledGeneralSeats++;
-            case "obc" -> this.filledObcSeats++;
-            case "sc" -> this.filledScSeats++;
-            case "st" -> this.filledStSeats++;
+            case "general" -> this.filledGeneralSeats = (filledGeneralSeats != null ? filledGeneralSeats : 0) + 1;
+            case "obc" -> this.filledObcSeats = (filledObcSeats != null ? filledObcSeats : 0) + 1;
+            case "sc" -> this.filledScSeats = (filledScSeats != null ? filledScSeats : 0) + 1;
+            case "st" -> this.filledStSeats = (filledStSeats != null ? filledStSeats : 0) + 1;
         }
         updateSeatCounts();
     }
@@ -84,32 +90,44 @@ public class Seat {
     public String getBranch() { return branch; }
     public void setBranch(String branch) { this.branch = branch; }
 
-    public int getGeneralSeats() { return generalSeats; }
-    public void setGeneralSeats(int generalSeats) { this.generalSeats = generalSeats; }
+    public Integer getGeneralSeats() { return generalSeats; }
+    public void setGeneralSeats(Integer generalSeats) { this.generalSeats = generalSeats; }
 
-    public int getObcSeats() { return obcSeats; }
-    public void setObcSeats(int obcSeats) { this.obcSeats = obcSeats; }
+    public Integer getObcSeats() { return obcSeats; }
+    public void setObcSeats(Integer obcSeats) { this.obcSeats = obcSeats; }
 
-    public int getScSeats() { return scSeats; }
-    public void setScSeats(int scSeats) { this.scSeats = scSeats; }
+    public Integer getScSeats() { return scSeats; }
+    public void setScSeats(Integer scSeats) { this.scSeats = scSeats; }
 
-    public int getStSeats() { return stSeats; }
-    public void setStSeats(int stSeats) { this.stSeats = stSeats; }
+    public Integer getStSeats() { return stSeats; }
+    public void setStSeats(Integer stSeats) { this.stSeats = stSeats; }
 
-    public int getFilledGeneralSeats() { return filledGeneralSeats; }
-    public void setFilledGeneralSeats(int filledGeneralSeats) { this.filledGeneralSeats = filledGeneralSeats; }
+    public Integer getFilledGeneralSeats() { return filledGeneralSeats; }
+    public void setFilledGeneralSeats(Integer filledGeneralSeats) { this.filledGeneralSeats = filledGeneralSeats; }
 
-    public int getFilledObcSeats() { return filledObcSeats; }
-    public void setFilledObcSeats(int filledObcSeats) { this.filledObcSeats = filledObcSeats; }
+    public Integer getFilledObcSeats() { return filledObcSeats; }
+    public void setFilledObcSeats(Integer filledObcSeats) { this.filledObcSeats = filledObcSeats; }
 
-    public int getFilledScSeats() { return filledScSeats; }
-    public void setFilledScSeats(int filledScSeats) { this.filledScSeats = filledScSeats; }
+    public Integer getFilledScSeats() { return filledScSeats; }
+    public void setFilledScSeats(Integer filledScSeats) { this.filledScSeats = filledScSeats; }
 
-    public int getFilledStSeats() { return filledStSeats; }
-    public void setFilledStSeats(int filledStSeats) { this.filledStSeats = filledStSeats; }
+    public Integer getFilledStSeats() { return filledStSeats; }
+    public void setFilledStSeats(Integer filledStSeats) { this.filledStSeats = filledStSeats; }
 
-    public int getTotalSeats() { return totalSeats; }
-    public int getVacantSeats() { return vacantSeats; }
+    public Integer getTotalSeats() { return totalSeats; }
+    public Integer getVacantSeats() { return vacantSeats; }
+
+    public void updateSeatByBranch(Seat seatDetails) {
+        if (seatDetails.getGeneralSeats() != null) this.generalSeats = seatDetails.getGeneralSeats();
+        if (seatDetails.getObcSeats() != null) this.obcSeats = seatDetails.getObcSeats();
+        if (seatDetails.getScSeats() != null) this.scSeats = seatDetails.getScSeats();
+        if (seatDetails.getStSeats() != null) this.stSeats = seatDetails.getStSeats();
+        if (seatDetails.getFilledGeneralSeats() != null) this.filledGeneralSeats = seatDetails.getFilledGeneralSeats();
+        if (seatDetails.getFilledObcSeats() != null) this.filledObcSeats = seatDetails.getFilledObcSeats();
+        if (seatDetails.getFilledScSeats() != null) this.filledScSeats = seatDetails.getFilledScSeats();
+        if (seatDetails.getFilledStSeats() != null) this.filledStSeats = seatDetails.getFilledStSeats();
+        updateSeatCounts();
+    }
 
     @Override
     public String toString() {

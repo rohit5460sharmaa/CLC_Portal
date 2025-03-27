@@ -43,7 +43,7 @@ public class StudentController {
     public ResponseEntity<Student> updateStudent(
         @PathVariable String rollNumber,
         @RequestBody Map<String, Object> updates) {
-        
+
         return studentService.getStudentByRollNumber(rollNumber)
             .map(existingStudent -> {
                 // Merge changes with existing data
@@ -62,7 +62,34 @@ public class StudentController {
                 if (updates.containsKey("dob")) {
                     existingStudent.setDob(LocalDate.parse((String) updates.get("dob")));
                 }
-                
+                if (updates.containsKey("admitted")) {
+                    existingStudent.setAdmitted((Boolean) updates.get("admitted"));
+                }
+
+                return ResponseEntity.ok(studentService.saveStudent(existingStudent));
+            })
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{rollNumber}")
+    public ResponseEntity<Student> partialUpdateStudent(
+        @PathVariable String rollNumber,
+        @RequestBody Map<String, Object> updates) {
+
+        return studentService.getStudentByRollNumber(rollNumber)
+            .map(existingStudent -> {
+                // Apply partial updates
+                updates.forEach((key, value) -> {
+                    switch (key) {
+                        case "name" -> existingStudent.setName((String) value);
+                        case "email" -> existingStudent.setEmail((String) value);
+                        case "phone" -> existingStudent.setPhone((String) value);
+                        case "address" -> existingStudent.setAddress((String) value);
+                        case "dob" -> existingStudent.setDob(LocalDate.parse((String) value));
+                        case "admitted" -> existingStudent.setAdmitted((Boolean) value);
+                    }
+                });
+
                 return ResponseEntity.ok(studentService.saveStudent(existingStudent));
             })
             .orElse(ResponseEntity.notFound().build());

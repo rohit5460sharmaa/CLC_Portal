@@ -1,6 +1,7 @@
 package NucleusTeq.College.Level.Counselling.Service;
 
 import NucleusTeq.College.Level.Counselling.model.Preference;
+import jakarta.transaction.Transactional;
 import NucleusTeq.College.Level.Counselling.Repository.PreferenceRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -39,4 +40,11 @@ public class PreferenceService {
             throw new RuntimeException("Preference not found with id: " + id);
         }
     }
+    
+
+    @Transactional
+    public void deleteByRollNumber(String rollNumber) {
+        preferenceRepository.deleteByRollNumber(rollNumber);
+    }
+
 }

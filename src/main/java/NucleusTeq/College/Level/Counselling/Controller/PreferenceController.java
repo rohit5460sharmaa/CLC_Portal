@@ -39,11 +39,13 @@ public class PreferenceController {
         return preference != null ? ResponseEntity.ok(preference) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePreference(@PathVariable Long id) {
-        preferenceService.deletePreference(id);
+    
+    @DeleteMapping("/{rollNumber}")
+    public ResponseEntity<String> deletePreference(@PathVariable String rollNumber) {
+        preferenceService.deleteByRollNumber(rollNumber);
         return ResponseEntity.ok("Preference deleted successfully");
     }
+
 
     public static class PreferenceRequest {
         private String studentName;

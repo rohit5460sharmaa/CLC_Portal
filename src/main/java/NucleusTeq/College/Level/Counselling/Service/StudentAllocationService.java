@@ -63,10 +63,8 @@ public class StudentAllocationService {
     }
 
     private void updateSeatCounts(StudentAllocation allocation, int delta) {
-        Seat seat = seatRepository.findByBranch(allocation.getBranch());
-        if (seat == null) {
-            throw new RuntimeException("Branch not found: " + allocation.getBranch());
-        }
+        Seat seat = seatRepository.findByBranch(allocation.getBranch())
+                .orElseThrow(() -> new RuntimeException("Branch not found: " + allocation.getBranch()));
 
         switch (allocation.getCategory().toLowerCase()) {
             case "general":

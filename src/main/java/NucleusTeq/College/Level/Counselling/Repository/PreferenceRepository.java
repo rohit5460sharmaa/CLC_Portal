@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface PreferenceRepository extends JpaRepository<Preference, Long> {
     Optional<Preference> findByRollNumber(String rollNumber);
+    void deleteByRollNumber(String rollNumber);
+
 }

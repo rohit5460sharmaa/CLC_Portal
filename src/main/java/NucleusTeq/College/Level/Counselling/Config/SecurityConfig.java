@@ -20,6 +20,8 @@ public class SecurityConfig {
             .cors(cors -> {})  // Enable CORS - configurations are picked up from CorsConfig
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/**").permitAll()  // Allow all requests for now (development)
+                .requestMatchers("/api/**").permitAll() // Allow public access to APIs
+
                 .requestMatchers("/api/auth/**").permitAll()  // Allow all auth endpoints
                 .requestMatchers("/api/seats/**").permitAll()
                 .requestMatchers("/auth/register-student", "/auth/login-student").permitAll()

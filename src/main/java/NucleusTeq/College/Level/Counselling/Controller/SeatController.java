@@ -51,4 +51,11 @@ public class SeatController {
     public ResponseEntity<Seat> allocateSeat(@RequestParam String branch, @RequestParam String category) {
         return ResponseEntity.ok(seatService.allocateSeat(branch, category));
     }
+
+    @PatchMapping("/{branch}")
+    public ResponseEntity<Seat> updateSeat(@PathVariable String branch, @RequestBody Seat seatDetails) {
+        return ResponseEntity.ok(seatService.updateSeatByBranch(branch, seatDetails));
+    }
+
+
 }
