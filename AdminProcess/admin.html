@@ -18,9 +18,15 @@
                         </div>
                         <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                             <a href="../AdminProcess/admin.html" class="px-3 py-2 rounded-md text-sm font-medium bg-indigo-900">Dashboard</a>
-                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Manage Officers</a>
-                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Institution Settings</a>
-                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">Reports</a>
+                            <a href="#seat-management" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" id="seat-management-link">
+                                <i class="fas fa-chair mr-2"></i>Seat Management
+                            </a>
+                            <a href="#student-queue" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" id="student-queue-link">
+                                <i class="fas fa-users mr-2"></i>Student Queue
+                            </a>
+                            <a href="#reports" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-indigo-700" id="reports-link">
+                                <i class="fas fa-chart-bar mr-2"></i>Reports
+                            </a>
                         </div>
                     </div>
                     <div class="flex items-center">
@@ -34,8 +40,130 @@
                 </div>
             </div>
         </nav>
+              <!-- Main Content Sections -->
+            <div class="container mx-auto px-4 py-8">
+                <!-- Seat Management Section -->
+                <section id="seat-management" class="section hidden">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-800">Seat Management</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4">Add Branch and Seats</h3>
+                            <form id="branch-seat-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Branch Name</label>
+                                    <input type="text" id="branch-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Total Seats</label>
+                                    <input type="number" id="total-seats" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Category-wise Seat Distribution</label>
+                                    <div class="grid grid-cols-2 gap-2 mt-2">
+                                        <div>
+                                            <label class="text-xs">General</label>
+                                            <input type="number" id="gen-seats" class="block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="General Seats">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs">SC</label>
+                                            <input type="number" id="sc-seats" class="block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="SC Seats">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs">ST</label>
+                                            <input type="number" id="st-seats" class="block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="ST Seats">
+                                        </div>
+                                        <div>
+                                            <label class="text-xs">OBC</label>
+                                            <input type="number" id="obc-seats" class="block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="OBC Seats">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-end">
+                                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-300">
+                                        Add Branch
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+        
+                        <!-- Seat Matrix Table -->
+                        <div class="mt-6">
+                            <h3 class="text-lg font-semibold mb-4">Current Seat Matrix</h3>
+                            <table class="min-w-full bg-white">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left">Branch</th>
+                                        <th class="px-4 py-2 text-left">Total Seats</th>
+                                        <th class="px-4 py-2 text-left">General</th>
+                                        <th class="px-4 py-2 text-left">SC</th>
+                                        <th class="px-4 py-2 text-left">ST</th>
+                                        <th class="px-4 py-2 text-left">OBC</th>
+                                        <th class="px-4 py-2 text-left">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="seat-matrix-body">
+                                    <!-- Dynamically populated seat matrix rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+        
+                <!-- Student Queue Section -->
+                <section id="student-queue" class="section hidden">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-800">Student Admission Queue</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div id="current-student" class="mb-6">
+                            <h3 class="text-lg font-semibold mb-4">Current Student</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Name</label>
+                                    <p id="student-name" class="mt-1 block w-full rounded-md border-gray-300">-</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Rank</label>
+                                    <p id="student-rank" class="mt-1 block w-full rounded-md border-gray-300">-</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Category</label>
+                                    <p id="student-category" class="mt-1 block w-full rounded-md border-gray-300">-</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Preferred Branches</label>
+                                    <p id="student-branches" class="mt-1 block w-full rounded-md border-gray-300">-</p>
+                                </div>
+                            </div>
+                            <div class="mt-6 flex space-x-4">
+                                <button id="admit-btn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                                    <i class="fas fa-check mr-2"></i>Admit
+                                </button>
+                                <button id="skip-btn" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                                    <i class="fas fa-times mr-2"></i>Skip
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+        
+                <!-- Reports Section -->
+                <section id="reports" class="section hidden">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-800">Reports</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">Seat Occupancy</h3>
+                                <canvas id="seat-occupancy-chart"></canvas>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-4">Category-wise Admission</h3>
+                                <canvas id="category-admission-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
 
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 section" id="dashboard" >
             <div class="md:flex md:items-center md:justify-between mb-6">
                 <div class="flex-1 min-w-0">
                     <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">

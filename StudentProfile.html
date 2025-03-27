@@ -124,7 +124,11 @@
                                 <p id="view-rank" class="text-indigo-800 font-bold">Loading...</p>
                             </div>
                             <div>
-                                <p class="text-gray-600 font-medium">Preferred Branch</p>
+                                <!-- When branch is allocated -->
+                                <p class="text-green-800 font-semibold">Allocated Branch</p>
+
+                                <!-- When not allocated -->
+                                <p class="text-yellow-800 font-semibold">Pending Allocation</p>
                                 <p id="view-branch" class="text-indigo-800 font-bold">Loading...</p>
                             </div>
                             <div>
@@ -155,18 +159,33 @@
             const viewModeElements = document.querySelectorAll('.view-mode');
             const editModeElements = document.querySelectorAll('.edit-mode');
             let studentData = {};
-
+            let allocatData = {};  // To store allocation data
+        
             // Get roll number from URL or default
             function getRollNumber() {
                 const params = new URLSearchParams(window.location.search);
                 return params.get('rollNumber') || '2023-CSE-0042';
             }
-
+        
+            // Append roll number to all links
+            function appendRollNumberToLinks() {
+                const rollNumber = localStorage.getItem('rollNumber');
+                if (!rollNumber) return;
+            
+                document.querySelectorAll('a').forEach(link => {
+                    const url = new URL(link.href, window.location.origin);
+                    url.searchParams.set('rollNumber', rollNumber);
+                    link.href = url.toString();
+                });
+            }
+            
+            appendRollNumberToLinks();
+        
             // Fetch student data from API
             async function fetchStudentData() {
                 try {
                     const response = await fetch(`http://localhost:8080/students/${getRollNumber()}`);
-                    if (!response.ok) throw new Error('Failed to fetch data');
+                    if (!response.ok) throw new Error('Failed to fetch student data');
                     return await response.json();
                 } catch (error) {
                     console.error('Fetch error:', error);
@@ -174,51 +193,165 @@
                     return null;
                 }
             }
-
-            // Populate all profile data
-            function populateProfile(data) {
-                // Header Section
-                document.getElementById('header-user-name').textContent = data.name;
-                document.getElementById('profile-header-name').textContent = data.name;
-                document.getElementById('profile-header-branch').textContent = data.branch;
-                document.getElementById('edit-header-name').value = data.name;
-                document.getElementById('edit-header-branch').value = data.branch;
-
-                // Personal Information
-                document.getElementById('view-name').textContent = data.name;
-                document.getElementById('edit-name').value = data.name;
-                document.getElementById('view-roll').textContent = data.rollNumber;
-                document.getElementById('view-dob').textContent = new Date(data.dob).toLocaleDateString();
-                document.getElementById('edit-dob').value = data.dob;
-
-                // Contact Information
-                document.getElementById('view-email').textContent = data.email;
-                document.getElementById('edit-email').value = data.email;
-                document.getElementById('view-phone').textContent = data.phone;
-                document.getElementById('edit-phone').value = data.phone;
-                document.getElementById('view-address').textContent = data.address;
-                document.getElementById('edit-address').value = data.address;
-
-                // Counselling Information
-                document.getElementById('view-rank').textContent = data.rank;
-                document.getElementById('view-branch').textContent = data.preferredBranch;
-                document.getElementById('view-status').textContent = data.admitted;
+        
+            // Fetch allocation data from API
+            async function fetchAllocatedData() {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/allocations/${getRollNumber()}`);
+                    
+                    if (!response.ok) {
+                        // If response is not OK, check if it's a 404 (Not Found)
+                        if (response.status === 404) {
+                            // Return a default allocation object
+                            return {
+                                branch: 'Not Allocated',
+                                defaultAllocation: true,
+                                message: 'Awaiting'
+                            };
+                        }
+                        throw new Error('Failed to fetch allocation data');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // If response is successful but data is empty
+                    if (!data || Object.keys(data).length === 0) {
+                        return {
+                            branch: 'Not Allocated',
+                            defaultAllocation: true,
+                            message: 'Awaiting'
+                        };
+                    }
+                    
+                    return data;
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    
+                    // Return a default allocation object in case of any error
+                    return {
+                        branch: 'Not Allocated',
+                        defaultAllocation: true,
+                        message: 'Allocation Data Unavailable'
+                    };
+                }
             }
+        
+            // Populate all profile data
+            function populateProfile(data, allocat) {
+                // Validate input
+                if (!data) {
+                    console.error('No data provided to populate profile');
+                    return;
+                }
+            
+                // Header Section
+                const headerElements = ['header-user-name', 'profile-header-name'];
+                headerElements.forEach(elementId => {
+                    const element = document.getElementById(elementId);
+                    if (element) element.textContent = data.name || 'N/A';
+                });
+            
+                // Profile Header Branch
+                const profileHeaderBranch = document.getElementById('profile-header-branch');
+                if (profileHeaderBranch) {
+                    profileHeaderBranch.textContent = allocat ? allocat.branch : "Not Allocated";
+                }
+            
+                // Personal Information
+                const personalInfoMap = {
+                    'view-name': data.name,
+                    'view-roll': data.rollNumber,
+                    'view-dob': data.dob ? new Date(data.dob).toLocaleDateString() : 'N/A'
+                };
+            
+                Object.entries(personalInfoMap).forEach(([elementId, value]) => {
+                    const element = document.getElementById(elementId);
+                    if (element) element.textContent = value || 'N/A';
+                });
+            
+                // Contact Information
+                const contactInfoMap = {
+                    'view-email': data.email,
+                    'view-phone': data.phone,
+                    'view-address': data.address
+                };
+            
+                Object.entries(contactInfoMap).forEach(([elementId, value]) => {
+                    const element = document.getElementById(elementId);
+                    if (element) element.textContent = value || 'N/A';
+                });
+            
+                // Counselling Information
+                const counsellingInfoElement = document.getElementById('view-rank');
+                if (counsellingInfoElement) {
+                    counsellingInfoElement.textContent = data.rank || 'N/A';
+                }
+            
+                function populateBranchAllocation(allocat) {
+                    const allocatedBranchElement = document.querySelector('p.text-green-800');
+                    const pendingAllocationElement = document.querySelector('p.text-yellow-800');
+                    const viewBranch = document.getElementById('view-branch');
+                
+                    if (viewBranch) {
+                        if (allocat && !allocat.defaultAllocation) {
+                            // Normal branch allocation
+                            allocatedBranchElement.classList.remove('hidden');
+                            pendingAllocationElement.classList.add('hidden');
+                
+                            viewBranch.textContent = allocat.branch;
+                            viewBranch.classList.remove('text-yellow-800', 'bg-red-100', 'text-red-800');
+                            viewBranch.classList.add('text-green-800', 'px-3', 'py-1', 'inline-block', 'rounded-md');
+                        } else {
+                            // Default/unallocated state
+                            allocatedBranchElement.classList.add('hidden');
+                            pendingAllocationElement.classList.remove('hidden');
+                
+                            viewBranch.textContent = allocat?.message || 'Not Allocated Yet';
+                            viewBranch.classList.remove('text-green-800', 'bg-red-100', 'text-red-800');
+                            viewBranch.classList.add('text-yellow-800', 'px-3', 'py-1', 'inline-block', 'rounded-md');
+                        }
+                    }
+                }
 
+                populateBranchAllocation(allocat);
+            
+                // Admitted Status
+                const viewStatusElement = document.getElementById('view-status');
+                if (viewStatusElement) {
+                    let statusText = 'Not Admitted Yet';
+                    let statusColor = 'text-red-800';
+                
+                    if (data.admitted === true) {
+                        statusText = 'Admitted';
+                        statusColor = 'text-green-800';
+                    } else if (data.admitted === 'In Progress') {
+                        statusText = 'In Progress';
+                        statusColor = 'text-red-800';
+                    }
+                
+                    // Remove previous color classes
+                    viewStatusElement.classList.remove('text-green-800', 'text-red-800');
+                    // Add appropriate color class
+                    viewStatusElement.classList.add(statusColor);
+                    
+                    viewStatusElement.textContent = statusText;
+                }
+            }
+        
             // Toggle edit mode
             function toggleEditMode(enable) {
                 viewModeElements.forEach(el => el.classList.toggle('hidden', enable));
                 editModeElements.forEach(el => el.classList.toggle('hidden', !enable));
             }
-
+        
             // Event Listeners
             editProfileBtn.addEventListener('click', () => toggleEditMode(true));
-            
+        
             document.getElementById('cancel-edit-btn').addEventListener('click', () => {
                 toggleEditMode(false);
-                populateProfile(studentData); // Reset form
+                populateProfile(studentData, allocatData); // Reset form with data
             });
-
+        
             profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
@@ -229,22 +362,22 @@
                     address: document.getElementById('edit-address').value,
                     dob: document.getElementById('edit-dob').value
                 };
-            
+        
                 try {
                     const response = await fetch(`http://localhost:8080/students/${getRollNumber()}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(updatedData)
                     });
-            
+        
                     const responseData = await response.json();
-                    
+        
                     if (!response.ok) {
                         throw new Error(responseData.message || 'Update failed');
                     }
-                    
+        
                     studentData = { ...studentData, ...updatedData };
-                    populateProfile(studentData);
+                    populateProfile(studentData, allocatData); // Update the profile with allocation data
                     toggleEditMode(false);
                     alert('Profile updated successfully!');
                 } catch (error) {
@@ -252,24 +385,31 @@
                     alert(`Error updating profile: ${error.message}`);
                 }
             });
-
-            
+        
             // Initialization
             async function initialize() {
                 const data = await fetchStudentData();
+                const allocat = await fetchAllocatedData();
+                
                 if (data) {
                     studentData = data;
-                    populateProfile(data);
                 }
+        
+                if (allocat) {
+                    allocatData = allocat;
+                }
+        
+                populateProfile(studentData, allocatData); // Populate both student data and allocation data
             }
-
+        
             initialize();
         });
-
+        
         document.querySelector('[data-logout-button]').addEventListener('click', () => {
             localStorage.removeItem('authToken');
             window.location.href = 'Login/login.html';
         });
+        
     </script>
 </body>
 </html>
