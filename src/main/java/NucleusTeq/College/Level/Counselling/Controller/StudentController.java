@@ -36,7 +36,7 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.saveStudent(student)); // ✅ Use service
+        return ResponseEntity.ok(studentService.saveStudent(student)); //  Use service
     }
 
     @PutMapping("/{rollNumber}")
@@ -66,7 +66,7 @@ public class StudentController {
                     existingStudent.setAdmitted((Boolean) updates.get("admitted"));
                 }
 
-                return ResponseEntity.ok(studentService.saveStudent(existingStudent));
+                return ResponseEntity.ok(studentService.saveStudentUpdate(existingStudent));
             })
             .orElse(ResponseEntity.notFound().build());
     }
@@ -90,7 +90,7 @@ public class StudentController {
                     }
                 });
 
-                return ResponseEntity.ok(studentService.saveStudent(existingStudent));
+                return ResponseEntity.ok(studentService.saveStudentUpdate(existingStudent));
             })
             .orElse(ResponseEntity.notFound().build());
     }

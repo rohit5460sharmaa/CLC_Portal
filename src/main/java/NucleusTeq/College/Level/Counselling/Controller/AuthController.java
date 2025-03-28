@@ -36,24 +36,31 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         String username = authRequest.getUsername();
         String password = authRequest.getPassword();
-        
-        
+        String requestedUserType = authRequest.getUserType(); // Requested user type
 
-        Optional<Student> student = studentRepository.findByEmailOrRollNumber(username, username);
-        if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
-            String token = jwtUtil.generateToken(username, "STUDENT");
-            return ResponseEntity.ok(new AuthResponse(token, "STUDENT",student.get().getName()));
+        // Validate Student Login
+        if ("STUDENT".equalsIgnoreCase(requestedUserType)) {
+            Optional<Student> student = studentRepository.findByEmailOrRollNumber(username, username);
+            if (student.isPresent() && passwordEncoder.matches(password, student.get().getPassword())) {
+                String token = jwtUtil.generateToken(username, "STUDENT");
+                return ResponseEntity.ok(new AuthResponse(token, "STUDENT", student.get().getName().toLowerCase()));
+            }
         }
 
-        Optional<User> user = userRepository.findByEmail(username);
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            String token = jwtUtil.generateToken(username, user.get().getRole());
-            return ResponseEntity.ok(new AuthResponse(token, user.get().getRole(), user.get().getUsername()));
+        // Validate User (Officer/Admin) Login
+        if ("OFFICER".equalsIgnoreCase(requestedUserType) || "ADMIN".equalsIgnoreCase(requestedUserType)) {
+            Optional<User> user = userRepository.findByEmail(username);
+            if (user.isPresent() && 
+                passwordEncoder.matches(password, user.get().getPassword()) && 
+                user.get().getRole().equalsIgnoreCase(requestedUserType)) {
+                String token = jwtUtil.generateToken(username, user.get().getRole());
+                return ResponseEntity.ok(new AuthResponse(token, user.get().getRole(), user.get().getUsername().toLowerCase()));
+            }
         }
 
         return ResponseEntity.status(401).body("Invalid Credentials");
     }
-
+    
     @PostMapping("/add-user")
     public ResponseEntity<?> addUser(@RequestBody User user, @RequestHeader("Authorization") String token) {
         String adminRole = jwtUtil.extractRole(token.substring(7));

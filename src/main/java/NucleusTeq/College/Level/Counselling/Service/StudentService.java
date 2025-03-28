@@ -29,7 +29,13 @@ public class StudentService {
         student.setPassword(passwordEncoder.encode(student.getPassword())); // Encrypt password
         return studentRepo.save(student);
     }
-
+    
+    // Save or update student with encrypted password
+    public Student saveStudentUpdate(Student student) {
+        
+        return studentRepo.save(student);
+    }
+    
     // Get all students
     public List<Student> getAllStudents() {
         return studentRepo.findAll();
