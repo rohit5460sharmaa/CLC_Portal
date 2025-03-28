@@ -9,26 +9,42 @@
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="logo">
-                <h1>CLC Portal</h1>
-            </div>
-            <nav>
-                <input type="checkbox" id="nav-toggle">
-                <label for="nav-toggle" class="nav-toggle-label">
+        <nav>
+            <div class="container">
+                <div class="logo-container">
+                    <i class="fas fa-university"></i>
+                    <span>CLC Portal</span>
+                </div>
+                
+                <div class="nav-menu">
+                    <a href="../hero.html" class="active">Home</a>
+                    <a href="../AboutUS/about.html">About</a>
+                    <a href="../StandingPage/standing.html">Standing</a>
+                    <a href="../Contact/contact.html">Contact</a>
+                </div>
+                
+                <div class="auth-buttons">
+                    <a href="../Login/login.html" class="login-btn">Log In</a>
+                    <a href="../Register/register.html" class="register-btn">Register</a>
+                </div>
+                
+                <div class="mobile-menu-toggle">
                     <i class="fas fa-bars"></i>
-                </label>
-                <ul>
-                    <li><a href="../hero.html">Home</a></li>
-                    <li><a href="../AboutUS/about.html" class="active">About Us</a></li>
-                    <li><a href="../Seat.html">Seat Matrix</a></li>
-                    <li><a href="../StandingPage/standing.html">Standing</a></li>
-                    <li><a href="../login.html" class="btn-login">Login</a></li>
-                </ul>
-            </nav>
-        </div>
+                </div>
+            </div>
+            
+            <div class="mobile-dropdown">
+                <a href="../hhero.html" class="active">Home</a>
+                <a href="../AboutUS/about.html">About</a>
+                <a href="../StandingPage/standing.html">Standing</a>
+                <a href="../Contact/contact.html">Contact</a>
+                <div class="auth-buttons">
+                    <a href="../Login/login.html" class="login-btn">Log In</a>
+                    <a href="../Register/register.html" class="register-btn">Register</a>
+                </div>
+            </div>
+        </nav>
     </header>
-
     <section class="hero">
         <div class="container">
             <h1>About College Level Counselling Portal</h1>
@@ -184,5 +200,11 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.mobile-dropdown').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>

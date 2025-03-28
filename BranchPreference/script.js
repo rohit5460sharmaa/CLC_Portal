@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const params = new URLSearchParams(window.location.search);
         return params.get('rollNumber');
     }
-
+        
     // Function to append rollNumber to links
 function appendRollNumberToLinks() {
     const rollNumber = localStorage.getItem('rollNumber');

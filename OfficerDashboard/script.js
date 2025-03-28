@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Update student status
             await fetch(`${BASE_URLS.students}/${student.rollNumber}`, {
-                method: 'PATCH',
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ admitted: true })
             });

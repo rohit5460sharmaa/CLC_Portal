@@ -1,0 +1,149 @@
+.branch-card {
+    border: 1px solid #3730a3;  /* Indigo border */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.branch-header {
+    background-color: #3730a3;  /* Indigo background */
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.branch-content {
+    padding: 10px;
+}
+
+.seat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.seat-row:last-child {
+    border-bottom: none;
+}
+
+.seat-row .category {
+    font-weight: 500;
+}
+
+.seat-row.total {
+    font-weight: bold;
+}
+
+.seat-row .seats {
+    color: #3730a3;  /* Indigo text */
+}
+
+:root {
+    --indigo-50: #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-200: #c7d2fe;
+    --indigo-300: #a5b4fc;
+    --indigo-400: #818cf8;
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+    --indigo-800: #3730a3;
+    --indigo-900: #312e81;
+}
+
+.stat-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.stat-card {
+    flex: 1;
+    background-color: var(--indigo-50);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1), 0 4px 6px -2px rgba(79, 70, 229, 0.05);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.15), 0 10px 10px -5px rgba(79, 70, 229, 0.1);
+    border-color: var(--indigo-300);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, var(--indigo-500), var(--indigo-700));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--indigo-800);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--indigo-900);
+    margin-bottom: 0.25rem;
+}
+
+.stat-percentage {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--indigo-600);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-percentage::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--indigo-500);
+    border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    .stat-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* Optional: Add a subtle animation to percentage */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.stat-percentage {
+    animation: pulse 2s infinite;
+}

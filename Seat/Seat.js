@@ -1,3 +1,23 @@
+function getRollNumber() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('rollNumber') || '2023-CSE-0042';
+}
+
+// Append roll number to all links
+function appendRollNumberToLinks() {
+    const rollNumber = localStorage.getItem('rollNumber');
+    if (!rollNumber) return;
+
+    document.querySelectorAll('a').forEach(link => {
+        const url = new URL(link.href, window.location.origin);
+        url.searchParams.set('rollNumber', rollNumber);
+        link.href = url.toString();
+    });
+}
+
+appendRollNumberToLinks();
+
+
 // Global variables for authentication and data management
 let userData = null;
 let allSeatData = null; // Store the complete original data
@@ -169,7 +189,7 @@ function modifyBranchForCategory(branch, selectedCategory) {
     };
 }
 
-// Modify the createBranchCard function to correctly handle seat data
+// Updated createBranchCard function to match the desired UI
 function createBranchCard(branch) {
     const categories = [
         { name: 'General', key: 'generalSeats', filled: 'filledGeneralSeats' },
@@ -178,36 +198,29 @@ function createBranchCard(branch) {
         { name: 'ST', key: 'stSeats', filled: 'filledStSeats' }
     ];
 
-    // Filter out categories with 0 seats
-    const filteredCategories = categories.filter(category => 
-        (branch[category.key] || 0) > 0
-    );
-
-    const categoryHTML = filteredCategories.map(category => {
-        const totalCategorySeats = branch[category.key] || 0;
-        const filledCategorySeats = branch[category.filled] || 0;
-
-        return `
-            <div class="seat-category">
-                <span class="category-name">${category.name}</span>
-                <span class="seat-count">${filledCategorySeats} / ${totalCategorySeats}</span>
-            </div>
-        `;
-    }).join('');
-
-    const isLoggedIn = checkLoginStatus();
-    const editableClass = isLoggedIn ? 'editable' : '';
-
+    // Create the HTML for the branch card
     return `
-        <div class="branch-card ${editableClass}" data-branch="${branch.branch}">
-            <div class="branch-header">${branch.branch || 'Unknown Branch'}</div>
-            <div class="branch-body">
-                ${categoryHTML}
-                <div class="total-seats">
-                    <span>Total Seats</span>
-                    <span>${branch.totalSeats || 0}</span>
+        <div class="branch-card" data-branch="${branch.branch}">
+            <div class="branch-header">${branch.branch}</div>
+            <div class="branch-content">
+                ${categories.map(category => {
+                    const totalCategorySeats = branch[category.key] || 0;
+                    const filledCategorySeats = branch[category.filled] || 0;
+                    
+                    // Only show categories with seats
+                    if (totalCategorySeats > 0) {
+                        return `
+                            <div class="seat-row">
+                                <span class="category">${category.name}</span>
+                                <span class="seats">${filledCategorySeats} / ${totalCategorySeats}</span>
+                            </div>
+                        `;
+                    }
+                }).join('')}
+                <div class="seat-row total">
+                    <span class="category">Total Seats</span>
+                    <span class="seats">${branch.totalSeats || 0}</span>
                 </div>
-                ${isLoggedIn ? '<div class="tooltip">Click to edit</div>' : ''}
             </div>
         </div>
     `;
@@ -319,13 +332,13 @@ function setupEventListeners() {
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
     // Check login status and update UI
-    // updateUIForLoginStatus(checkLoginStatus());
+    updateUIForLoginStatus(checkLoginStatus());
 
     // Fetch and display seat data
     fetchAndDisplaySeatData();
 
     // Setup event listeners
-    // setupEventListeners();
+    setupEventListeners();
 });
 
 // Add global error handling
@@ -337,4 +350,9 @@ window.addEventListener('error', (event) => {
         colno: event.colno,
         error: event.error
     });
+});
+
+document.querySelector('[data-logout-button]').addEventListener('click', () => {
+    localStorage.removeItem('authToken');
+    window.location.href = '../Login/login.html';
 });
