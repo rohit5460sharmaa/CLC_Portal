@@ -331,3 +331,80 @@ footer {
     color: var(--gray-600);
     font-size: 0.9rem;
 }
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.available-branches {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.selected-preferences-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+#selected-preferences {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.preference-actions {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Existing preference section styles remain the same */
+#selected-preferences h2,
+.preference-actions h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--indigo-700);
+    border-bottom: 2px solid var(--indigo-200);
+    padding-bottom: 0.5rem;
+}
+
+.preference-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.preference-grid .branch-card {
+    background-color: var(--indigo-50);
+    border-radius: 8px;
+    padding: 1rem;
+    border-left: 4px solid var(--indigo-500);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.preference-grid .branch-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.preference-grid .branch-card span {
+    color: var(--indigo-800);
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    .selected-preferences-container {
+        grid-row: 2;
+    }
+}

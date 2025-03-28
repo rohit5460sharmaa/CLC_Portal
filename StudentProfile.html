@@ -354,30 +354,46 @@
         
             profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
+            
                 const updatedData = {
-                    name: document.getElementById('edit-name').value,
-                    email: document.getElementById('edit-email').value,
-                    phone: document.getElementById('edit-phone').value,
-                    address: document.getElementById('edit-address').value,
-                    dob: document.getElementById('edit-dob').value
+                    name: document.getElementById('edit-name').value.trim(),
+                    email: document.getElementById('edit-email').value.trim(),
+                    phone: document.getElementById('edit-phone').value.trim(),
+                    address: document.getElementById('edit-address').value.trim(),
+                    dob: document.getElementById('edit-dob').value.trim()
                 };
-        
+            
+                const rollNumber = getRollNumber();
+                if (!rollNumber) {
+                    alert('Invalid Roll Number');
+                    return;
+                }
+            
+                if (!updatedData.name || !updatedData.email || !updatedData.phone) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+            
                 try {
-                    const response = await fetch(`http://localhost:8080/students/${getRollNumber()}`, {
+                    const response = await fetch(`http://localhost:8080/students/${rollNumber}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(updatedData)
                     });
-        
-                    const responseData = await response.json();
-        
-                    if (!response.ok) {
-                        throw new Error(responseData.message || 'Update failed');
+            
+                    let responseData;
+                    try {
+                        responseData = await response.json();
+                    } catch {
+                        responseData = null;
                     }
-        
+            
+                    if (!response.ok) {
+                        throw new Error(responseData?.message || 'Update failed');
+                    }
+            
                     studentData = { ...studentData, ...updatedData };
-                    populateProfile(studentData, allocatData); // Update the profile with allocation data
+                    populateProfile(studentData, allocatData);
                     toggleEditMode(false);
                     alert('Profile updated successfully!');
                 } catch (error) {
@@ -385,6 +401,7 @@
                     alert(`Error updating profile: ${error.message}`);
                 }
             });
+            
         
             // Initialization
             async function initialize() {

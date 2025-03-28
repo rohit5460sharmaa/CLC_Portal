@@ -47,38 +47,45 @@
         </div>
 
         <main>
-            <div class="branch-info-container">
+            <div class="available-branches">
                 <h2>Available Branches</h2>
                 <div class="branch-info" id="branch-info">
                     <!-- Branches will be dynamically populated here -->
                 </div>
             </div>
-
-            <div class="preference-section">
-                <h2>Set Your Preferences</h2>
-                <p class="instruction">Drag and drop branches to set your priority order</p>
-
-                <form id="preference-form">
-                    <div class="preference-list" id="preference-container">
-                        <div class="preference-item">
-                            <span class="priority-number">1</span>
-                            <select class="branch-select" required>
-                                <option value="" selected disabled>Select Branch</option>
-                                <!-- Branch options will be dynamically populated here -->
-                            </select>
-                            <button type="button" class="remove-btn" disabled>×</button>
+        
+            <div class="selected-preferences-container">
+                <div id="selected-preferences">
+                    <h2>Your Selected Preferences</h2>
+                    <div class="preference-grid">
+                        <!-- Selected preferences will be dynamically added here -->
+                    </div>
+                </div>
+        
+                <div class="preference-actions">
+                    <form id="preference-form">
+                        <div class="preference-list" id="preference-container">
+                            <div class="preference-item">
+                                <span class="priority-number">1</span>
+                                <select class="branch-select" required>
+                                    <option value="" selected disabled>Select Branch</option>
+                                    <!-- Branch options will be dynamically populated here -->
+                                </select>
+                                <button type="button" class="remove-btn" disabled>×</button>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <button type="button" id="add-preference" class="add-btn">+ Add Another Preference</button>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="secondary-btn">Reset</button>
-                        <button type="submit" class="primary-btn">Submit Preferences</button>
-                    </div>
-                </form>
+                        
+                        <button type="button" id="add-preference" class="add-btn">+ Add Another Preference</button>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="secondary-btn">Reset</button>
+                            <button type="submit" class="primary-btn">Submit Preferences</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </main>
+        ```
 
         <footer>
             <p>Note: Your branch allocation will be based on your rank and preference order.</p>

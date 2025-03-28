@@ -212,15 +212,57 @@ function appendRollNumberToLinks() {
         addPreferenceButton.disabled = false;
     });
 
-    // Handle form submission
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault();
+// Handle form submission
+form.addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-        if (!studentData) {
-            alert('Student information is missing.');
+    if (!studentData) {
+        alert('Student information is missing.');
+        return;
+    }
+
+    const rollNumber = studentData.rollNumber; // Extract roll number
+
+    try {
+        // Check if the student has already submitted preferences
+        const checkResponse = await fetch(`http://localhost:8080/api/preferences/student/${rollNumber}`);
+        
+        if (checkResponse.ok) {
+            // Student already has preferences in the database
+            const existingPreferences = await checkResponse.json();
+            
+            // Create selected preferences display
+            let selectedPreferencesDiv = document.getElementById('selected-preferences');
+            if (!selectedPreferencesDiv) {
+                selectedPreferencesDiv = document.createElement('div');
+                selectedPreferencesDiv.id = 'selected-preferences';
+                document.body.appendChild(selectedPreferencesDiv);
+            }
+
+            // Hide preference form
+            const preferenceSection = document.querySelector('#preference-form');
+            if (preferenceSection) {
+                preferenceSection.style.display = 'none';
+            }
+
+            // Display existing preferences
+            selectedPreferencesDiv.innerHTML = `
+                <h2>Your Submitted Preferences</h2>
+                <div class="preference-grid">
+                    ${existingPreferences.branches.map(pref => `
+                        <div class="branch-card">
+                            <span>${pref}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            selectedPreferencesDiv.classList.add('available-branches');
+
+            alert('⚠️ You have already submitted your preferences.');
             return;
         }
 
+        // If not already submitted, proceed with new preference submission
         // Collect branch preferences
         const preferences = [];
         const selects = preferenceContainer.querySelectorAll('.branch-select');
@@ -244,30 +286,53 @@ function appendRollNumberToLinks() {
             branches: preferences,
         };
 
-        try {
-            const response = await fetch('http://localhost:8080/api/preferences/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+        // Submit new preferences
+        const response = await fetch('http://localhost:8080/api/preferences/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        });
 
-            const responseText = await response.text();
-            console.log('📌 Response Status:', response.status);
-            console.log('📌 Response Body:', responseText);
+        const responseText = await response.text();
+        console.log('📌 Response Status:', response.status);
+        console.log('📌 Response Body:', responseText);
 
-            if (!response.ok) throw new Error(`Failed to submit preferences: ${response.statusText}`);
+        if (!response.ok) throw new Error(`Failed to submit preferences: ${response.statusText}`);
 
-            alert('✅ Preferences submitted successfully!');
+        alert('✅ Preferences submitted successfully!');
 
-            document.querySelectorAll('.branch-select, .remove-btn, #add-preference, button[type="submit"]').forEach(el => {
-                el.disabled = true;
-            });
-
-        } catch (error) {
-            console.error('❌ Error submitting preferences:', error);
-            alert('Failed to submit preferences. Please try again.');
+        // Hide preference section
+        const preferenceSection = document.querySelector('#preference-form');
+        if (preferenceSection) {
+            preferenceSection.style.display = 'none';
         }
-    });
+
+        // Create selected preferences display
+        let selectedPreferencesDiv = document.getElementById('selected-preferences');
+        if (!selectedPreferencesDiv) {
+            selectedPreferencesDiv = document.createElement('div');
+            selectedPreferencesDiv.id = 'selected-preferences';
+            document.body.appendChild(selectedPreferencesDiv);
+        }
+
+        // Display submitted preferences
+        selectedPreferencesDiv.innerHTML = `
+            <h2>Your Selected Preferences</h2>
+            <div class="preference-grid">
+                ${preferences.map(pref => `
+                    <div class="branch-card">
+                        <span>${pref}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        selectedPreferencesDiv.classList.add('available-branches');
+
+    } catch (error) {
+        console.error('❌ Error processing preferences:', error);
+        alert('Failed to process preferences. Please try again.');
+    }
+});
 
     // Initialize
     fetchBranches();

@@ -319,13 +319,13 @@ function setupEventListeners() {
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
     // Check login status and update UI
-    updateUIForLoginStatus(checkLoginStatus());
+    // updateUIForLoginStatus(checkLoginStatus());
 
     // Fetch and display seat data
     fetchAndDisplaySeatData();
 
     // Setup event listeners
-    setupEventListeners();
+    // setupEventListeners();
 });
 
 // Add global error handling
