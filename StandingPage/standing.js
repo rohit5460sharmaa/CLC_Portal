@@ -2,137 +2,8 @@
 let currentUser = null;
 let userRole = null;
 
-// Sample data
-const studentsData = [
-    {
-        rank: 1,
-        name: "Ananya Patel",
-        rollNumber: "2023BTECH1015",
-        branch: "Computer Science",
-        status: "admitted",
-        contact: "+91 98712 34567"
-    },
-    {
-        rank: 2,
-        name: "Vikram Singh",
-        rollNumber: "2023BTECH1022",
-        branch: "Computer Science",
-        status: "admitted",
-        contact: "+91 87654 12309"
-    },
-    {
-        rank: 3,
-        name: "Priya Sharma",
-        rollNumber: "2023BTECH1008",
-        branch: "Electronics",
-        status: "admitted",
-        contact: "+91 76543 21098"
-    },
-    {
-        rank: 4,
-        name: "Amit Kumar",
-        rollNumber: "2023BTECH1030",
-        branch: "Mechanical",
-        status: "admitted",
-        contact: "+91 65432 10987"
-    },
-    {
-        rank: 5,
-        name: "Sneha Verma",
-        rollNumber: "2023BTECH1011",
-        branch: "Computer Science",
-        status: "skipped",
-        contact: "+91 54321 09876"
-    },
-    {
-        rank: 6,
-        name: "Harsh Gupta",
-        rollNumber: "2023BTECH1007",
-        branch: "Electronics",
-        status: "admitted",
-        contact: "+91 43210 98765"
-    },
-    {
-        rank: 7,
-        name: "Neha Reddy",
-        rollNumber: "2023BTECH1019",
-        branch: "Computer Science",
-        status: "admitted",
-        contact: "+91 32109 87654"
-    },
-    {
-        rank: 8,
-        name: "Arjun Nair",
-        rollNumber: "2023BTECH1025",
-        branch: "Civil",
-        status: "admitted",
-        contact: "+91 21098 76543"
-    },
-    {
-        rank: 9,
-        name: "Pooja Jain",
-        rollNumber: "2023BTECH1033",
-        branch: "Computer Science",
-        status: "admitted",
-        contact: "+91 10987 65432"
-    },
-    {
-        rank: 10,
-        name: "Rohan Desai",
-        rollNumber: "2023BTECH1017",
-        branch: "Mechanical",
-        status: "skipped",
-        contact: "+91 90876 54321"
-    },
-    {
-        rank: 11,
-        name: "Ishita Singh",
-        rollNumber: "2023BTECH1042",
-        branch: "Electronics",
-        status: "admitted",
-        contact: "+91 89765 43210"
-    },
-    {
-        rank: 12,
-        name: "Aditya Kapoor",
-        rollNumber: "2023BTECH1039",
-        branch: "Computer Science",
-        status: "admitted",
-        contact: "+91 78654 32109"
-    },
-    {
-        rank: 13,
-        name: "Meera Iyer",
-        rollNumber: "2023BTECH1024",
-        branch: "Electrical",
-        status: "admitted",
-        contact: "+91 67543 21098"
-    },
-    {
-        rank: 14,
-        name: "Karan Malhotra",
-        rollNumber: "2023BTECH1036",
-        branch: "Computer Science",
-        status: "admitted",
-        contact: "+91 56432 10987"
-    },
-    {
-        rank: 15,
-        name: "Anita Deshmukh",
-        rollNumber: "2023BTECH1028",
-        branch: "Electronics",
-        status: "admitted",
-        contact: "+91 45321 09876"
-    },
-    {
-        rank: 16,
-        name: "Rahul Sharma",
-        rollNumber: "2023BTECH1001",
-        branch: "Computer Science",
-        status: "processing",
-        contact: "+91 98765 43210"
-    }
-];
+// Student data will now be fetched from API
+let studentsData = [];
 
 // DOM elements
 const loginLink = document.getElementById('loginLink');
@@ -166,12 +37,46 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
 });
 
-function initializeApp() {
-    // Check if user is logged in (from localStorage)
-    checkLoginStatus();
-    
-    // Load standings table
-    renderStandingsTable();
+async function initializeApp() {
+    try {
+        // Fetch student data
+        const [studentsResponse, allocationsResponse] = await Promise.all([
+            fetch('http://localhost:8080/api/preferences/all'),
+            fetch('http://localhost:8080/api/allocations')
+        ]);
+
+        if (!studentsResponse.ok || !allocationsResponse.ok) {
+            throw new Error('Failed to fetch data');
+        }
+
+        studentsData = await studentsResponse.json();
+        const allocationsData = await allocationsResponse.json();
+
+        console.log('Allocations Data:', allocationsData);
+
+        // Map allocations by rollNumber for quick lookup
+        const allocationMap = new Map(allocationsData.map(allocation => [allocation.rollNumber, allocation]));
+
+        // Update student status and branch based on allocation
+        studentsData.forEach(student => {
+            const allocation = allocationMap.get(student.rollNumber);
+            if (allocation) {
+                student.status = 'admitted';
+                student.branches = [allocation.branch];
+            } else {
+                student.status = 'not admitted';
+                student.branches = [allocation.branches[0]];
+
+            }
+        });
+
+        checkLoginStatus();
+
+        renderStandingsTable();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        alert('Unable to load data. Please try again later.');
+    }
 }
 
 function setupEventListeners() {
@@ -180,21 +85,7 @@ function setupEventListeners() {
     loginForm.addEventListener('submit', handleLogin);
     logoutLink.addEventListener('click', handleLogout);
     refreshBtn.addEventListener('click', handleRefresh);
-    
-    // Admin controls event listeners
-    if (processNextBtn) {
-        processNextBtn.addEventListener('click', processNextStudent);
-    }
-    
-    if (skipCurrentBtn) {
-        skipCurrentBtn.addEventListener('click', skipCurrentStudent);
-    }
-    
-    if (resetQueueBtn) {
-        resetQueueBtn.addEventListener('click', resetQueue);
-    }
-    
-    // Close modal when clicking outside
+
     window.addEventListener('click', function(event) {
         if (event.target === loginModal) {
             closeLoginModal();
@@ -204,70 +95,27 @@ function setupEventListeners() {
 
 function checkLoginStatus() {
     const savedUser = localStorage.getItem('clcPortalUser');
-    
+
     if (savedUser) {
         const userData = JSON.parse(savedUser);
         currentUser = userData.username;
         userRole = userData.role;
-        
+
         updateUIForLoggedInUser();
     }
 }
 
-function updateUIForLoggedInUser() {
-    // Update navigation
-    loginLink.classList.add('hidden');
-    profileLink.classList.remove('hidden');
-    logoutLink.classList.remove('hidden');
-    
-    // Show/hide sections based on role
-    if (userRole === 'student') {
-        // Find student data
-        const studentData = findStudentByRollOrName(currentUser);
-        
-        if (studentData) {
-            // Display student info
-            currentStudentSection.classList.remove('hidden');
-            updateStudentInfo(studentData);
-        }
-    } else if (userRole === 'officer' || userRole === 'admin') {
-        // Show admin controls
-        adminControls.classList.remove('hidden');
-        
-        // Show current student being processed
-        currentStudentSection.classList.remove('hidden');
-        
-        // Get the student currently being processed
-        const processingStudent = studentsData.find(student => student.status === 'processing');
-        if (processingStudent) {
-            updateStudentInfo(processingStudent);
-        }
-    }
-}
-
-function findStudentByRollOrName(identifier) {
-    return studentsData.find(student => 
-        student.rollNumber === identifier || 
-        student.name.toLowerCase() === identifier.toLowerCase()
-    );
-}
-
 function updateStudentInfo(studentData) {
-    studentName.textContent = studentData.name;
-    studentRoll.textContent = studentData.rollNumber;
-    studentRank.textContent = studentData.rank;
-    studentBranch.textContent = studentData.branch;
-    studentContact.textContent = studentData.contact;
-    
-    // Update status
+    studentName.textContent = studentData.studentName || 'N/A';
+    studentRoll.textContent = studentData.rollNumber || 'N/A';
+    studentRank.textContent = studentData.rank || 'N/A';
+
     statusText.textContent = capitalizeFirstLetter(studentData.status);
-    
-    // Update status icon
-    statusIcon.className = 'status-icon ' + studentData.status;
-    
-    // Update icon inside status indicator
+
+    statusIcon.className = 'status-icon ' + (studentData.status || 'unknown');
+
     let iconClass = 'fas ';
-    
+
     switch (studentData.status) {
         case 'admitted':
             iconClass += 'fa-check';
@@ -284,185 +132,68 @@ function updateStudentInfo(studentData) {
         default:
             iconClass += 'fa-question';
     }
-    
+
     statusIcon.innerHTML = `<i class="${iconClass}"></i>`;
 }
 
 function renderStandingsTable() {
     standingsTableBody.innerHTML = '';
-    
-    // Sort students by rank
-    const sortedStudents = [...studentsData].sort((a, b) => a.rank - b.rank);
-    
-    // Display only top 15 students for the table
+
+    const sortedStudents = [...studentsData].sort((a, b) => (a.rank || Infinity) - (b.rank || Infinity));
+
     const displayStudents = sortedStudents.slice(0, 15);
-    
+
     displayStudents.forEach(student => {
         const row = document.createElement('tr');
-        
+
         row.innerHTML = `
-            <td class="rank-cell">${student.rank}</td>
-            <td class="name-cell">${student.name}</td>
-            <td>${student.rollNumber}</td>
-            <td><span class="branch-badge">${student.branch}</span></td>
-            <td><span class="status-badge status-${student.status}">${capitalizeFirstLetter(student.status)}</span></td>
+            <td class="rank-cell">${student.rank || 'N/A'}</td>
+            <td class="name-cell">${student.studentName || 'N/A'}</td>
+            <td>${student.rollNumber || 'N/A'}</td>
+            <td><span class="branch-badge">${student.branches && student.branches[0] ? student.branches[0] : 'N/A'}</span></td>
+            <td><span class="status-badge status-${student.status || 'unknown'}">${capitalizeFirstLetter(student.status)}</span></td>
         `;
-        
+
         standingsTableBody.appendChild(row);
     });
 }
 
-function openLoginModal(e) {
-    e.preventDefault();
-    loginModal.classList.remove('hidden');
+// Helper to capitalize first letter safely
+function capitalizeFirstLetter(str) {
+    if (!str) return 'Unknown';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+} 
+
+// Placeholder functions for login/logout/modal
+function openLoginModal() {
+    loginModal.style.display = 'block';
 }
 
 function closeLoginModal() {
-    loginModal.classList.add('hidden');
+    loginModal.style.display = 'none';
 }
 
-function handleLogin(e) {
-    e.preventDefault();
-    
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const userType = document.getElementById('userType').value;
-    
-    // In a real app, you would validate credentials with the server
-    // For demo purposes, we'll simulate successful login
-    
-    // Save user info to localStorage
-    const userData = {
-        username: username,
-        role: userType
-    };
-    
-    localStorage.setItem('clcPortalUser', JSON.stringify(userData));
-    
-    // Update global variables
-    currentUser = username;
-    userRole = userType;
-    
-    // Update UI
-    updateUIForLoggedInUser();
-    
-    // Close modal
-    closeLoginModal();
+function handleLogin(event) {
+    event.preventDefault();
+    alert('Login functionality not implemented yet.');
 }
 
-function handleLogout(e) {
-    e.preventDefault();
-    
-    // Clear user data from localStorage
+function handleLogout() {
     localStorage.removeItem('clcPortalUser');
-    
-    // Reset global variables
-    currentUser = null;
-    userRole = null;
-    
-    // Update UI
-    loginLink.classList.remove('hidden');
-    profileLink.classList.add('hidden');
-    logoutLink.classList.add('hidden');
-    currentStudentSection.classList.add('hidden');
-    adminControls.classList.add('hidden');
+    location.reload();
 }
 
 function handleRefresh() {
-    refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
-    
-    // Simulate server request delay
-    setTimeout(function() {
-        refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
-        
-        // Update the status of a random student
-        const statuses = ['admitted', 'waiting', 'skipped', 'processing'];
-        const randomIndex = Math.floor(Math.random() * 15);
-        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-        
-        // Update the student data
-        studentsData[randomIndex].status = randomStatus;
-        
-        // Re-render the table
-        renderStandingsTable();
-        
-        // If user is an admin or officer, update the current student section if needed
-        if ((userRole === 'admin' || userRole === 'officer') && randomIndex === studentsData.findIndex(s => s.status === 'processing')) {
-            updateStudentInfo(studentsData[randomIndex]);
-        }
-        
-        // Notification
-        alert('Standing data has been refreshed!');
-    }, 1500);
-}
+    initializeApp();
+} 
 
-// Admin functions
-function processNextStudent() {
-    // Find current processing student and set to admitted
-    const currentProcessingIndex = studentsData.findIndex(student => student.status === 'processing');
-    
-    if (currentProcessingIndex !== -1) {
-        studentsData[currentProcessingIndex].status = 'admitted';
-    }
-    
-    // Find next student in queue and set to processing
-    const nextStudentIndex = studentsData.findIndex((student, index) => 
-        index > currentProcessingIndex && 
-        student.status !== 'admitted' && 
-        student.status !== 'skipped'
-    );
-    
-    if (nextStudentIndex !== -1) {
-        studentsData[nextStudentIndex].status = 'processing';
-        
-        // Update current student display
-        updateStudentInfo(studentsData[nextStudentIndex]);
+function updateUIForLoggedInUser() {
+    loginLink.style.display = 'none';
+    logoutLink.style.display = 'block';
+
+    if (userRole === 'admin') {
+        adminControls.style.display = 'block';
     } else {
-        // No more students to process
-        alert('All students have been processed or skipped.');
+        adminControls.style.display = 'none';
     }
-    
-    // Update the table
-    renderStandingsTable();
-}
-
-function skipCurrentStudent() {
-    // Find current processing student and set to skipped
-    const currentProcessingIndex = studentsData.findIndex(student => student.status === 'processing');
-    
-    if (currentProcessingIndex !== -1) {
-        studentsData[currentProcessingIndex].status = 'skipped';
-        
-        // Process next student automatically
-        processNextStudent();
-    } else {
-        alert('No student is currently being processed.');
-    }
-}
-
-function resetQueue() {
-    if (confirm('Are you sure you want to reset the entire queue? This action cannot be undone.')) {
-        // Reset all students to waiting except admitted ones
-        studentsData.forEach(student => {
-            if (student.status !== 'admitted') {
-                student.status = 'waiting';
-            }
-        });
-        
-        // Set the highest ranked waiting student to processing
-        const nextStudent = studentsData.find(student => student.status === 'waiting');
-        if (nextStudent) {
-            nextStudent.status = 'processing';
-            updateStudentInfo(nextStudent);
-        }
-        
-        // Update the table
-        renderStandingsTable();
-        
-        alert('Queue has been reset successfully.');
-    }
-}
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }
