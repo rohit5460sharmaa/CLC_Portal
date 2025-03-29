@@ -388,6 +388,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ admitted: true })
             });
 
+            const updateSeatResponse = await fetch(`${BASE_URLS.seats}/${student.selectedBranch}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    allocated: true,  // Include allocation status
+                    category: student.category // Pass the selected category ('general', 'obc', 'sc', 'st')
+                })
+            });
+
+            if (!updateSeatResponse.ok) {
+                console.warn('Failed to update seat allocation');
+            } else {
+                console.log('Seat allocation updated successfully');
+            }
+
+            const removePreferenceResponse = await fetch(`${BASE_URLS.preferences}/${student.rollNumber}`, {
+                method: 'DELETE'
+            });
+    
+            if (!removePreferenceResponse.ok) {
+                console.warn('Could not remove student from preferences queue');
+            }
+
             // Remove from queue
             studentQueue = studentQueue.filter(s => s.rollNumber !== rollNumber);
             renderStudentQueue();
