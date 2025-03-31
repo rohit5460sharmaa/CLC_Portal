@@ -18,13 +18,13 @@ public class StudentController {
     private final StudentService studentService;
 
     @Autowired
-    public StudentController(StudentService studentService) { // ✅ Constructor Injection
+    public StudentController(StudentService studentService) { // Constructor Injection
         this.studentService = studentService;
     }
 
     @GetMapping
     public List<Student> getAllStudents() {
-        return studentService.getAllStudents(); // ✅ Use service instead of repo
+        return studentService.getAllStudents(); // Use service 
     }
 
     @GetMapping("/{rollNumber}")
@@ -104,10 +104,4 @@ public class StudentController {
         return ResponseEntity.notFound().build();
     }
 
-//    @GetMapping("/email/{email}")
-//    public ResponseEntity<Student> getStudentByEmail(@PathVariable String email) {
-//        return studentService.existsByEmail(email)
-//                .map(ResponseEntity::ok)
-//                .orElse(ResponseEntity.notFound().build());
-//    }
 }

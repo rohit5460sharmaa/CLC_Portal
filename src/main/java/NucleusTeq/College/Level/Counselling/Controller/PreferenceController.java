@@ -27,7 +27,7 @@ public class PreferenceController {
         );
         return ResponseEntity.ok(preference);
     }
-
+//all
     @GetMapping("/all")
     public ResponseEntity<List<Preference>> getAllPreferences() {
         return ResponseEntity.ok(preferenceService.getAllPreferences());
