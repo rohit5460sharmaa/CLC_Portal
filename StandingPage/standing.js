@@ -6,12 +6,6 @@ let userRole = null;
 let studentsData = [];
 
 // DOM elements
-const loginLink = document.getElementById('loginLink');
-const profileLink = document.getElementById('profileLink');
-const logoutLink = document.getElementById('logoutLink');
-const loginModal = document.getElementById('loginModal');
-const loginForm = document.getElementById('loginForm');
-const closeModalBtn = document.querySelector('.close');
 const currentStudentSection = document.getElementById('currentStudentSection');
 const adminControls = document.getElementById('adminControls');
 const refreshBtn = document.getElementById('refreshBtn');
@@ -26,15 +20,10 @@ const studentContact = document.getElementById('studentContact');
 const statusText = document.getElementById('statusText');
 const statusIcon = document.getElementById('statusIcon');
 
-// Admin control buttons
-const processNextBtn = document.getElementById('processNextBtn');
-const skipCurrentBtn = document.getElementById('skipCurrentBtn');
-const resetQueueBtn = document.getElementById('resetQueueBtn');
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
-    setupEventListeners();
 });
 
 async function initializeApp() {
@@ -52,7 +41,7 @@ async function initializeApp() {
         studentsData = await studentsResponse.json();
         const allocationsData = await allocationsResponse.json();
 
-        console.log('Allocations Data:', allocationsData);
+        // console.log('Allocations Data:', allocationsData);
 
         // Map allocations by rollNumber for quick lookup
         const allocationMap = new Map(allocationsData.map(allocation => [allocation.rollNumber, allocation]));
@@ -65,12 +54,11 @@ async function initializeApp() {
                 student.branches = [allocation.branch];
             } else {
                 student.status = 'not admitted';
-                student.branches = [allocation.branches[0]];
+                student.branches = [student.branches[0]];
 
             }
         });
 
-        checkLoginStatus();
 
         renderStandingsTable();
     } catch (error) {
@@ -79,31 +67,7 @@ async function initializeApp() {
     }
 }
 
-function setupEventListeners() {
-    loginLink.addEventListener('click', openLoginModal);
-    closeModalBtn.addEventListener('click', closeLoginModal);
-    loginForm.addEventListener('submit', handleLogin);
-    logoutLink.addEventListener('click', handleLogout);
-    refreshBtn.addEventListener('click', handleRefresh);
 
-    window.addEventListener('click', function(event) {
-        if (event.target === loginModal) {
-            closeLoginModal();
-        }
-    });
-}
-
-function checkLoginStatus() {
-    const savedUser = localStorage.getItem('clcPortalUser');
-
-    if (savedUser) {
-        const userData = JSON.parse(savedUser);
-        currentUser = userData.username;
-        userRole = userData.role;
-
-        updateUIForLoggedInUser();
-    }
-}
 
 function updateStudentInfo(studentData) {
     studentName.textContent = studentData.studentName || 'N/A';
@@ -164,20 +128,6 @@ function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 } 
 
-// Placeholder functions for login/logout/modal
-function openLoginModal() {
-    loginModal.style.display = 'block';
-}
-
-function closeLoginModal() {
-    loginModal.style.display = 'none';
-}
-
-function handleLogin(event) {
-    event.preventDefault();
-    alert('Login functionality not implemented yet.');
-}
-
 function handleLogout() {
     localStorage.removeItem('clcPortalUser');
     location.reload();
@@ -186,14 +136,3 @@ function handleLogout() {
 function handleRefresh() {
     initializeApp();
 } 
-
-function updateUIForLoggedInUser() {
-    loginLink.style.display = 'none';
-    logoutLink.style.display = 'block';
-
-    if (userRole === 'admin') {
-        adminControls.style.display = 'block';
-    } else {
-        adminControls.style.display = 'none';
-    }
-}

@@ -47,7 +47,6 @@
     </header>
 
     <div class="container">
-        <!-- Current Student Section (Only visible to logged-in students or admin/officers) -->
         <div class="current-student-section hidden" id="currentStudentSection">
             <div class="section-title">
                 <i class="fas fa-user-graduate"></i>
@@ -84,27 +83,6 @@
             </div>
         </div>
 
-        <!-- Admin Controls (Only visible to admin/officers) -->
-        <div class="admin-controls hidden" id="adminControls">
-            <div class="section-title">
-                <i class="fas fa-cogs"></i>
-                Admin Controls
-            </div>
-            <div class="admin-actions">
-                <button id="processNextBtn" class="admin-btn">
-                    <i class="fas fa-play"></i>
-                    Process Next Student
-                </button>
-                <button id="skipCurrentBtn" class="admin-btn">
-                    <i class="fas fa-forward"></i>
-                    Skip Current
-                </button>
-                <button id="resetQueueBtn" class="admin-btn danger">
-                    <i class="fas fa-redo"></i>
-                    Reset Queue
-                </button>
-            </div>
-        </div>
 
         <div class="standings-section">
             <div class="standings-header">
@@ -130,32 +108,6 @@
             </table>
         </div>
         
-        <!-- Login Modal -->
-        <div id="loginModal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Login to CLC Portal</h2>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="username">Username/Roll Number</label>
-                        <input type="text" id="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="userType">User Type</label>
-                        <select id="userType">
-                            <option value="student">Student</option>
-                            <option value="officer">Officer</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="login-btn">Login</button>
-                </form>
-            </div>
-        </div>
     </div>
 
     <script src="standing.js"></script>

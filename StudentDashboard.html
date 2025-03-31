@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
+
 <body class="bg-gray-50">
     <nav class="bg-indigo-800 text-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,10 +19,14 @@
                         <span class="font-bold text-xl">CLC Portal</span>
                     </div>
                     <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
-                        <a href="StudentDashboard.html" class="px-3 py-2 rounded-md text-sm font-medium bg-blue-900">Dashboard</a>
-                        <a href="Seat/Seat.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Seat Matrix</a>
-                        <a href="BranchPreference/index.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Add Preference</a>
-                        <a href="StudentProfile.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Profile</a>
+                        <a href="StudentDashboard.html"
+                            class="px-3 py-2 rounded-md text-sm font-medium bg-blue-900">Dashboard</a>
+                        <a href="Seat/Seat.html" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Seat
+                            Matrix</a>
+                        <a href="BranchPreference/index.html"
+                            class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Add Preference</a>
+                        <a href="StudentProfile.html"
+                            class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Profile</a>
                     </div>
                 </div>
                 <div class="flex items-center">
@@ -38,11 +44,15 @@
     <!-- Mobile menu, show/hide based on menu state -->
     <div class="md:hidden">
         <div class="bg-indigo-700 px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="StudentDashboard.html" class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-900">Dashboard</a>
-            <a href="Seat/Seat.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Seat Matrix</a>
+            <a href="StudentDashboard.html"
+                class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-900">Dashboard</a>
+            <a href="Seat/Seat.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Seat
+                Matrix</a>
 
-            <a href="BranchPreference/index.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Add Preference</a>
-            <a href="StudentProfile.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Profile</a>
+            <a href="BranchPreference/index.html"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Add Preference</a>
+            <a href="StudentProfile.html"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-indigo-700">Profile</a>
         </div>
     </div>
 
@@ -61,7 +71,8 @@
                         </div>
                     </div>
                     <div class="ml-auto">
-                        <span id="admission-status" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                        <span id="admission-status"
+                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
                             <i class="fas fa-clock mr-1"></i> In Queue
                         </span>
                     </div>
@@ -70,9 +81,9 @@
             <div class="bg-gray-50 px-4 py-4 sm:px-6">
                 <div class="text-sm">
                     <span class="font-medium text-gray-700">Your Current Rank:</span>
-                    <span data-current-rank class="ml-2 font-bold text-indigo-600">145</span>
+                    <span data-current-rank class="ml-2 font-bold text-indigo-600">1</span>
                     <span class="ml-4 font-medium text-gray-700">Students Ahead of You:</span>
-                    <span data-students-ahead class="ml-2 font-bold text-indigo-600">8</span>
+                    <span data-students-ahead class="ml-2 font-bold text-indigo-600">1</span>
                 </div>
             </div>
         </div>
@@ -88,15 +99,17 @@
                     <dl class="space-y-2">
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt class="text-sm font-medium text-gray-500">Full name</dt>
-                            <dd data-user-fullname class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">John Doe</dd>
+                            <dd data-user-fullname class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">John Doe
+                            </dd>
                         </div>
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt class="text-sm font-medium text-gray-500">Roll number</dt>
-                            <dd data-user-rollnumber class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">EX-2023-45678</dd>
+                            <dd data-user-rollnumber class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                EX-2023-45678</dd>
                         </div>
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt class="text-sm font-medium text-gray-500">Rank</dt>
-                            <dd data-user-rank class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">145</dd>
+                            <dd data-user-rank class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">1</dd>
                         </div>
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <dt class="text-sm font-medium text-gray-500">Category</dt>
@@ -105,7 +118,7 @@
                     </dl>
                 </div>
             </div>
-            
+
             <!-- Counselling Schedule -->
             <div class="bg-white shadow rounded-lg overflow-hidden">
                 <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
@@ -123,7 +136,8 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-medium text-gray-500">Venue</span>
-                            <span data-counselling-venue class="text-sm font-bold text-indigo-600">Main Auditorium</span>
+                            <span data-counselling-venue class="text-sm font-bold text-indigo-600">Main
+                                Auditorium</span>
                         </div>
                     </div>
                     <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100">
@@ -134,7 +148,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Required Documents -->
             <div class="bg-white shadow rounded-lg overflow-hidden">
                 <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
@@ -180,11 +194,21 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Roll Number</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admitted</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Rank</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Roll Number</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Name</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Category</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Admitted</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -205,60 +229,55 @@
 
     <script>
 
-            
-// Ensure rollNumber is stored from token
-function storeRollNumberFromToken() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        console.error('❌ Token not found in localStorage.');
-        return;
-    }
-
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        if (payload.username) {
-            localStorage.setItem('rollNumber', payload.username);
-            console.log('✅ Stored rollNumber:', payload.username);
-        } else {
-            console.error('❌ Username missing in token payload.');
-        }
-    } catch (error) {
-        console.error('❌ Error decoding token:', error);
-    }
-}
-
-storeRollNumberFromToken(); 
-
-// Function to append rollNumber to links
-function appendRollNumberToLinks() {
-    const rollNumber = localStorage.getItem('rollNumber');
-    if (!rollNumber) return;
-
-    document.querySelectorAll('a').forEach(link => {
-        const url = new URL(link.href, window.location.origin);
-        url.searchParams.set('rollNumber', rollNumber);
-        link.href = url.toString();
-    });
-}
-
-appendRollNumberToLinks();
-
-
-        
         let userData = {};
 
         async function fetchUserDetails() {
+
+            function storeRollNumberFromToken() {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('❌ Token not found in localStorage.');
+                    return;
+                }
+
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    if (payload.username) {
+                        localStorage.setItem('rollNumber', payload.username);
+                        console.log('✅ Stored rollNumber:', payload.username);
+                    } else {
+                        console.error('❌ Username missing in token payload.');
+                    }
+                } catch (error) {
+                    console.error('❌ Error decoding token:', error);
+                }
+            }
+
+            storeRollNumberFromToken();
+
+            function appendRollNumberToLinks() {
+                const rollNumber = localStorage.getItem('rollNumber');
+                if (!rollNumber) return;
+
+                document.querySelectorAll('a').forEach(link => {
+                    const url = new URL(link.href, window.location.origin);
+                    url.searchParams.set('rollNumber', rollNumber);
+                    link.href = url.toString();
+                });
+            }
+
+            appendRollNumberToLinks();
             try {
                 const rollNumber = localStorage.getItem('rollNumber');
-                
+
                 if (!rollNumber) {
                     console.error('Roll number not found in localStorage.');
                     displayErrorMessage('Roll number is missing. Please log in again.');
                     return;
                 }
-        
+
                 console.log('Fetching student data for rollNumber:', rollNumber); // Debugging log
-        
+
                 const response = await fetch(`http://localhost:8080/students/${rollNumber}`, {
                     method: 'GET',
                     headers: {
@@ -266,11 +285,11 @@ appendRollNumberToLinks();
                         'Content-Type': 'application/json'
                     }
                 });
-        
+
                 if (!response.ok) {
                     throw new Error(`Failed to fetch user details. Status: ${response.status}`);
                 }
-        
+
                 userData = await response.json();
                 console.log(userData);
                 updateUserInterface(userData);
@@ -279,7 +298,7 @@ appendRollNumberToLinks();
                 displayErrorMessage('Unable to load user details. Please try again later.');
             }
         }
-        
+
         async function fetchCounsellingSchedule() {
             try {
                 // Hardcoded counselling schedule
@@ -301,25 +320,25 @@ appendRollNumberToLinks();
                         'Content-Type': 'application/json'
                     }
                 });
-        
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch top rankings');
                 }
-        
+
                 const rankingsData = await response.json();
-                
+
                 // Sort the rankings data by rank in ascending order
                 const sortedRankingsData = rankingsData.sort((a, b) => a.rank - b.rank);
-                
+
                 // Update the top rankings table with sorted data
                 updateTopRankingsTable(sortedRankingsData);
-        
+
                 // Optional: Automatically calculate students ahead if userData is available
                 if (userData && userData.rank) {
-                    const studentsAhead = rankingsData.filter(student => 
+                    const studentsAhead = rankingsData.filter(student =>
                         student.rank < userData.rank
                     ).length;
-        
+
                     const studentsAheadElement = document.querySelector('[data-students-ahead]');
                     if (studentsAheadElement) {
                         studentsAheadElement.textContent = studentsAhead.toString();
@@ -332,10 +351,10 @@ appendRollNumberToLinks();
         function updateUserInterface(userData) {
             console.log(userData.name);
             document.querySelectorAll('[data-user-fullname]').forEach(el => {
-                el.textContent = userData.name || 'John Doe';
+                el.textContent = userData.name || 'John Doe';
             });
             document.querySelector('[data-user-rollnumber]').textContent = userData.rollNumber || 'EX-2023-45678';
-            document.querySelector('[data-user-rank]').textContent = userData.rank || '145';
+            document.querySelector('[data-user-rank]').textContent = userData.rank || '1';
             document.querySelector('[data-user-category]').textContent = userData.category || 'General';
 
             const admissionStatusElement = document.getElementById('admission-status');
@@ -348,7 +367,7 @@ appendRollNumberToLinks();
                 admissionStatusElement.classList.remove('bg-green-100', 'text-green-800');
                 admissionStatusElement.classList.add('bg-yellow-100', 'text-yellow-800');
             }
-            document.querySelector('[data-current-rank]').textContent = userData.rank || '145';
+            document.querySelector('[data-current-rank]').textContent = userData.rank || '1';
             console.log(userData.admitted);
             console.log(userData.admitted);
 
@@ -374,11 +393,11 @@ appendRollNumberToLinks();
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${student.category}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                ${student.admitted === true ? 'bg-green-100 text-green-800' : 
-                                student.admitted === 'In Progress' ? 'bg-blue-100 text-blue-800' : 
-                                'bg-yellow-100 text-yellow-800'}">
-                                ${student.admitted === true ? 'Admitted' : 
-                                student.admitted === 'In Progress' ? 'In Progress' : 'Not Admitted Yet'}
+                                ${student.admitted === true ? 'bg-green-100 text-green-800' :
+                        student.admitted === 'In Progress' ? 'bg-blue-100 text-blue-800' :
+                            'bg-yellow-100 text-yellow-800'}">
+                                ${student.admitted === true ? 'Admitted' :
+                        student.admitted === 'In Progress' ? 'In Progress' : 'Not Admitted Yet'}
                             </span>
 
                         </td>
@@ -387,7 +406,7 @@ appendRollNumberToLinks();
                 tableBody.innerHTML += row;
             });
         }
-        
+
 
         function displayErrorMessage(message) {
             const errorContainer = document.createElement('div');
@@ -417,11 +436,12 @@ appendRollNumberToLinks();
         });
 
         document.querySelector('[data-logout-button]').addEventListener('click', () => {
-            localStorage.removeItem('authToken');
-            window.location.href = 'Login/login.html';
+            localStorage.removeItem('token');
+            window.location.href = 'Logout/index.html';
         });
 
     </script>
 
 </body>
+
 </html>

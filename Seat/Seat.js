@@ -24,7 +24,7 @@ let allSeatData = null; // Store the complete original data
 
 // Function to check login status
 function checkLoginStatus() {
-    const token = localStorage.getItem('userToken');
+    const token = localStorage.getItem('token');
     return !!token;
 }
 
@@ -63,7 +63,7 @@ function fetchAndDisplaySeatData() {
     // Verify container elements exist
     if (!seatMatrixContainer || !summaryStatsContainer) {
         console.error('Seat matrix or summary stats container not found!', {
-            seatMatrixContainer, 
+            seatMatrixContainer,
             summaryStatsContainer
         });
         return;
@@ -83,84 +83,84 @@ function fetchAndDisplaySeatData() {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('userToken') || ''}`
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Store the complete original data
-        allSeatData = data;
-        
-        // Validate received data
-        if (!Array.isArray(data)) {
-            console.error('Received data is not an array:', data);
-            throw new Error('Invalid data format');
-        }
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Store the complete original data
+            allSeatData = data;
 
-        // Filter data based on category and search term
-        const filteredData = data.filter(branch => {
-            // Search term filtering
-            const branchName = (branch.branch || '').toLowerCase();
-            const matchesSearch = !searchTerm || branchName.includes(searchTerm);
-
-            // Category filtering with seat availability check
-            if (category !== 'all') {
-                const categoryKey = category.toLowerCase() + 'Seats';
-                const availableCategorySeats = branch[categoryKey] || 0;
-                
-                // Check if the branch has available seats in the selected category
-                return matchesSearch && availableCategorySeats > 0;
+            // Validate received data
+            if (!Array.isArray(data)) {
+                console.error('Received data is not an array:', data);
+                throw new Error('Invalid data format');
             }
 
-            return matchesSearch;
-        });
-        
-        // Clear loading states
-        seatMatrixContainer.innerHTML = '';
-        summaryStatsContainer.innerHTML = '';
+            // Filter data based on category and search term
+            const filteredData = data.filter(branch => {
+                // Search term filtering
+                const branchName = (branch.branch || '').toLowerCase();
+                const matchesSearch = !searchTerm || branchName.includes(searchTerm);
 
-        // Generate branch cards
-        if (filteredData.length === 0) {
-            seatMatrixContainer.innerHTML = `
+                // Category filtering with seat availability check
+                if (category !== 'all') {
+                    const categoryKey = category.toLowerCase() + 'Seats';
+                    const availableCategorySeats = branch[categoryKey] || 0;
+
+                    // Check if the branch has available seats in the selected category
+                    return matchesSearch && availableCategorySeats > 0;
+                }
+
+                return matchesSearch;
+            });
+
+            // Clear loading states
+            seatMatrixContainer.innerHTML = '';
+            summaryStatsContainer.innerHTML = '';
+
+            // Generate branch cards
+            if (filteredData.length === 0) {
+                seatMatrixContainer.innerHTML = `
                 <div class="no-results" style="text-align: center; width: 100%; padding: 2rem; color: var(--indigo-700);">
                     No branches found with available seats matching the selected filters.
                 </div>
             `;
-        } else {
-            filteredData.forEach(branch => {
-                // If a specific category is selected, only show that category's seats
-                if (category !== 'all') {
-                    branch = modifyBranchForCategory(branch, category);
-                }
-                seatMatrixContainer.innerHTML += createBranchCard(branch);
+            } else {
+                filteredData.forEach(branch => {
+                    // If a specific category is selected, only show that category's seats
+                    if (category !== 'all') {
+                        branch = modifyBranchForCategory(branch, category);
+                    }
+                    seatMatrixContainer.innerHTML += createBranchCard(branch);
+                });
+            }
+
+            // Create summary stats based on filtered and potentially modified data
+            summaryStatsContainer.innerHTML = createSummaryStats(filteredData, category);
+
+            // Update UI based on login status
+            updateUIForLoginStatus(checkLoginStatus());
+        })
+        .catch(error => {
+            console.error('Complete Error Details:', {
+                message: error.message,
+                stack: error.stack
             });
-        }
 
-        // Create summary stats based on filtered and potentially modified data
-        summaryStatsContainer.innerHTML = createSummaryStats(filteredData, category);
-
-        // Update UI based on login status
-        updateUIForLoginStatus(checkLoginStatus());
-    })
-    .catch(error => {
-        console.error('Complete Error Details:', {
-            message: error.message,
-            stack: error.stack
-        });
-        
-        seatMatrixContainer.innerHTML = `
+            seatMatrixContainer.innerHTML = `
             <div class="error-message">
                 Unable to load seat data. ${error.message}
                 <br>Check console for more details.
             </div>
         `;
-        summaryStatsContainer.innerHTML = '';
-    });
+            summaryStatsContainer.innerHTML = '';
+        });
 }
 
 // Function to modify branch data when a specific category is selected
@@ -204,19 +204,19 @@ function createBranchCard(branch) {
             <div class="branch-header">${branch.branch}</div>
             <div class="branch-content">
                 ${categories.map(category => {
-                    const totalCategorySeats = branch[category.key] || 0;
-                    const filledCategorySeats = branch[category.filled] || 0;
-                    
-                    // Only show categories with seats
-                    if (totalCategorySeats > 0) {
-                        return `
+        const totalCategorySeats = branch[category.key] || 0;
+        const filledCategorySeats = branch[category.filled] || 0;
+
+        // Only show categories with seats
+        if (totalCategorySeats > 0) {
+            return `
                             <div class="seat-row">
                                 <span class="category">${category.name}</span>
                                 <span class="seats">${filledCategorySeats} / ${totalCategorySeats}</span>
                             </div>
                         `;
-                    }
-                }).join('')}
+        }
+    }).join('')}
                 <div class="seat-row total">
                     <span class="category">Total Seats</span>
                     <span class="seats">${branch.totalSeats || 0}</span>
@@ -236,17 +236,17 @@ function createSummaryStats(data, selectedCategory = 'all') {
         if (selectedCategory === 'all') {
             // Sum total seats for all categories
             totalSeats += branch.totalSeats || (
-                (branch.generalSeats || 0) + 
-                (branch.obcSeats || 0) + 
-                (branch.scSeats || 0) + 
+                (branch.generalSeats || 0) +
+                (branch.obcSeats || 0) +
+                (branch.scSeats || 0) +
                 (branch.stSeats || 0)
             );
 
             // Sum filled seats for all categories
             filledSeats += (
-                (branch.filledGeneralSeats || 0) + 
-                (branch.filledObcSeats || 0) + 
-                (branch.filledScSeats || 0) + 
+                (branch.filledGeneralSeats || 0) +
+                (branch.filledObcSeats || 0) +
+                (branch.filledScSeats || 0) +
                 (branch.filledStSeats || 0)
             );
         } else {
@@ -259,7 +259,7 @@ function createSummaryStats(data, selectedCategory = 'all') {
             };
 
             const [totalSeatsKey, filledSeatsKey] = categoryMap[selectedCategory];
-            
+
             totalSeats += branch[totalSeatsKey] || 0;
             filledSeats += branch[filledSeatsKey] || 0;
         }
@@ -309,11 +309,11 @@ function setupEventListeners() {
     document.getElementById('academic-year').addEventListener('change', () => {
         fetchAndDisplaySeatData();
     });
-    
+
     document.getElementById('category').addEventListener('change', () => {
         fetchAndDisplaySeatData();
     });
-    
+
     document.getElementById('search').addEventListener('input', () => {
         fetchAndDisplaySeatData();
     });
@@ -354,5 +354,5 @@ window.addEventListener('error', (event) => {
 
 document.querySelector('[data-logout-button]').addEventListener('click', () => {
     localStorage.removeItem('authToken');
-    window.location.href = '../Login/login.html';
+    window.location.href = '../Logout/index.html';
 });
